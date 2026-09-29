@@ -1,0 +1,184 @@
+ROSARCANA - ILLUSTRAZIONI MANCANTI (60 carte)
+Salva ogni immagine con il nome tra parentesi quadre (formato 5:7 verticale, va bene anche quadrato) e mandamele in uno zip.
+Lo stile è lo stesso delle illustrazioni già nel gioco.
+
+[brace-c6.png]  Grifone di Cenere (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a griffin with smoldering ash-grey feathers swooping around a fortress tower. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-c7.png]  Tamburina di Guerra (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a young war drummer beating a drum with charred bones, soldiers marching behind. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-c8.png]  Scheggia Ardente (Incantesimo, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a glowing shard of molten metal flying like an arrow toward a stone seal. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-c9.png]  Fanatico del Rogo (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a fanatic monk with burning scars raising a torch, ready to sacrifice himself. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-c10.png]  Sentinella Fumante (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a sentinel made of dark smoke standing still on burning ramparts. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-u4.png]  Incendiaria (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a hooded saboteur lighting a fuse at the foot of a fortress wall, sparks in the dark. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-u5.png]  Berserker di Cenere (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a berserker warrior covered in ash, screaming, axe raised, embers swirling. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-u6.png]  Pira Votiva (Reliquia, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a votive pyre burning on castle walls, its smoke shaped like reaching hands. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-u7.png]  Veterano delle Braci (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a scarred veteran knight in blackened armor under a strange colored sky. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-r3.png]  Signore delle Braci (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: an old armored lord of the forge raising a glowing ember in his gauntlet, soldiers rallying behind him. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-r4.png]  Drago di Brace (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a great red dragon with ember-glowing scales breathing fire over a fortress. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-r5.png]  Eruzione (Incantesimo, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a volcanic eruption pouring lava down a battlefield lane. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-r6.png]  Araldo del Fuoco (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a herald in crimson raising a burning banner and blowing a war horn. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-l2.png]  Surtr, il Gigante Nero (Unità, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: Surtr, a colossal black fire giant with a flaming sword striding through a burning land. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-l3.png]  Fornace Eterna (Reliquia, Brace)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: an eternal forge with a single brilliant ember at its heart, anvils and chains around it. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-c6.png]  Gabbiano delle Secche (Unità, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a white gull crying above treacherous shoals and a ship in the fog. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-c7.png]  Onda Anomala (Incantesimo, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a monstrous rogue wave rising over a stone pier. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-c8.png]  Granchio Corazzato (Unità, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: an armored giant crab with closed claws guarding a tide pool. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-c9.png]  Pescatore di Perle (Unità, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a pearl diver emerging from moonlit water holding a glowing pearl. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-c10.png]  Nebbia Salmastra (Incantesimo, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a salty sea fog swallowing soldiers on a beach. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-u4.png]  Alta Marea (Reliquia, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a rising tide flooding a stone causeway under a pale moon. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-u5.png]  Tritone Esploratore (Unità, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a triton scout with a conch horn emerging from a side current near cliffs. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-u6.png]  Ancora Spezzata (Reliquia, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a broken ship anchor half buried in the seabed, chains still tight. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-u7.png]  Maga delle Correnti (Unità, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a sea sorceress reading swirling currents like pages of a book. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-r3.png]  Sirena Ammaliatrice (Unità, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a beautiful siren singing on a rock with glowing eyes, spellbound sailors in the mist. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-r4.png]  Kraken Dormiente (Unità, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a colossal sleeping kraken on the ocean floor opening one enormous eye. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-r5.png]  Contromarea (Incantesimo, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: the sea pulling back suddenly, leaving an army stranded on wet sand. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-r6.png]  Signora delle Secche (Unità, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a regal queen of the shoals with a coral crown, stranded ships behind her. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-l2.png]  Scilla (Unità, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: Scylla, a six-headed sea monster rising from a narrow strait at a ship. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-l3.png]  Faro di Alessandria (Reliquia, Marea)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: the Lighthouse of Alexandria rebuilt in gothic style, its beam cutting through the night. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-c6.png]  Custode delle Sorgenti (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a small robed spirit tending a luminous spring among mossy roots. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-c7.png]  Muschio Rampicante (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: thick glowing moss creeping over ancient standing stones. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-c8.png]  Seme Errante (Incantesimo, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a single glowing seed carried by the wind over a dark field. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-c9.png]  Lupo Giovane (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a young grey wolf howling under an omen-filled sky in the forest. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-c10.png]  Erborista (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: an old herbalist woman gathering glowing herbs at the foot of a cracked stone seal. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-u4.png]  Vipera del Sottobosco (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a small emerald viper coiled on a mossy stone, fangs glistening. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-u5.png]  Treant Custode (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a walking tree guardian with bark armor and glowing sap wounds. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-u6.png]  Cerchio delle Fate (Reliquia, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a fairy ring of luminous mushrooms in a dark glade. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-u7.png]  Cinghiale Furioso (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: an enraged boar charging, bristles glowing with green fury. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-r3.png]  Cervo Bianco (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a majestic white stag in a sunlit forest clearing with a soft halo. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-r4.png]  Driade Antica (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: an ancient dryad merging with a giant tree, flowers blooming around her. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-r5.png]  Richiamo della Foresta (Incantesimo, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a guardian blowing a carved root horn, animals of the forest answering. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-r6.png]  Signore dei Cervi (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a stag lord with enormous antlers holding a small glowing sapling. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-l2.png]  Titano di Quercia (Unità, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a colossal oak titan rising from the earth, roots like legs. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-l3.png]  Primavera Eterna (Incantesimo, Radice)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: an eternal spring meadow bursting with flowers and healing light around ruined seals. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-c6.png]  Scriba del Nulla (Unità, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a gaunt scribe writing glowing violet runes on the walls of an endless crypt library. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-c7.png]  Novizia del Velo (Unità, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a young veiled novice nun holding a black candle in a crypt. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-c8.png]  Tributo (Incantesimo, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: hands offering a glowing soul-flame to a dark void altar. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-c9.png]  Scheletro Rianimato (Unità, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a skeleton warrior reassembling itself from scattered bones. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-c10.png]  Sussurro del Pozzo (Incantesimo, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: whispers rising as violet mist from a deep ancient well. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-u4.png]  Pipistrello di Cripta (Unità, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a large bat with violet-glowing eyes circling a cracked crypt vault. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-u5.png]  Negromante (Unità, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a necromancer raising small skeletal creatures from graves. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-u6.png]  Reliquiario Oscuro (Reliquia, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a dark gothic reliquary with bones glowing inside. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-u7.png]  Sacerdotessa del Nulla (Unità, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a priestess of the void praying in silence among candles. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-r3.png]  Grande Eclisse (Incantesimo, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a total eclipse devouring the sun above a battlefield where weak figures dissolve into shadow. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-r4.png]  Divoratore di Anime (Unità, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a hulking soul devourer absorbing ghostly spirits into its chest. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-r5.png]  Patto delle Ombre (Incantesimo, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: two shadowy hands shaking over a contract written in glowing ink. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-r6.png]  Arcivescovo del Silenzio (Unità, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a skeletal archbishop in black vestments leading a procession of the dead. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-l2.png]  Hel, Regina dei Morti (Unità, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: Hel, queen of the dead, half beautiful and half skeletal, opening a great gate. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-l3.png]  Il Grande Patto (Reliquia, Vuoto)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third because text will be placed there. Subject: a vast ritual circle at dawn where a life is offered to a black sun. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+

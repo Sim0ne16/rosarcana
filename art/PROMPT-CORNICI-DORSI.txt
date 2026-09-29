@@ -1,0 +1,48 @@
+ROSARCANA - PROMPT PER CORNICI DI MAESTRIA E DORSI
+Salva ogni immagine con il nome tra parentesi quadre e mandamele in uno zip.
+Cornici: il centro e l'esterno devono restare NERO PIENO: li rendo trasparenti io. Formato 5:7 verticale.
+Dorsi: formato 5:7 verticale, a tutta immagine.
+
+==============================================================================
+CORNICI DI MAESTRIA (una per grado, sempre più ricca)
+==============================================================================
+
+[frame-maestria-1.png]  Apprendista
+PROMPT: Ornate trading card frame, border only, vertical 5:7 aspect ratio, perfectly symmetrical, straight front view, flat, no perspective. All ornaments stay inside the image edges. The frame is a decorative border along the four edges, about 7% of the width thick, with richer ornaments in the four corners and at the center of the top and bottom edges. The whole inner area is an empty rectangle with slightly rounded corners filled with flat solid pure black (#000000); the thin area outside the frame is also flat solid pure black. Painterly dark fantasy style matching gothic cathedral art, highly detailed materials, dramatic rim light. No card art inside, no characters, no text, no letters, no numbers, no logo, no watermark. Material: dark polished wood and hammered copper, simple elegant bevel, small copper rivets in the corners.
+
+[frame-maestria-2.png]  Adepto
+PROMPT: Ornate trading card frame, border only, vertical 5:7 aspect ratio, perfectly symmetrical, straight front view, flat, no perspective. All ornaments stay inside the image edges. The frame is a decorative border along the four edges, about 7% of the width thick, with richer ornaments in the four corners and at the center of the top and bottom edges. The whole inner area is an empty rectangle with slightly rounded corners filled with flat solid pure black (#000000); the thin area outside the frame is also flat solid pure black. Painterly dark fantasy style matching gothic cathedral art, highly detailed materials, dramatic rim light. No card art inside, no characters, no text, no letters, no numbers, no logo, no watermark. Material: cold silver with engraved runic lines, small pale blue moonstones in the four corners.
+
+[frame-maestria-3.png]  Custode
+PROMPT: Ornate trading card frame, border only, vertical 5:7 aspect ratio, perfectly symmetrical, straight front view, flat, no perspective. All ornaments stay inside the image edges. The frame is a decorative border along the four edges, about 7% of the width thick, with richer ornaments in the four corners and at the center of the top and bottom edges. The whole inner area is an empty rectangle with slightly rounded corners filled with flat solid pure black (#000000); the thin area outside the frame is also flat solid pure black. Painterly dark fantasy style matching gothic cathedral art, highly detailed materials, dramatic rim light. No card art inside, no characters, no text, no letters, no numbers, no logo, no watermark. Material: gold leaf and deep red enamel, laurel leaves along the sides, a ruby at the top center.
+
+[frame-maestria-4.png]  Maestro
+PROMPT: Ornate trading card frame, border only, vertical 5:7 aspect ratio, perfectly symmetrical, straight front view, flat, no perspective. All ornaments stay inside the image edges. The frame is a decorative border along the four edges, about 7% of the width thick, with richer ornaments in the four corners and at the center of the top and bottom edges. The whole inner area is an empty rectangle with slightly rounded corners filled with flat solid pure black (#000000); the thin area outside the frame is also flat solid pure black. Painterly dark fantasy style matching gothic cathedral art, highly detailed materials, dramatic rim light. No card art inside, no characters, no text, no letters, no numbers, no logo, no watermark. Material: white marble and gold inlay like a cathedral altar, tiny carved rose windows in the corners, emerald accents.
+
+[frame-maestria-5.png]  Gran Maestro
+PROMPT: Ornate trading card frame, border only, vertical 5:7 aspect ratio, perfectly symmetrical, straight front view, flat, no perspective. All ornaments stay inside the image edges. The frame is a decorative border along the four edges, about 7% of the width thick, with richer ornaments in the four corners and at the center of the top and bottom edges. The whole inner area is an empty rectangle with slightly rounded corners filled with flat solid pure black (#000000); the thin area outside the frame is also flat solid pure black. Painterly dark fantasy style matching gothic cathedral art, highly detailed materials, dramatic rim light. No card art inside, no characters, no text, no letters, no numbers, no logo, no watermark. Material: dark iron and stained glass shards glowing in crimson, teal, green and violet, gothic tracery in the corners, faint inner light.
+
+[frame-maestria-6.png]  Leggenda
+PROMPT: Ornate trading card frame, border only, vertical 5:7 aspect ratio, perfectly symmetrical, straight front view, flat, no perspective. All ornaments stay inside the image edges. The frame is a decorative border along the four edges, about 7% of the width thick, with richer ornaments in the four corners and at the center of the top and bottom edges. The whole inner area is an empty rectangle with slightly rounded corners filled with flat solid pure black (#000000); the thin area outside the frame is also flat solid pure black. Painterly dark fantasy style matching gothic cathedral art, highly detailed materials, dramatic rim light. No card art inside, no characters, no text, no letters, no numbers, no logo, no watermark. Material: radiant gold and violet crystal, a small crown at the top center, four glowing rose-window medallions in the corners, sparks of light, majestic and luminous.
+
+==============================================================================
+DORSI DELLE CARTE
+==============================================================================
+
+[back-rosone.png]  Il Grande Rosone
+PROMPT: Trading card back design, vertical 5:7 aspect ratio, full bleed, perfectly symmetrical, straight front view, centered emblem, rich ornamental border, dark fantasy gothic cathedral style, painterly, highly detailed. No text, no letters, no numbers, no logo, no watermark. A huge glowing stained-glass rose window in the center with four colored segments (crimson, teal, green, violet), dark stone tracery around it, gold filigree border.
+
+[back-codice.png]  Codice Arcano
+PROMPT: Trading card back design, vertical 5:7 aspect ratio, full bleed, perfectly symmetrical, straight front view, centered emblem, rich ornamental border, dark fantasy gothic cathedral style, painterly, highly detailed. No text, no letters, no numbers, no logo, no watermark. An ancient leather-bound grimoire cover, gold-tooled knotwork, a central arcane seal with a rose, worn edges, candlelight reflections.
+
+[back-eclisse.png]  Eclisse
+PROMPT: Trading card back design, vertical 5:7 aspect ratio, full bleed, perfectly symmetrical, straight front view, centered emblem, rich ornamental border, dark fantasy gothic cathedral style, painterly, highly detailed. No text, no letters, no numbers, no logo, no watermark. A black sun eclipse with a thin blazing corona at the center, surrounded by silver constellations and a violet night sky, silver border.
+
+[back-radici.png]  Trama di Radici
+PROMPT: Trading card back design, vertical 5:7 aspect ratio, full bleed, perfectly symmetrical, straight front view, centered emblem, rich ornamental border, dark fantasy gothic cathedral style, painterly, highly detailed. No text, no letters, no numbers, no logo, no watermark. Intertwined glowing roots and ivy forming a circular knot in the center, moss and tiny luminous flowers, dark green and amber tones.
+
+[back-fornace.png]  Cuore della Fornace
+PROMPT: Trading card back design, vertical 5:7 aspect ratio, full bleed, perfectly symmetrical, straight front view, centered emblem, rich ornamental border, dark fantasy gothic cathedral style, painterly, highly detailed. No text, no letters, no numbers, no logo, no watermark. A molten core of magma in the center held by black iron bands and chains, embers flying, bronze and crimson border.
+
+[back-abissi.png]  Occhio degli Abissi
+PROMPT: Trading card back design, vertical 5:7 aspect ratio, full bleed, perfectly symmetrical, straight front view, centered emblem, rich ornamental border, dark fantasy gothic cathedral style, painterly, highly detailed. No text, no letters, no numbers, no logo, no watermark. A giant sea serpent coiled in a circle around a glowing pearl, deep teal water, bioluminescent details, coral border.

@@ -1,0 +1,13 @@
+.ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.shafts i {
+  position: absolute; top: -20%; width: 22vw; height: 150%; transform-origin: 50% 0;
+  background: linear-gradient(180deg, rgba(255,214,140,.10), rgba(255,214,140,.03) 55%, transparent 80%);
+  filter: blur(8px); animation: sway 18s ease-in-out infinite alternate;
+}
+.shafts i:nth-child(1) { left: 8%; transform: rotate(-16deg); }
+.shafts i:nth-child(2) { left: 42%; width: 16vw; transform: rotate(-10deg); background: linear-gradient(180deg, rgba(140,180,255,.08), transparent 70%); animation-duration: 23s; }
+.shafts i:nth-child(3) { left: 74%; transform: rotate(-20deg); background: linear-gradient(180deg, rgba(220,120,140,.08), transparent 70%); animation-duration: 27s; }
+@keyframes sway { from { rotate: -3deg; opacity: .7; } to { rotate: 3deg; opacity: 1; } }
+.mote { position: absolute; bottom: -10px; border-radius: 50%; background: #ffe2a8; box-shadow: 0 0 6px #ffd27a; opacity: 0; animation: rise linear infinite; }
+@keyframes rise { 0% { transform: translate(0, 0); opacity: 0; } 10% { opacity: .7; } 90% { opacity: .5; } 100% { transform: translate(var(--dx), -105vh); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .shafts i, .mote { animation: none; } .mote { display: none; } }

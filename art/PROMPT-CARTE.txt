@@ -1,0 +1,555 @@
+SIGILLI - PROMPT PER LE ILLUSTRAZIONI
+Ogni riga PROMPT è completa: copiala e incollala così com'è nel generatore.
+Salva ogni immagine con il nome indicato (es. brace-c0.png).
+
+==============================================================================
+FULL ART VERTICALE (consigliata: è il formato dello stile Illustrata del gioco, 5:7)
+==============================================================================
+
+[brace-c0.png]  Scintilla Errante
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a small wandering spirit made of sparks dancing over cinders, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-c1.png]  Fabbro di Tizzoni
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a burly blacksmith hammering glowing embers on an anvil, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-c2.png]  Lanciafiamme Novizio
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a young soldier carrying a crude flamethrower of brass and leather, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-c3.png]  Fiammata
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a burst of fire striking from an outstretched hand, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-c4.png]  Guardia di Cenere
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: an armored guard in soot-black plate holding a burning banner, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-c5.png]  Corridore Ardente
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a lean runner wreathed in flames sprinting across ash dunes, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-u0.png]  Ariete Rovente
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a battering ram shaped like a ram head, red-hot iron, pushed by soldiers, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-u1.png]  Pioggia di Braci
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a rain of glowing embers falling on a battlefield at night, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-u2.png]  Stendardo Incandescente
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a tattered incandescent war banner planted in cracked stone, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-u3.png]  Duellante di Brace
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a duelist with two burning sabers mid-lunge, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-r0.png]  Fenice Minore
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a small phoenix rising from ashes, wings of flame, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-r1.png]  Colata Lavica
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a river of lava crashing into a fortress wall, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-r2.png]  Capitana dei Roghi
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a captain in crimson armor commanding pyres behind her, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-l0.png]  Vulkara, Cuore del Monte
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: Vulkara, a colossal elemental whose chest is an erupting volcano, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-l1.png]  Il Primo Fuoco
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: an ancient shrine holding the first flame, pilgrims kneeling, placed in the upper two thirds of the image. Setting: volcanic forge-world, embers, molten gold and crimson light. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c0.png]  Spruzzo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a playful splash of seawater lifting a small creature, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c1.png]  Pescatore di Nebbie
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a lone fisherman casting a net into thick fog from a small boat, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c2.png]  Anguilla Guizzante
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a luminous eel twisting through kelp, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c3.png]  Sentinella di Corallo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a sentinel made of living coral holding a shield, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c4.png]  Risacca
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a receding wave pulling pebbles back into the sea, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c5.png]  Medusa Pallida
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a pale translucent jellyfish trailing long tendrils, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-u0.png]  Veggente delle Maree
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a blindfolded seer holding a glowing pearl above tide pools, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-u1.png]  Corrente Contraria
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a violent counter-current sweeping a warrior backward, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-u2.png]  Faro Sommerso
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a sunken lighthouse still shining underwater, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-u3.png]  Custode del Golfo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a huge old sea turtle guarding a bay, barnacled shell, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-r0.png]  Maelstrom
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a colossal whirlpool swallowing ships, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-r1.png]  Leviatana Giovane
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a young leviathan sea serpent breaching the surface, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-r2.png]  Ammiraglio Salmastro
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a weathered admiral with an anchor-shaped staff on a storm deck, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-l0.png]  Thalassa, Voce degli Abissi
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: Thalassa, a regal mermaid queen singing to the abyss, glowing runes in the water, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-l1.png]  Marea Eterna
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: an endless tide covering a whole coastline under twin moons, placed in the upper two thirds of the image. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c0.png]  Germoglio Tenace
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a tiny stubborn sprout breaking through stone, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c1.png]  Druida di Muschio
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a druid covered in moss with a gnarled staff, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c2.png]  Cinghiale di Rovo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a wild boar with bramble thorns growing from its back, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c3.png]  Scorza
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: thick bark armor forming around a warrior arm, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c4.png]  Arciera del Sottobosco
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a hooded archer in the undergrowth drawing a bow, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c5.png]  Linfa
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a single drop of golden sap falling from a branch, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-u0.png]  Quercia Vigile
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a vigilant giant oak with a watchful face in the bark, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-u1.png]  Sciame di Spore
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a swarm of glowing spores rising from mushrooms, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-u2.png]  Cerchio di Pietre
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a circle of standing stones covered in lichen, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-u3.png]  Lupa Grigia
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a grey she-wolf howling on a mossy rock, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-r0.png]  Antico Rampicante
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: ancient creeping vines strangling a ruined tower, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-r1.png]  Rinascita Verde
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: green light restoring a withered meadow, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-r2.png]  Orsa Madre
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a mother bear standing protectively with two cubs, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-l0.png]  Yggrin, l'Albero che Cammina
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: Yggrin, a walking colossal tree with a wise face, roots as legs, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-l1.png]  Seme del Mondo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a world seed glowing inside a cradle of roots, placed in the upper two thirds of the image. Setting: ancient mossy forest, standing stones, green and amber light through leaves. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c0.png]  Accolito Velato
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a veiled acolyte holding a black candle, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c1.png]  Ombra Affamata
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a hungry shadow with long clawed hands reaching out, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c2.png]  Patto di Sangue
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a ritual dagger over a bleeding heart on an altar, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c3.png]  Spettro Ramingo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a wandering specter drifting through a graveyard, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c4.png]  Occhio Vacuo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a huge hollow eye opening in the night sky, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c5.png]  Sussurro
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: ghostly lips whispering curses, violet mist, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-u0.png]  Mietitrice
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a reaper with a curved scythe harvesting pale lights, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-u1.png]  Richiamo dalla Fossa
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a hand rising from an open grave, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-u2.png]  Altare Crepato
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a cracked star altar leaking violet light, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-u3.png]  Ladro d'Anime
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a thief holding a glass vessel full of swirling souls, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-r0.png]  Divoratore di Stelle
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a devourer of stars with a gaping maw eating constellations, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-r1.png]  Eclissi
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a total eclipse over a silent battlefield, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-r2.png]  Sovrano Cavo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: a hollow king with an empty crowned skull on a throne, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-l0.png]  Nyxa, Regina del Nulla
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: Nyxa, queen of nothingness, crown of dark stars, raising the dead, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-l1.png]  Il Silenzio
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait aspect ratio, edge-to-edge scene. Subject: an absolute silence: a battlefield frozen and fading into the void, placed in the upper two thirds of the image. Setting: starless void and crumbling crypts, violet and silver moonlight. The lower third is a darker, calm, low-detail area of the same scene so rules text can sit on top. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+==============================================================================
+ILLUSTRAZIONE ORIZZONTALE (riquadro classico, 4:3)
+==============================================================================
+
+[brace-c0.png]  Scintilla Errante
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a small wandering spirit made of sparks dancing over cinders. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-c1.png]  Fabbro di Tizzoni
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a burly blacksmith hammering glowing embers on an anvil. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-c2.png]  Lanciafiamme Novizio
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a young soldier carrying a crude flamethrower of brass and leather. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-c3.png]  Fiammata
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a burst of fire striking from an outstretched hand. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-c4.png]  Guardia di Cenere
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: an armored guard in soot-black plate holding a burning banner. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-c5.png]  Corridore Ardente
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a lean runner wreathed in flames sprinting across ash dunes. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-u0.png]  Ariete Rovente
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a battering ram shaped like a ram head, red-hot iron, pushed by soldiers. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-u1.png]  Pioggia di Braci
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a rain of glowing embers falling on a battlefield at night. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-u2.png]  Stendardo Incandescente
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a tattered incandescent war banner planted in cracked stone. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-u3.png]  Duellante di Brace
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a duelist with two burning sabers mid-lunge. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-r0.png]  Fenice Minore
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a small phoenix rising from ashes, wings of flame. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-r1.png]  Colata Lavica
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a river of lava crashing into a fortress wall. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-r2.png]  Capitana dei Roghi
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a captain in crimson armor commanding pyres behind her. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-l0.png]  Vulkara, Cuore del Monte
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: Vulkara, a colossal elemental whose chest is an erupting volcano. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[brace-l1.png]  Il Primo Fuoco
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: an ancient shrine holding the first flame, pilgrims kneeling. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c0.png]  Spruzzo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a playful splash of seawater lifting a small creature. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c1.png]  Pescatore di Nebbie
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a lone fisherman casting a net into thick fog from a small boat. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c2.png]  Anguilla Guizzante
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a luminous eel twisting through kelp. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c3.png]  Sentinella di Corallo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a sentinel made of living coral holding a shield. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c4.png]  Risacca
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a receding wave pulling pebbles back into the sea. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-c5.png]  Medusa Pallida
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a pale translucent jellyfish trailing long tendrils. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-u0.png]  Veggente delle Maree
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a blindfolded seer holding a glowing pearl above tide pools. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-u1.png]  Corrente Contraria
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a violent counter-current sweeping a warrior backward. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-u2.png]  Faro Sommerso
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a sunken lighthouse still shining underwater. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-u3.png]  Custode del Golfo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a huge old sea turtle guarding a bay, barnacled shell. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-r0.png]  Maelstrom
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a colossal whirlpool swallowing ships. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-r1.png]  Leviatana Giovane
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a young leviathan sea serpent breaching the surface. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-r2.png]  Ammiraglio Salmastro
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a weathered admiral with an anchor-shaped staff on a storm deck. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-l0.png]  Thalassa, Voce degli Abissi
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: Thalassa, a regal mermaid queen singing to the abyss, glowing runes in the water. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[marea-l1.png]  Marea Eterna
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: an endless tide covering a whole coastline under twin moons. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c0.png]  Germoglio Tenace
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a tiny stubborn sprout breaking through stone. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c1.png]  Druida di Muschio
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a druid covered in moss with a gnarled staff. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c2.png]  Cinghiale di Rovo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a wild boar with bramble thorns growing from its back. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c3.png]  Scorza
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: thick bark armor forming around a warrior arm. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c4.png]  Arciera del Sottobosco
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a hooded archer in the undergrowth drawing a bow. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-c5.png]  Linfa
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a single drop of golden sap falling from a branch. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-u0.png]  Quercia Vigile
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a vigilant giant oak with a watchful face in the bark. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-u1.png]  Sciame di Spore
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a swarm of glowing spores rising from mushrooms. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-u2.png]  Cerchio di Pietre
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a circle of standing stones covered in lichen. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-u3.png]  Lupa Grigia
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a grey she-wolf howling on a mossy rock. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-r0.png]  Antico Rampicante
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: ancient creeping vines strangling a ruined tower. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-r1.png]  Rinascita Verde
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: green light restoring a withered meadow. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-r2.png]  Orsa Madre
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a mother bear standing protectively with two cubs. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-l0.png]  Yggrin, l'Albero che Cammina
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: Yggrin, a walking colossal tree with a wise face, roots as legs. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[radice-l1.png]  Seme del Mondo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a world seed glowing inside a cradle of roots. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c0.png]  Accolito Velato
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a veiled acolyte holding a black candle. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c1.png]  Ombra Affamata
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a hungry shadow with long clawed hands reaching out. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c2.png]  Patto di Sangue
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a ritual dagger over a bleeding heart on an altar. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c3.png]  Spettro Ramingo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a wandering specter drifting through a graveyard. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c4.png]  Occhio Vacuo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a huge hollow eye opening in the night sky. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-c5.png]  Sussurro
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: ghostly lips whispering curses, violet mist. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-u0.png]  Mietitrice
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a reaper with a curved scythe harvesting pale lights. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-u1.png]  Richiamo dalla Fossa
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a hand rising from an open grave. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-u2.png]  Altare Crepato
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a cracked star altar leaking violet light. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-u3.png]  Ladro d'Anime
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a thief holding a glass vessel full of swirling souls. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-r0.png]  Divoratore di Stelle
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a devourer of stars with a gaping maw eating constellations. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-r1.png]  Eclissi
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a total eclipse over a silent battlefield. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-r2.png]  Sovrano Cavo
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: a hollow king with an empty crowned skull on a throne. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-l0.png]  Nyxa, Regina del Nulla
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: Nyxa, queen of nothingness, crown of dark stars, raising the dead. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+[vuoto-l1.png]  Il Silenzio
+PROMPT: Painterly dark-fantasy oil painting for a collectible card game, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Card illustration, 4:3 horizontal aspect ratio, single centered subject, readable at small size. Subject: an absolute silence: a battlefield frozen and fading into the void. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no card template, no UI.
+
+==============================================================================
+ANIMAZIONE (image-to-video: carica l'immagine full art e usa questo prompt)
+==============================================================================
+
+[brace-c0.mp4]  Scintilla Errante
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-c1.mp4]  Fabbro di Tizzoni
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-c2.mp4]  Lanciafiamme Novizio
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-c3.mp4]  Fiammata
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-c4.mp4]  Guardia di Cenere
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-c5.mp4]  Corridore Ardente
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-u0.mp4]  Ariete Rovente
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-u1.mp4]  Pioggia di Braci
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-u2.mp4]  Stendardo Incandescente
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-u3.mp4]  Duellante di Brace
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-r0.mp4]  Fenice Minore
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-r1.mp4]  Colata Lavica
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-r2.mp4]  Capitana dei Roghi
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-l0.mp4]  Vulkara, Cuore del Monte
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[brace-l1.mp4]  Il Primo Fuoco
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, embers drifting upward, flames flickering, heat shimmer in the air, painterly style preserved, no new elements, no text.
+
+[marea-c0.mp4]  Spruzzo
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-c1.mp4]  Pescatore di Nebbie
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-c2.mp4]  Anguilla Guizzante
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-c3.mp4]  Sentinella di Corallo
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-c4.mp4]  Risacca
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-c5.mp4]  Medusa Pallida
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-u0.mp4]  Veggente delle Maree
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-u1.mp4]  Corrente Contraria
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-u2.mp4]  Faro Sommerso
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-u3.mp4]  Custode del Golfo
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-r0.mp4]  Maelstrom
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-r1.mp4]  Leviatana Giovane
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-r2.mp4]  Ammiraglio Salmastro
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-l0.mp4]  Thalassa, Voce degli Abissi
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[marea-l1.mp4]  Marea Eterna
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, gentle water ripples, drifting mist and floating bubbles, soft caustic light, painterly style preserved, no new elements, no text.
+
+[radice-c0.mp4]  Germoglio Tenace
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-c1.mp4]  Druida di Muschio
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-c2.mp4]  Cinghiale di Rovo
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-c3.mp4]  Scorza
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-c4.mp4]  Arciera del Sottobosco
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-c5.mp4]  Linfa
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-u0.mp4]  Quercia Vigile
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-u1.mp4]  Sciame di Spore
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-u2.mp4]  Cerchio di Pietre
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-u3.mp4]  Lupa Grigia
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-r0.mp4]  Antico Rampicante
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-r1.mp4]  Rinascita Verde
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-r2.mp4]  Orsa Madre
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-l0.mp4]  Yggrin, l'Albero che Cammina
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[radice-l1.mp4]  Seme del Mondo
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, leaves swaying in a light breeze, glowing spores and pollen floating, painterly style preserved, no new elements, no text.
+
+[vuoto-c0.mp4]  Accolito Velato
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-c1.mp4]  Ombra Affamata
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-c2.mp4]  Patto di Sangue
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-c3.mp4]  Spettro Ramingo
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-c4.mp4]  Occhio Vacuo
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-c5.mp4]  Sussurro
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-u0.mp4]  Mietitrice
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-u1.mp4]  Richiamo dalla Fossa
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-u2.mp4]  Altare Crepato
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-u3.mp4]  Ladro d'Anime
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-r0.mp4]  Divoratore di Stelle
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-r1.mp4]  Eclissi
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-r2.mp4]  Sovrano Cavo
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-l0.mp4]  Nyxa, Regina del Nulla
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.
+
+[vuoto-l1.mp4]  Il Silenzio
+PROMPT: Subtle seamless looping animation of this painted card illustration, 4 seconds, static camera, the subject keeps its exact shape and pose with only a slow breathing motion, violet mist slowly swirling, stars twinkling, faint ghostly glow pulsing, painterly style preserved, no new elements, no text.

@@ -1,0 +1,99 @@
+ROSARCANA - IMMAGINI PER IL SITO
+Ogni riga PROMPT è completa: copiala così com'è. Salva l'immagine con il nome tra parentesi quadre.
+
+==============================================================================
+1. CARTE MANCANTI (5:7, come le altre)
+==============================================================================
+
+[marea-c2.png]  Anguilla Guizzante  (5:7)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a luminous eel twisting through kelp. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[tok-germoglio.png]  Germoglio (evocato da Sciame di Spore)  (5:7)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a tiny glowing sprout creature with two leaves, born from a spore. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[tok-cucciolo.png]  Cucciolo (evocato da Orsa Madre)  (5:7)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a brave bear cub standing on a mossy rock. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+==============================================================================
+2. CUSTODI DEL SIGILLO (1:1, ritratti)
+==============================================================================
+
+[custode-vesta.png]  Vesta, Custode della Fiamma  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a solemn priestess in soot-dark robes guarding an eternal sacred flame in a bronze brazier, eyes that have not slept for a thousand years. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[custode-ladro.png]  Il Ladro senza Nome (Prometeo)  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a hooded thief with broken glowing chains on his wrists, holding a stolen flame cupped in his hands. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[custode-cassandra.png]  Cassandra delle Maree  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a sad young prophetess with sea-green eyes and pearls in her hair, whispering a prophecy no one believes. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[custode-nocchiero.png]  Il Nocchiero delle Secche  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a weathered helmsman at a ship wheel steering between two monstrous cliffs in a storm. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[custode-uomoverde.png]  L'Uomo Verde  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a gentle face made of oak leaves and moss emerging from a cathedral stone wall. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[custode-madre.png]  La Madre delle Stagioni (Demetra)  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a harvest goddess holding golden wheat and a lantern, searching for her lost daughter. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[custode-traghettatore.png]  Il Traghettatore (Caronte)  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a gaunt ferryman with a lantern and a long pole on a black river, a coin in his bony hand. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[custode-ecate.png]  Ecate dei Crocevia  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a three-faced goddess at a crossroads at night holding keys and two torches. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+==============================================================================
+3. AMBIENTI DEL SITO (16:9)
+==============================================================================
+
+[home-hero.png]  Sfondo della home  (16:9)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Wide cinematic 16:9 landscape composition, lots of breathing room, no single character in the center. Subject: the interior of an immense gothic cathedral at night, a giant rose window glowing in four colors (crimson, teal, green, violet) casting colored light beams across the nave, floating embers and dust. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[tavolo.png]  Sfondo del tavolo di gioco  (16:9)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Wide cinematic 16:9 landscape composition, lots of breathing room, no single character in the center. Subject: top-down view of an ancient stone altar table inside a cathedral, carved with three long lanes and three round seals at each end, candles at the edges, very dark and low-contrast so cards remain readable. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[avventura-mappa.png]  Mappa del Capitolo 1  (16:9)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Wide cinematic 16:9 landscape composition, lots of breathing room, no single character in the center. Subject: an illustrated fantasy map painted on old parchment: a volcano, a misty bay, a breathing forest, a veiled crypt and a dark cathedral in the distance, connected by a winding path. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[negozio.png]  Sfondo del Reliquiario (negozio)  (16:9)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Wide cinematic 16:9 landscape composition, lots of breathing room, no single character in the center. Subject: a candlelit reliquary room full of golden shelves, sealed card packs and glowing relics, warm light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+==============================================================================
+4. CASATE (3:2, per Cronache, mazzi e filtri)
+==============================================================================
+
+[casata-brace.png]  Casata brace  (3:2)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Horizontal 3:2 key art, subject slightly off-center, space for a title on one side. Subject: the House of Embers: a procession of soot-armored guards carrying pyres toward a volcano under a red sky. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[casata-marea.png]  Casata marea  (3:2)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Horizontal 3:2 key art, subject slightly off-center, space for a title on one side. Subject: the House of Tides: a drowned city with a sunken lighthouse and a sea queen singing on a rock. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[casata-radice.png]  Casata radice  (3:2)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Horizontal 3:2 key art, subject slightly off-center, space for a title on one side. Subject: the House of Roots: a colossal walking tree above a circle of standing stones, druids at its feet. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[casata-vuoto.png]  Casata vuoto  (3:2)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Horizontal 3:2 key art, subject slightly off-center, space for a title on one side. Subject: the House of the Void: a starless sky being eaten by a wolf-shaped darkness above crumbling crypts, a queen of night on a throne. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+==============================================================================
+5. MODALITÀ E AVVERSARI
+==============================================================================
+
+[modo-classificata.png]  Riquadro Classificata  (3:2)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Horizontal 3:2 key art, subject slightly off-center, space for a title on one side. Subject: two champions facing each other across a cathedral arena under a huge rose window, banners of four colors. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[modo-casual.png]  Riquadro Casual  (3:2)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Horizontal 3:2 key art, subject slightly off-center, space for a title on one side. Subject: friends playing cards by candlelight in a tavern inside old cathedral ruins, warm and relaxed. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[avv-garra.png]  Garra la Tizzonaia  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a fierce ember-haired warrior woman with a burning whip. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[avv-pescatore.png]  Il Pescatore Muto  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a silent old fisherman with sewn lips and a net full of glowing memories. Setting: misty sea cliffs and drowned ruins, teal and deep blue light, sea spray. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[avv-ortica.png]  Madre Ortica  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: an old forest witch crowned with nettles and thorns, eyes glowing green. Setting: ancient mossy forest, standing stones, green and amber light through leaves. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+
+[avv-frate.png]  Frate Cenere  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a gaunt monk covered in grey ash holding a black candle. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.
+==============================================================================
+6. BUSTINA
+==============================================================================
+
+[bustina.png]  Illustrazione della bustina  (1:1)
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro lighting, rich jewel tones, subtle stained-glass light rays, gothic cathedral mood, visible brushstrokes. Square portrait, head and shoulders, centered, strong rim light, dark simple background. Subject: a glowing rose window seal of red wax and gold, radiating four colored lights, mystical and precious. No text, no letters, no numbers, no logo, no watermark, no signature, no frame, no border, no UI, no card template, no mockup.

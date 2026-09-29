@@ -1,0 +1,39 @@
+.living { position: absolute; inset: 0; z-index: 6; pointer-events: none; border-radius: inherit; overflow: hidden; }
+/* bagliore che vive solo vicino ai bordi */
+.edge { position: absolute; inset: 0; border-radius: inherit; mix-blend-mode: screen;
+  -webkit-mask: linear-gradient(90deg, #000 0, transparent 11%, transparent 89%, #000 100%), linear-gradient(180deg, #000 0, transparent 8%, transparent 92%, #000 100%);
+  mask: linear-gradient(90deg, #000 0, transparent 11%, transparent 89%, #000 100%), linear-gradient(180deg, #000 0, transparent 8%, transparent 92%, #000 100%); }
+.edge i { position: absolute; inset: -30%; }
+.line { position: absolute; inset: 0; border-radius: inherit; padding: 1.1cqw; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.svg { position: absolute; inset: 1cqw; width: calc(100% - 2cqw); height: calc(100% - 2cqw); filter: drop-shadow(0 .3cqw .4cqw rgba(0,0,0,.6)); }
+
+.fiamme .line { background: linear-gradient(180deg, #ffe39a, #ff7a2a 40%, #8e2210); }
+.fiamme .edge i:nth-child(1) { background: radial-gradient(circle at 50% 100%, rgba(255,230,140,.95), rgba(255,110,30,.8) 35%, transparent 62%) 0 0 / 16% 16%; animation: rise 1.3s linear infinite; filter: blur(1.2cqw); }
+.fiamme .edge i:nth-child(2) { background: radial-gradient(circle at 50% 100%, rgba(255,80,20,.8), transparent 60%) 8% 0 / 22% 20%; animation: rise 1.9s linear infinite; filter: blur(1.6cqw); }
+@keyframes rise { to { background-position-y: -40%; } }
+.maree .line { background: linear-gradient(90deg, #bff7ff, #2f8595 50%, #bff7ff); background-size: 200% 100%; animation: slide 3s linear infinite; }
+.maree .edge i:nth-child(1) { background: repeating-linear-gradient(115deg, rgba(160,240,255,0) 0 6cqw, rgba(160,240,255,.4) 7.5cqw, rgba(160,240,255,0) 10cqw); animation: wave 2.4s linear infinite; filter: blur(.5cqw); }
+.maree .edge i:nth-child(2) { background: radial-gradient(circle, rgba(220,255,255,.8) 0 .5cqw, transparent .8cqw) 0 0 / 7cqw 7cqw; animation: wave 4s linear infinite reverse; opacity: .6; }
+@keyframes wave { to { transform: translateX(14cqw); } }
+@keyframes slide { to { background-position: 200% 0; } }
+.rovi .line { background: linear-gradient(135deg, #7fae4a, #2f5e1f 50%, #9bc35a); }
+.rovi .edge i:nth-child(1) { background: radial-gradient(circle, rgba(170,230,120,.35), transparent 60%) 0 0 / 30% 30%; animation: breathe 5s ease-in-out infinite alternate; }
+.nebbia .line { background: linear-gradient(135deg, #d2b4f0, #3a2466 50%, #b08ae0); }
+.nebbia .edge i:nth-child(1) { background: radial-gradient(circle at 30% 30%, rgba(170,110,255,.8), transparent 35%), radial-gradient(circle at 70% 70%, rgba(110,60,200,.8), transparent 35%); animation: spin 9s linear infinite; filter: blur(1.4cqw); }
+.nebbia .edge i:nth-child(2) { background: radial-gradient(circle, #fff 0 .3cqw, transparent .5cqw) 0 0 / 9cqw 11cqw; animation: twinkle 2.2s ease-in-out infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes twinkle { 50% { opacity: .2; } }
+@keyframes breathe { to { opacity: .4; transform: scale(1.05); } }
+.brina .line { background: linear-gradient(135deg, #ffffff, #9fd6ff 45%, #e6f6ff 60%, #6fa8e0); }
+.brina .edge i:nth-child(1) { background: radial-gradient(circle, rgba(230,250,255,.9) 0 .35cqw, transparent .6cqw) 0 0 / 5cqw 6cqw; animation: twinkle 3s ease-in-out infinite; }
+.brina .edge i:nth-child(2) { background: linear-gradient(180deg, rgba(210,240,255,.5), transparent 40%, rgba(210,240,255,.4)); }
+.aurea .line { display: none; }
+.aurea .edge i:nth-child(1) { background: linear-gradient(115deg, transparent 40%, rgba(255,236,170,.9) 50%, transparent 60%) 0 0 / 250% 100%; animation: sweep 4s ease-in-out infinite; }
+@keyframes sweep { from { background-position: 130% 0; } to { background-position: -130% 0; } }
+
+.mini { position: absolute; inset: 0; z-index: 7; width: 100%; height: 100%; pointer-events: none; }
+.masterpiece { filter: drop-shadow(0 0 1.2cqw rgba(255,210,110,.7)); animation: mp 3s ease-in-out infinite; }
+@keyframes mp { 50% { filter: drop-shadow(0 0 2.6cqw rgba(255,210,110,1)); } }
+@media (prefers-reduced-motion: reduce) { .edge i, .line, .masterpiece { animation: none !important; } }
+.imgFrame { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 7; pointer-events: none; object-fit: fill; }
+.imgFrameOut { position: absolute; z-index: 10; pointer-events: none; max-width: none; filter: drop-shadow(0 .8cqw 1.4cqw rgba(0,0,0,.55)); }

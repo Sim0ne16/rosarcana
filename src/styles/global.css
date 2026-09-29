@@ -1,0 +1,31 @@
+:root {
+  --display: "Grenze Gotisch", "UnifrakturMaguntia", Georgia, serif;
+  --body: "Alegreya Sans", "Gill Sans", "Trebuchet MS", system-ui, sans-serif;
+  --bg: #14111b; --bg2: #1d1827; --panel: #211b2c; --ink: #ede3cb; --ink2: #aaa3b8; --line: #3a3150; --gold: #caa15a; --gold2: #f0c35a; --wax: #b8383a;
+  --rc: #8f8a7e; --ru: #3f9a6f; --rr: #3f7ed6; --rl: #e39b1f;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { margin: 0; min-height: 100%; }
+body {
+  font-family: var(--body); font-size: 17px; line-height: 1.45; color: var(--ink);
+  background: radial-gradient(ellipse 60% 40% at 50% -5%, rgba(224,160,50,.13), transparent 70%), repeating-linear-gradient(90deg, rgba(255,255,255,.015) 0 2px, transparent 2px 140px), linear-gradient(#1a1622, #100d15) fixed;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+button { font: inherit; color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.05; margin: 0; }
+:focus-visible { outline: 3px solid var(--gold2); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .05s !important; } }
+
+/* ---------- Accessibilità ---------- */
+html { --text-scale: 1; }
+body { font-size: calc(17px * var(--text-scale)); }
+html.rm *, html.rm *::before, html.rm *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+html.hc { --ink2: #e6e0d2; }
+html.hc [class*='body'] { color: #000 !important; background: #fffaf0 !important; }
+html.hc [class*='flavor'], html.hc [class*='kw'] span { color: #3a2a10 !important; }
+html.hc [class*='unit'] { outline: 2px solid rgba(255,255,255,.55); outline-offset: 1px; }
+html.hc [class*='muted'] { color: #d0c8b8 !important; }
+
+/* Rosarcana è pensato per computer: sotto questa larghezza la pagina scorre invece di riorganizzarsi */
+html, body { min-width: 1100px; }

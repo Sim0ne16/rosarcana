@@ -1,0 +1,49 @@
+import { AnimatePresence, motion } from 'framer-motion';
+import { useMemo } from 'react';
+import { cardInfo, type Game } from '../../engine';
+import { Rose } from '../../cards/art/CardArt';
+import { rose } from '../../cards/art/rose';
+import { SEAL_PAL } from '../../cards/art/palettes';
+import { Floaters } from './Floaters';
+import { Icon } from '../../cards/cardText';
+import { useBattle } from './store';
+import s from './battle.module.css';
+
+export function SealView({ G, p, l, targetable }: { G: Game; p: number; l: number; targetable: boolean }) {
+  const P = G.p[p], hp = P.seals[l], relic = P.relics[l];
+  const fx = useBattle(st => st.fx).filter(f => f.p === p && f.l === l);
+  const broke = fx.find(f => f.kind === 'break');
+  const svg = useMemo(() => rose(SEAL_PAL[p], { n: P.sealMax, lit: hp, dead: hp <= 0, core: 12 }), [p, P.sealMax, hp]);
+  const b = useBattle.getState;
+  const showRelic = (el: Element) => { if (!relic) return; const r = el.getBoundingClientRect(); b().setPreview({ id: relic, rect: { x: r.left, y: r.top, w: r.width, h: r.height } }); };
+  return (
+    <motion.button className={`${s.seal} ${p === 0 ? s.mine : s.theirs} ${hp <= 0 ? s.broken : hp <= 3 ? s.low : ''} ${targetable ? s.targetable : ''}`} data-drop={`seal:${p}-${l}`}
+      onClick={() => b().clickSeal(p, l)} aria-label={`Sigillo di ${P.name}: ${hp <= 0 ? 'spezzato' : `${hp} su ${P.sealMax}`}`}
+      animate={fx.some(f => f.kind === 'dmg') ? { x: [0, -5, 5, -2, 0] } : { x: 0 }} transition={{ duration: 0.4 }}>
+      <span className={s.medal}>
+        <svg className={s.gauge} viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="46" className={s.gaugeTrack} />
+          <circle cx="50" cy="50" r="46" className={s.gaugeFill} style={{ strokeDasharray: `${(Math.max(0, hp) / P.sealMax) * 289} 289` }} />
+        </svg>
+        <Rose svg={svg} className={s.rose} />
+        <b className={s.sealHp}>{hp > 0 ? hp : ''}</b>
+      </span>
+      <span className={s.sinfo}>
+        <span className={s.sLabel}>{hp <= 0 ? 'Spezzato' : p === 0 ? 'Tuo Sigillo' : 'Sigillo nemico'}</span>
+        {hp > 0 && <span className={s.hpBar}><i style={{ width: `${(hp / P.sealMax) * 100}%` }} /></span>}
+        {relic ? <span className={s.relic} data-relic onMouseEnter={e => showRelic(e.currentTarget)} onMouseLeave={() => b().setPreview(null)} onClick={e => { e.stopPropagation(); if (b().lens) b().inspect({ id: relic, p }); else showRelic(e.currentTarget); }} onContextMenu={e => { e.preventDefault(); b().inspect({ id: relic, p }); }}>{cardInfo(relic).n}</span>
+          : hp > 0 && <span className={s.snote}>{hp} / {P.sealMax} punti vita</span>}
+      </span>
+      {relic && <span className={s.relicDot} data-relic title={cardInfo(relic).n} onClick={e => { e.stopPropagation(); showRelic(e.currentTarget); }}><Icon k="type-R" /></span>}
+      <Floaters fx={fx} />
+      <AnimatePresence>{broke && <Shatter key={broke.id} colors={SEAL_PAL[p]} />}</AnimatePresence>
+    </motion.button>
+  );
+}
+function Shatter({ colors }: { colors: string[] }) {
+  const shards = useMemo(() => Array.from({ length: 18 }, (_, i) => ({ a: Math.random() * Math.PI * 2, d: 60 + Math.random() * 110, r: Math.random() * 540 - 270, c: colors[i % colors.length] })), [colors]);
+  return <span className={s.shatter} aria-hidden="true">{shards.map((sh, i) => (
+    <motion.span key={i} className={s.shard} style={{ background: sh.c }} initial={{ x: 0, y: 0, opacity: 1, rotate: 0 }}
+      animate={{ x: Math.cos(sh.a) * sh.d, y: Math.sin(sh.a) * sh.d + 50, opacity: 0, rotate: sh.r }} transition={{ duration: 1.1, ease: 'easeOut' }} />
+  ))}</span>;
+}

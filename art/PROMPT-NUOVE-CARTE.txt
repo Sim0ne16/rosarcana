@@ -1,0 +1,38 @@
+ROSARCANA - ILLUSTRAZIONI DELLE 12 NUOVE CARTE
+Salva con il nome tra parentesi quadre (formato 5:7 verticale) e mandamele in uno zip.
+
+[brace-c6.png]  Grifone di Cenere
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a griffin with smoldering ash-grey feathers taking flight from a volcanic ridge. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-u4.png]  Incendiaria
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a hooded saboteur lighting a fuse at the foot of a fortress wall, sparks in the dark. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[brace-r3.png]  Signore delle Braci
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: an old armored lord of the forge holding a glowing ember in his gauntlet, soldiers rallying behind him. Setting: volcanic forge-world, embers, molten gold and crimson light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-c6.png]  Gabbiano delle Secche
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a white gull crying above treacherous shoals and a ship in the fog. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-u4.png]  Alta Marea
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a rising tide flooding a stone causeway under a pale moon, waves climbing the steps. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[marea-r3.png]  Sirena Ammaliatrice
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a beautiful siren singing on a rock with glowing eyes, spellbound sailors in the mist. Setting: misty sea cliffs and drowned ruins, teal and deep blue light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-c6.png]  Custode delle Sorgenti
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a small robed spirit tending a luminous spring among mossy roots. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-u4.png]  Vipera del Sottobosco
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a small emerald viper coiled on a mossy stone, fangs glistening. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[radice-r3.png]  Cervo Bianco
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a majestic white stag standing in a sunlit forest clearing, soft halo of light. Setting: ancient mossy forest, standing stones, green and amber light. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-c6.png]  Scriba del Nulla
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a gaunt scribe writing glowing violet runes on the walls of an endless crypt library. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-u4.png]  Pipistrello di Cripta
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a large bat with violet-glowing eyes hanging from a cracked crypt vault. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.
+
+[vuoto-r3.png]  Grande Eclisse
+PROMPT: Painterly dark-fantasy oil painting, dramatic chiaroscuro, rich jewel tones, stained-glass light rays, gothic cathedral mood, visible brushstrokes. Full-art vertical card illustration, 5:7 portrait, subject in the upper two thirds, darker calm lower third. Subject: a total eclipse devouring the sun above a battlefield where weak figures dissolve into shadow. Setting: starless void and crumbling crypts, violet and silver moonlight. No text, no letters, no numbers, no logo, no watermark, no frame, no border, no UI, no card template.

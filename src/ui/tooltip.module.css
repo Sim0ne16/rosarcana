@@ -1,0 +1,2 @@
+.tip { position: fixed; z-index: 400; max-width: 280px; padding: 8px 12px; border-radius: 10px; pointer-events: none; background: rgba(16,12,22,.97); color: #efe6d2; font-size: 13px; line-height: 1.35; box-shadow: 0 0 0 1px #caa15a, 0 10px 24px rgba(0,0,0,.6); display: flex; flex-direction: column; gap: 2px; }
+.tip b { font-family: var(--display); font-size: 17px; color: #ffe39a; }

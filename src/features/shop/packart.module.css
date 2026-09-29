@@ -1,0 +1,22 @@
+.cw { container-type: inline-size; width: 100%; }
+.pack { position: relative; width: 100%; aspect-ratio: 5/8; display: flex; flex-direction: column; filter: drop-shadow(0 22px 30px rgba(0,0,0,.6)); }
+.crimp { height: 4.5cqw; flex: none; background: repeating-linear-gradient(90deg, #f6d27a 0 1.2cqw, #b8862a 1.2cqw 2.4cqw); clip-path: polygon(0.00% 0, 3.57% 100%, 7.14% 0, 10.71% 100%, 14.29% 0, 17.86% 100%, 21.43% 0, 25.00% 100%, 28.57% 0, 32.14% 100%, 35.71% 0, 39.29% 100%, 42.86% 0, 46.43% 100%, 50.00% 0, 53.57% 100%, 57.14% 0, 60.71% 100%, 64.29% 0, 67.86% 100%, 71.43% 0, 75.00% 100%, 78.57% 0, 82.14% 100%, 85.71% 0, 89.29% 100%, 92.86% 0, 96.43% 100%, 100.00% 0, 100% 100%, 0 100%); }
+.crimpB { transform: scaleY(-1); }
+.body {
+  position: relative; flex: 1; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding: 6cqw 6cqw 4cqw;
+  background: linear-gradient(135deg, #5a0f12 0%, #8e2226 30%, #3a0f1a 60%, #6e1f10 100%);
+  box-shadow: inset 0 0 0 1.4cqw #d9a943, inset 0 0 0 2.2cqw #3a0f1a, inset 0 0 8cqw rgba(0,0,0,.6);
+}
+.body::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(255,230,160,.06) 0 2cqw, transparent 2cqw 4cqw); pointer-events: none; }
+.window { position: relative; width: 100%; aspect-ratio: 1; border-radius: 50% 50% 4cqw 4cqw / 40% 40% 4cqw 4cqw; overflow: hidden; box-shadow: 0 0 0 1.4cqw #d9a943, 0 0 0 2.4cqw #2b1d08, 0 2cqw 5cqw rgba(0,0,0,.5); }
+.window > * { height: 100%; }
+.title { margin-top: 7cqw; font-family: var(--display); font-weight: 700; font-size: 15cqw; line-height: 1; background: linear-gradient(180deg, #fff1c4, #e8bd5a 50%, #9b6a1c); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 .6cqw 0 rgba(0,0,0,.7)); }
+.sub { margin-top: 2cqw; font-size: 5cqw; font-style: italic; color: #f3dfb0; opacity: .85; }
+.seal { position: absolute; left: 50%; bottom: 3cqw; width: 22cqw; transform: translateX(-50%); filter: drop-shadow(0 1cqw 1.5cqw rgba(0,0,0,.6)); }
+.seal svg { width: 100%; display: block; }
+.sheen { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; background: linear-gradient(115deg, transparent 30%, rgba(255,236,180,.35) 45%, transparent 60%); background-size: 250% 100%; animation: sheen 4.5s ease-in-out infinite; }
+@keyframes sheen { 0%, 30% { background-position: 130% 0; } 100% { background-position: -130% 0; } }
+.top { clip-path: inset(0 0 87% 0); }
+.bottom { clip-path: inset(13% 0 0 0); }
+@media (prefers-reduced-motion: reduce) { .sheen { animation: none; } }
+.window > img { width: 100%; height: 100%; object-fit: cover; display: block; }

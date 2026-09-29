@@ -1,0 +1,4 @@
+.av { position: relative; display: inline-block; aspect-ratio: 5/7; flex: none; container-type: inline-size; }
+.pic { position: absolute; inset: 0; border-radius: 6%; overflow: hidden; background: #120e18; }
+.pic > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.plain { position: absolute; inset: 0; border-radius: 6%; box-shadow: 0 0 0 2px #0d0b11, 0 0 0 3px rgba(217,169,67,.7); pointer-events: none; }
