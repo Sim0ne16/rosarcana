@@ -1,112 +1,540 @@
 /* Le carte espongono --px e --py (0..1) mentre il puntatore ci passa sopra; a riposo valgono 0.5. */
 
 /* ---------- Olografico: arcobaleno che segue la luce ---------- */
-.holo { position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: inherit; overflow: hidden; mix-blend-mode: color-dodge; opacity: .6; }
-.holo::before, .holo i { content: ""; position: absolute; inset: -50%; }
-.holo::before {
-  background: linear-gradient(115deg, transparent 30%, rgba(255,80,160,.5) 40%, rgba(255,210,90,.5) 46%, rgba(110,255,210,.5) 52%, rgba(120,150,255,.5) 58%, transparent 68%);
-  transform: translate(calc((var(--px, .5) - .5) * 60%), calc((var(--py, .5) - .5) * 60%)); transition: transform .12s linear;
-  animation: holoIdle 6s ease-in-out infinite alternate;
+.holo {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    border-radius: inherit;
+    overflow: hidden;
+    mix-blend-mode: color-dodge;
+    opacity: .6;
 }
-.holo i { background: repeating-linear-gradient(60deg, rgba(255,255,255,.12) 0 2cqw, transparent 2cqw 5cqw); transform: translate(calc((var(--px, .5) - .5) * -30%), 0); mix-blend-mode: overlay; }
-@keyframes holoIdle { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(80deg); } }
+
+.holo::before, .holo i {
+    content: "";
+    position: absolute;
+    inset: -50%;
+}
+
+.holo::before {
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 80, 160, .5) 40%, rgba(255, 210, 90, .5) 46%, rgba(110, 255, 210, .5) 52%, rgba(120, 150, 255, .5) 58%, transparent 68%);
+    transform: translate(calc((var(--px, .5) - .5) * 60%), calc((var(--py, .5) - .5) * 60%));
+    transition: transform .12s linear;
+    animation: holoIdle 6s ease-in-out infinite alternate;
+}
+
+.holo i {
+    background: repeating-linear-gradient(60deg, rgba(255, 255, 255, .12) 0 2cqw, transparent 2cqw 5cqw);
+    transform: translate(calc((var(--px, .5) - .5) * -30%), 0);
+    mix-blend-mode: overlay;
+}
+
+@keyframes holoIdle {
+    from {
+        filter: hue-rotate(0deg);
+    }
+    to {
+        filter: hue-rotate(80deg);
+    }
+}
 
 /* ---------- Aurora: veli che cambiano colore e seguono il puntatore ---------- */
-.aurora { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; border-radius: inherit; mix-blend-mode: screen;
-  -webkit-mask: linear-gradient(180deg, #000 0%, #000 50%, transparent 78%); mask: linear-gradient(180deg, #000 0%, #000 50%, transparent 78%); }
-.aurora i { position: absolute; left: -60%; right: -60%; height: 34%; border-radius: 50%; filter: blur(3cqw); opacity: .65;
-  translate: calc((var(--px, .5) - .5) * 40%) calc((var(--py, .5) - .5) * 20%); transition: translate .2s ease-out; animation: aurora 4.5s ease-in-out infinite alternate, hue 9s linear infinite; }
-.aurora i:nth-child(1) { top: 2%; background: linear-gradient(90deg, transparent, #4dffc3 30%, #5aa8ff 60%, transparent); }
-.aurora i:nth-child(2) { top: 18%; background: linear-gradient(90deg, transparent, #c47bff 35%, #ff7bb5 65%, transparent); animation-duration: 5.5s, 9s; animation-direction: alternate-reverse, normal; }
-.aurora i:nth-child(3) { top: 34%; background: linear-gradient(90deg, transparent, #7bffea 40%, #fff27b 60%, transparent); opacity: .4; animation-duration: 3.8s, 12s; }
-@keyframes aurora { from { transform: translateX(-22%) rotate(-8deg) scaleY(.7); } to { transform: translateX(22%) rotate(7deg) scaleY(1.3); } }
-@keyframes hue { to { filter: blur(3cqw) hue-rotate(360deg); } }
+.aurora {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: inherit;
+    mix-blend-mode: screen;
+    -webkit-mask: linear-gradient(180deg, #000 0%, #000 50%, transparent 78%);
+    mask: linear-gradient(180deg, #000 0%, #000 50%, transparent 78%);
+}
+
+.aurora i {
+    position: absolute;
+    left: -60%;
+    right: -60%;
+    height: 34%;
+    border-radius: 50%;
+    filter: blur(3cqw);
+    opacity: .65;
+    translate: calc((var(--px, .5) - .5) * 40%) calc((var(--py, .5) - .5) * 20%);
+    transition: translate .2s ease-out;
+    animation: aurora 4.5s ease-in-out infinite alternate, hue 9s linear infinite;
+}
+
+.aurora i:nth-child(1) {
+    top: 2%;
+    background: linear-gradient(90deg, transparent, #4dffc3 30%, #5aa8ff 60%, transparent);
+}
+
+.aurora i:nth-child(2) {
+    top: 18%;
+    background: linear-gradient(90deg, transparent, #c47bff 35%, #ff7bb5 65%, transparent);
+    animation-duration: 5.5s, 9s;
+    animation-direction: alternate-reverse, normal;
+}
+
+.aurora i:nth-child(3) {
+    top: 34%;
+    background: linear-gradient(90deg, transparent, #7bffea 40%, #fff27b 60%, transparent);
+    opacity: .4;
+    animation-duration: 3.8s, 12s;
+}
+
+@keyframes aurora {
+    from {
+        transform: translateX(-22%) rotate(-8deg) scaleY(.7);
+    }
+    to {
+        transform: translateX(22%) rotate(7deg) scaleY(1.3);
+    }
+}
+
+@keyframes hue {
+    to {
+        filter: blur(3cqw) hue-rotate(360deg);
+    }
+}
 
 /* ---------- Scintille ---------- */
-.fxBox { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; border-radius: inherit; }
-.star { position: absolute; background: #fff; clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%); filter: drop-shadow(0 0 1cqw #fff) drop-shadow(0 0 2cqw #bfe6ff); animation: twinkle 2.6s ease-in-out infinite; opacity: 0; transform: translate(-50%, -50%) scale(0); }
-@keyframes twinkle { 0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); } 45% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(45deg); } 60% { opacity: .9; } }
+.fxBox {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: inherit;
+}
+
+.star {
+    position: absolute;
+    background: #fff;
+    clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+    filter: drop-shadow(0 0 1cqw #fff) drop-shadow(0 0 2cqw #bfe6ff);
+    animation: twinkle 2.6s ease-in-out infinite;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    }
+    45% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(45deg);
+    }
+    60% {
+        opacity: .9;
+    }
+}
 
 /* ---------- Rune ---------- */
-.runes { position: absolute; left: 0; right: 0; top: 0; height: 62%; z-index: 4; pointer-events: none; display: grid; place-items: center; color: #ffe39a; mix-blend-mode: screen; filter: drop-shadow(0 0 1.2cqw #ffb347) drop-shadow(0 0 3cqw rgba(255,160,60,.6)); }
-.runes svg { width: 88%; height: auto; animation: spin 24s linear infinite; }
-.runes path { animation: runeGlow 5.6s ease-in-out infinite; opacity: .25; }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes runeGlow { 0%, 100% { opacity: .2; } 12% { opacity: 1; } 30% { opacity: .35; } }
+.runes {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 62%;
+    z-index: 4;
+    pointer-events: none;
+    display: grid;
+    place-items: center;
+    color: #ffe39a;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 0 1.2cqw #ffb347) drop-shadow(0 0 3cqw rgba(255, 160, 60, .6));
+}
+
+.runes svg {
+    width: 88%;
+    height: auto;
+    animation: spin 24s linear infinite;
+}
+
+.runes path {
+    animation: runeGlow 5.6s ease-in-out infinite;
+    opacity: .25;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes runeGlow {
+    0%, 100% {
+        opacity: .2;
+    }
+    12% {
+        opacity: 1;
+    }
+    30% {
+        opacity: .35;
+    }
+}
 
 /* ---------- Cornici ad anello (acquistabili, e maestria sulle unità) ---------- */
 .frame {
-  --fw: 3.2cqw; position: absolute; inset: 0; z-index: 6; pointer-events: none; border-radius: inherit; padding: var(--fw); background: var(--fb);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    --fw: 3.2cqw;
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    border-radius: inherit;
+    padding: var(--fw);
+    background: var(--fb);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
 }
-.f-argento { --fb: linear-gradient(135deg, #f4f6fa, #8a93a6 30%, #e6e9ef 50%, #6d7486 70%, #d9dde6); }
-.f-oro { --fb: linear-gradient(135deg, #fff1c4, #b8862a 30%, #ffe39a 50%, #8e5f14 70%, #f6d27a); }
-.f-diamante { --fb: repeating-linear-gradient(60deg, rgba(255,255,255,.45) 0 .8cqw, transparent .8cqw 3cqw), repeating-linear-gradient(-60deg, rgba(120,180,255,.3) 0 .8cqw, transparent .8cqw 3.4cqw), linear-gradient(115deg, #e8fbff, #7fd7ff 12%, #ffffff 20%, #b28cff 32%, #e8fbff 44%, #7fffd6 56%, #ffffff 64%, #8fb8ff 78%, #e8fbff); }
-.f-maestria-1 { --fb: linear-gradient(135deg, #ffd9b0, #9a5a2a 45%, #eaa36a 70%, #5a2e10); }
-.f-maestria-2 { --fb: linear-gradient(135deg, #ffffff, #8d96a8 45%, #e6eaf0 70%, #58607a); }
-.f-maestria-3 { --fb: linear-gradient(135deg, #fff3c4, #c08a24 45%, #ffe08a 70%, #7a4e0e); }
-.f-maestria-4 { --fb: linear-gradient(135deg, #eafffb, #46a59b 45%, #c2f2ea 70%, #27655f); }
-.f-maestria-5 { --fb: linear-gradient(135deg, #f2f8ff, #4d7fe0 40%, #d4e6ff 60%, #22399a); }
-.f-maestria-6 { --fb: linear-gradient(90deg, #fff1c4, #d99a2a, #c78bff, #3a1466, #fff1c4); }
-.frame.f-oro { filter: drop-shadow(0 0 1.5cqw rgba(255,200,90,.6)); }
-.frame.f-diamante { --fw: 3.8cqw; background-size: 300% 300%; animation: facet 4s linear infinite; filter: drop-shadow(0 0 2cqw rgba(160,220,255,.8)); }
-.frame.f-maestria-6 { background-size: 300% 100%; animation: facet 5s linear infinite; }
-@keyframes facet { to { background-position: 300% 0; } }
+
+.f-argento {
+    --fb: linear-gradient(135deg, #f4f6fa, #8a93a6 30%, #e6e9ef 50%, #6d7486 70%, #d9dde6);
+}
+
+.f-oro {
+    --fb: linear-gradient(135deg, #fff1c4, #b8862a 30%, #ffe39a 50%, #8e5f14 70%, #f6d27a);
+}
+
+.f-diamante {
+    --fb: repeating-linear-gradient(60deg, rgba(255, 255, 255, .45) 0 .8cqw, transparent .8cqw 3cqw), repeating-linear-gradient(-60deg, rgba(120, 180, 255, .3) 0 .8cqw, transparent .8cqw 3.4cqw), linear-gradient(115deg, #e8fbff, #7fd7ff 12%, #ffffff 20%, #b28cff 32%, #e8fbff 44%, #7fffd6 56%, #ffffff 64%, #8fb8ff 78%, #e8fbff);
+}
+
+.f-maestria-1 {
+    --fb: linear-gradient(135deg, #ffd9b0, #9a5a2a 45%, #eaa36a 70%, #5a2e10);
+}
+
+.f-maestria-2 {
+    --fb: linear-gradient(135deg, #ffffff, #8d96a8 45%, #e6eaf0 70%, #58607a);
+}
+
+.f-maestria-3 {
+    --fb: linear-gradient(135deg, #fff3c4, #c08a24 45%, #ffe08a 70%, #7a4e0e);
+}
+
+.f-maestria-4 {
+    --fb: linear-gradient(135deg, #eafffb, #46a59b 45%, #c2f2ea 70%, #27655f);
+}
+
+.f-maestria-5 {
+    --fb: linear-gradient(135deg, #f2f8ff, #4d7fe0 40%, #d4e6ff 60%, #22399a);
+}
+
+.f-maestria-6 {
+    --fb: linear-gradient(90deg, #fff1c4, #d99a2a, #c78bff, #3a1466, #fff1c4);
+}
+
+.frame.f-oro {
+    filter: drop-shadow(0 0 1.5cqw rgba(255, 200, 90, .6));
+}
+
+.frame.f-diamante {
+    --fw: 3.8cqw;
+    background-size: 300% 300%;
+    animation: facet 4s linear infinite;
+    filter: drop-shadow(0 0 2cqw rgba(160, 220, 255, .8));
+}
+
+.frame.f-maestria-6 {
+    background-size: 300% 100%;
+    animation: facet 5s linear infinite;
+}
+
+@keyframes facet {
+    to {
+        background-position: 300% 0;
+    }
+}
 
 /* ---------- Cornici di maestria ornate: sporgono oltre il bordo della carta ---------- */
-.mframe { position: absolute; z-index: 8; pointer-events: none; left: -12%; top: -12.857%; width: 124%; height: 125.714%; overflow: visible; filter: drop-shadow(0 1cqw 1.5cqw rgba(0,0,0,.55)); }
-.mframeMax { animation: masterGlow 2.6s ease-in-out infinite; }
-@keyframes masterGlow { 0%, 100% { filter: drop-shadow(0 1cqw 1.5cqw rgba(0,0,0,.55)) drop-shadow(0 0 1cqw rgba(199,139,255,.5)); } 50% { filter: drop-shadow(0 1cqw 1.5cqw rgba(0,0,0,.55)) drop-shadow(0 0 3.5cqw rgba(255,122,217,.9)); } }
+.mframe {
+    position: absolute;
+    z-index: 8;
+    pointer-events: none;
+    left: -12%;
+    top: -12.857%;
+    width: 124%;
+    height: 125.714%;
+    overflow: visible;
+    filter: drop-shadow(0 1cqw 1.5cqw rgba(0, 0, 0, .55));
+}
+
+.mframeMax {
+    animation: masterGlow 2.6s ease-in-out infinite;
+}
+
+@keyframes masterGlow {
+    0%, 100% {
+        filter: drop-shadow(0 1cqw 1.5cqw rgba(0, 0, 0, .55)) drop-shadow(0 0 1cqw rgba(199, 139, 255, .5));
+    }
+    50% {
+        filter: drop-shadow(0 1cqw 1.5cqw rgba(0, 0, 0, .55)) drop-shadow(0 0 3.5cqw rgba(255, 122, 217, .9));
+    }
+}
 
 /* ---------- Acquaforte: foil metallico inciso ---------- */
-.etched { position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: inherit; mix-blend-mode: overlay; opacity: .8;
-  background: repeating-linear-gradient(35deg, rgba(255,255,255,.22) 0 .35cqw, transparent .35cqw 1.1cqw),
-    linear-gradient(115deg, transparent 20%, rgba(255,240,200,.75) calc(var(--px, .5) * 100% - 10%), rgba(200,220,255,.5) calc(var(--px, .5) * 100%), transparent calc(var(--px, .5) * 100% + 15%));
-  animation: etchIdle 7s ease-in-out infinite alternate; }
-@keyframes etchIdle { from { filter: brightness(.9); } to { filter: brightness(1.25); } }
+.etched {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    border-radius: inherit;
+    mix-blend-mode: overlay;
+    opacity: .8;
+    background: repeating-linear-gradient(35deg, rgba(255, 255, 255, .22) 0 .35cqw, transparent .35cqw 1.1cqw),
+    linear-gradient(115deg, transparent 20%, rgba(255, 240, 200, .75) calc(var(--px, .5) * 100% - 10%), rgba(200, 220, 255, .5) calc(var(--px, .5) * 100%), transparent calc(var(--px, .5) * 100% + 15%));
+    animation: etchIdle 7s ease-in-out infinite alternate;
+}
+
+@keyframes etchIdle {
+    from {
+        filter: brightness(.9);
+    }
+    to {
+        filter: brightness(1.25);
+    }
+}
+
 /* ---------- Galassia: nebulose che ruotano, stelle che scorrono e pulsano ---------- */
-.galaxy { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; border-radius: inherit; mix-blend-mode: screen; }
-.galaxy::before { content: ""; position: absolute; inset: -60%;
-  background: radial-gradient(circle at 35% 35%, rgba(170,90,255,.55), transparent 28%), radial-gradient(circle at 65% 60%, rgba(40,190,255,.5), transparent 30%), radial-gradient(circle at 50% 80%, rgba(255,80,180,.4), transparent 26%), radial-gradient(circle at 70% 25%, rgba(90,255,200,.3), transparent 22%);
-  animation: nebulaSpin 18s linear infinite, nebulaHue 9s linear infinite; }
-.galaxy i { position: absolute; inset: -50% 0; opacity: .95;
-  background-image: radial-gradient(1.2px 1.2px at 10% 20%, #fff, transparent), radial-gradient(1px 1px at 30% 70%, #fff, transparent), radial-gradient(1.8px 1.8px at 55% 35%, #fff, transparent), radial-gradient(1px 1px at 80% 15%, #fff, transparent), radial-gradient(1.2px 1.2px at 75% 80%, #fff, transparent), radial-gradient(1.8px 1.8px at 20% 50%, #cfe8ff, transparent), radial-gradient(1px 1px at 45% 85%, #fff, transparent), radial-gradient(1.4px 1.4px at 90% 45%, #ffe0ff, transparent);
-  background-size: 50% 25%; animation: starDrift 10s linear infinite, starTw 1.6s ease-in-out infinite; }
-.galaxy i:nth-child(2) { background-size: 35% 18%; animation-duration: 16s, 2.3s; animation-delay: 0s, -.8s; opacity: .7; }
-@keyframes nebulaSpin { to { transform: rotate(360deg); } }
-@keyframes nebulaHue { to { filter: hue-rotate(360deg); } }
-@keyframes starDrift { from { transform: translateY(0); } to { transform: translateY(33.33%); } }
-@keyframes starTw { 50% { opacity: .35; } }
+.galaxy {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: inherit;
+    mix-blend-mode: screen;
+}
+
+.galaxy::before {
+    content: "";
+    position: absolute;
+    inset: -60%;
+    background: radial-gradient(circle at 35% 35%, rgba(170, 90, 255, .55), transparent 28%), radial-gradient(circle at 65% 60%, rgba(40, 190, 255, .5), transparent 30%), radial-gradient(circle at 50% 80%, rgba(255, 80, 180, .4), transparent 26%), radial-gradient(circle at 70% 25%, rgba(90, 255, 200, .3), transparent 22%);
+    animation: nebulaSpin 18s linear infinite, nebulaHue 9s linear infinite;
+}
+
+.galaxy i {
+    position: absolute;
+    inset: -50% 0;
+    opacity: .95;
+    background-image: radial-gradient(1.2px 1.2px at 10% 20%, #fff, transparent), radial-gradient(1px 1px at 30% 70%, #fff, transparent), radial-gradient(1.8px 1.8px at 55% 35%, #fff, transparent), radial-gradient(1px 1px at 80% 15%, #fff, transparent), radial-gradient(1.2px 1.2px at 75% 80%, #fff, transparent), radial-gradient(1.8px 1.8px at 20% 50%, #cfe8ff, transparent), radial-gradient(1px 1px at 45% 85%, #fff, transparent), radial-gradient(1.4px 1.4px at 90% 45%, #ffe0ff, transparent);
+    background-size: 50% 25%;
+    animation: starDrift 10s linear infinite, starTw 1.6s ease-in-out infinite;
+}
+
+.galaxy i:nth-child(2) {
+    background-size: 35% 18%;
+    animation-duration: 16s, 2.3s;
+    animation-delay: 0s, -.8s;
+    opacity: .7;
+}
+
+@keyframes nebulaSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes nebulaHue {
+    to {
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes starDrift {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(33.33%);
+    }
+}
+
+@keyframes starTw {
+    50% {
+        opacity: .35;
+    }
+}
+
 /* ---------- Prismatico: tessere arcobaleno ---------- */
-.prism { position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: inherit; mix-blend-mode: color-dodge; opacity: .28;
-  background: conic-gradient(from calc(var(--px, .5) * 360deg) at calc(var(--px, .5) * 100%) calc(var(--py, .5) * 100%), #ff5a8a, #ffd25a, #5affb0, #5ab8ff, #b45aff, #ff5a8a);
-  -webkit-mask: radial-gradient(circle, #000 35%, transparent 38%) 0 0 / 3cqw 3cqw; mask: radial-gradient(circle, #000 35%, transparent 38%) 0 0 / 3cqw 3cqw;
-  animation: prismHue 6s linear infinite; }
-@keyframes prismHue { to { filter: hue-rotate(360deg); } }
+.prism {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    border-radius: inherit;
+    mix-blend-mode: color-dodge;
+    opacity: .28;
+    background: conic-gradient(from calc(var(--px, .5) * 360deg) at calc(var(--px, .5) * 100%) calc(var(--py, .5) * 100%), #ff5a8a, #ffd25a, #5affb0, #5ab8ff, #b45aff, #ff5a8a);
+    -webkit-mask: radial-gradient(circle, #000 35%, transparent 38%) 0 0 / 3cqw 3cqw;
+    mask: radial-gradient(circle, #000 35%, transparent 38%) 0 0 / 3cqw 3cqw;
+    animation: prismHue 6s linear infinite;
+}
+
+@keyframes prismHue {
+    to {
+        filter: hue-rotate(360deg);
+    }
+}
+
 /* ---------- Oro fuso ---------- */
-.gold { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; border-radius: inherit; mix-blend-mode: overlay; }
-.gold::before { content: ""; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255,215,120,.55), rgba(180,110,20,.25) 50%, rgba(255,230,160,.5)); }
-.gold i { position: absolute; inset: -40% -80%; background: linear-gradient(100deg, transparent 40%, rgba(255,250,220,.95) 50%, transparent 60%); animation: goldFlow 3.2s ease-in-out infinite; }
-@keyframes goldFlow { from { transform: translateX(-40%); } to { transform: translateX(40%); } }
+.gold {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: inherit;
+    mix-blend-mode: overlay;
+}
+
+.gold::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(255, 215, 120, .55), rgba(180, 110, 20, .25) 50%, rgba(255, 230, 160, .5));
+}
+
+.gold i {
+    position: absolute;
+    inset: -40% -80%;
+    background: linear-gradient(100deg, transparent 40%, rgba(255, 250, 220, .95) 50%, transparent 60%);
+    animation: goldFlow 3.2s ease-in-out infinite;
+}
+
+@keyframes goldFlow {
+    from {
+        transform: translateX(-40%);
+    }
+    to {
+        transform: translateX(40%);
+    }
+}
 
 /* ---------- Cornici nuove ---------- */
-.f-gotica { --fb: linear-gradient(135deg, #e6e1d6, #8f8878 35%, #d8d2c3 55%, #5f5a4e 80%, #cfc8b8); }
-.f-nouveau { --fb: linear-gradient(135deg, #fff1c4, #c9a24a 30%, #5f8f3a 55%, #e8c86a 75%, #3f6a24); }
-.f-ossidiana { --fb: radial-gradient(circle at 30% 20%, #5a3a8f, transparent 40%), radial-gradient(circle at 80% 90%, #b45aff, transparent 35%), linear-gradient(135deg, #1a1422, #07050a 50%, #2a1a3a); }
-.f-vetrata { --fb: repeating-conic-gradient(from 10deg at 50% 50%, #c8323a 0 9deg, #17141c 9deg 10deg, #2f6fb8 10deg 19deg, #17141c 19deg 20deg, #5f8f3a 20deg 29deg, #17141c 29deg 30deg, #e0a032 30deg 39deg, #17141c 39deg 40deg, #7552a0 40deg 49deg, #17141c 49deg 50deg); }
-.frame.f-ossidiana { --fw: 3.6cqw; filter: drop-shadow(0 0 1.6cqw rgba(180,90,255,.65)); animation: obsid 3s ease-in-out infinite; }
-@keyframes obsid { 50% { filter: drop-shadow(0 0 3cqw rgba(200,120,255,.9)); } }
-.frame.f-vetrata { --fw: 3.8cqw; filter: drop-shadow(0 0 1.2cqw rgba(255,220,160,.35)); }
-.frame.f-gotica, .frame.f-nouveau { --fw: 2.8cqw; }
-.inner { position: absolute; inset: 1.5cqw; z-index: 7; pointer-events: none; width: calc(100% - 3cqw); height: calc(100% - 3cqw); filter: drop-shadow(0 .3cqw .4cqw rgba(0,0,0,.7)); }
+.f-gotica {
+    --fb: linear-gradient(135deg, #e6e1d6, #8f8878 35%, #d8d2c3 55%, #5f5a4e 80%, #cfc8b8);
+}
 
-@media (prefers-reduced-motion: reduce) { .etched, .galaxy::before, .galaxy i, .prism, .gold i, .frame.f-ossidiana { animation: none !important; } .holo::before, .aurora i, .star, .runes svg, .runes path, .frame, .mframeMax { animation: none !important; } .star { display: none; } }
+.f-nouveau {
+    --fb: linear-gradient(135deg, #fff1c4, #c9a24a 30%, #5f8f3a 55%, #e8c86a 75%, #3f6a24);
+}
+
+.f-ossidiana {
+    --fb: radial-gradient(circle at 30% 20%, #5a3a8f, transparent 40%), radial-gradient(circle at 80% 90%, #b45aff, transparent 35%), linear-gradient(135deg, #1a1422, #07050a 50%, #2a1a3a);
+}
+
+.f-vetrata {
+    --fb: repeating-conic-gradient(from 10deg at 50% 50%, #c8323a 0 9deg, #17141c 9deg 10deg, #2f6fb8 10deg 19deg, #17141c 19deg 20deg, #5f8f3a 20deg 29deg, #17141c 29deg 30deg, #e0a032 30deg 39deg, #17141c 39deg 40deg, #7552a0 40deg 49deg, #17141c 49deg 50deg);
+}
+
+.frame.f-ossidiana {
+    --fw: 3.6cqw;
+    filter: drop-shadow(0 0 1.6cqw rgba(180, 90, 255, .65));
+    animation: obsid 3s ease-in-out infinite;
+}
+
+@keyframes obsid {
+    50% {
+        filter: drop-shadow(0 0 3cqw rgba(200, 120, 255, .9));
+    }
+}
+
+.frame.f-vetrata {
+    --fw: 3.8cqw;
+    filter: drop-shadow(0 0 1.2cqw rgba(255, 220, 160, .35));
+}
+
+.frame.f-gotica, .frame.f-nouveau {
+    --fw: 2.8cqw;
+}
+
+.inner {
+    position: absolute;
+    inset: 1.5cqw;
+    z-index: 7;
+    pointer-events: none;
+    width: calc(100% - 3cqw);
+    height: calc(100% - 3cqw);
+    filter: drop-shadow(0 .3cqw .4cqw rgba(0, 0, 0, .7));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .etched, .galaxy::before, .galaxy i, .prism, .gold i, .frame.f-ossidiana {
+        animation: none !important;
+    }
+
+    .holo::before, .aurora i, .star, .runes svg, .runes path, .frame, .mframeMax {
+        animation: none !important;
+    }
+
+    .star {
+        display: none;
+    }
+}
 
 /* ---------- Alone: bagliore del colore della fazione che pulsa ai bordi ---------- */
-.halo { position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: inherit; box-shadow: inset 0 0 3cqw 1cqw color-mix(in srgb, var(--fac) 80%, #fff), inset 0 0 8cqw 2cqw color-mix(in srgb, var(--fac) 50%, transparent); mix-blend-mode: screen; animation: halo 3.2s ease-in-out infinite; }
-@keyframes halo { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+.halo {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow: inset 0 0 3cqw 1cqw color-mix(in srgb, var(--fac) 80%, #fff), inset 0 0 8cqw 2cqw color-mix(in srgb, var(--fac) 50%, transparent);
+    mix-blend-mode: screen;
+    animation: halo 3.2s ease-in-out infinite;
+}
+
+@keyframes halo {
+    0%, 100% {
+        opacity: .45;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
 /* ---------- Luce radente: un filo di luce che attraversa la carta ogni tanto ---------- */
-.gleam { position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: inherit; overflow: hidden; mix-blend-mode: screen; }
-.gleam::before { content: ""; position: absolute; top: -20%; bottom: -20%; width: 22%; left: -40%; background: linear-gradient(100deg, transparent, rgba(255,250,230,.75) 50%, transparent); transform: skewX(-18deg); animation: gleam 5.5s ease-in-out infinite; }
-@keyframes gleam { 0%, 55% { left: -40%; } 85%, 100% { left: 130%; } }
-@media (prefers-reduced-motion: reduce) { .halo, .gleam::before { animation: none; } }
+.gleam {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    border-radius: inherit;
+    overflow: hidden;
+    mix-blend-mode: screen;
+}
+
+.gleam::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    bottom: -20%;
+    width: 22%;
+    left: -40%;
+    background: linear-gradient(100deg, transparent, rgba(255, 250, 230, .75) 50%, transparent);
+    transform: skewX(-18deg);
+    animation: gleam 5.5s ease-in-out infinite;
+}
+
+@keyframes gleam {
+    0%, 55% {
+        left: -40%;
+    }
+    85%, 100% {
+        left: 130%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .halo, .gleam::before {
+        animation: none;
+    }
+}

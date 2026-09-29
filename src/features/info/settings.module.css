@@ -1,9 +1,81 @@
-.box { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
-.row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
-.row b { display: block; color: #f3dfb0; } .row span { font-size: 14px; color: #b9ae96; }
-.sw { flex: none; width: 52px; height: 30px; border-radius: 999px; border: 0; cursor: pointer; background: rgba(255,255,255,.15); position: relative; }
-.sw i { position: absolute; left: 4px; top: 4px; width: 22px; height: 22px; border-radius: 50%; background: #cfc5ae; transition: left .15s; }
-.sw[aria-checked="true"] { background: linear-gradient(180deg, #f6d27a, #c48a22); } .sw[aria-checked="true"] i { left: 26px; background: #231a0a; }
-.seg { display: inline-flex; flex: none; padding: 3px; border-radius: 999px; background: rgba(0,0,0,.4); }
-.seg button { border: 0; background: none; color: #cdbb95; padding: 5px 10px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 14px; }
-.seg button[aria-checked="true"] { background: linear-gradient(180deg, #f6d27a, #c48a22); color: #231a0a; }
+.box {
+    max-width: 560px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.row b {
+    display: block;
+    color: #f3dfb0;
+}
+
+.row span {
+    font-size: 14px;
+    color: #b9ae96;
+}
+
+.sw {
+    flex: none;
+    width: 52px;
+    height: 30px;
+    border-radius: 999px;
+    border: 0;
+    cursor: pointer;
+    background: rgba(255, 255, 255, .15);
+    position: relative;
+}
+
+.sw i {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #cfc5ae;
+    transition: left .15s;
+}
+
+.sw[aria-checked="true"] {
+    background: linear-gradient(180deg, #f6d27a, #c48a22);
+}
+
+.sw[aria-checked="true"] i {
+    left: 26px;
+    background: #231a0a;
+}
+
+.seg {
+    display: inline-flex;
+    flex: none;
+    padding: 3px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, .4);
+}
+
+.seg button {
+    border: 0;
+    background: none;
+    color: #cdbb95;
+    padding: 5px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 14px;
+}
+
+.seg button[aria-checked="true"] {
+    background: linear-gradient(180deg, #f6d27a, #c48a22);
+    color: #231a0a;
+}

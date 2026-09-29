@@ -1,25 +1,172 @@
-.portrait { position: relative; display: inline-block; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; flex: none; box-shadow: 0 0 0 2px #0d0b11, 0 0 0 4px var(--fc), 0 0 14px color-mix(in srgb, var(--fc) 50%, transparent); }
-.portrait > img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.portrait i { position: absolute; right: -1px; bottom: -1px; width: 38%; height: 38%; border-radius: 50%; display: grid; place-items: center; background: var(--fc); color: #fff8e8; box-shadow: 0 0 0 1.5px #0d0b11; }
-.portrait i svg { width: 70%; height: 70%; }
-.card { display: flex; gap: 14px; align-items: flex-start; padding: 14px; border-radius: 16px; background: linear-gradient(160deg, rgba(40,32,52,.92), rgba(22,18,30,.92)); box-shadow: 0 0 0 1px rgba(217,169,67,.3), inset 0 3px 0 var(--fc); text-align: left; }
-.big { width: 84px; height: 84px; }
-.body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.body h3 { font-size: 24px; color: #f3dfb0; line-height: 1; }
-.body em { color: #b9ae96; font-size: 14px; margin-bottom: 4px; }
-.body p { margin: 0; font-size: 14px; line-height: 1.4; color: #d8cdb4; }
-.body b { color: #ffe39a; }
-.lore { font-style: italic; color: #b9ae96 !important; margin-top: 4px !important; }
-.lore span { font-style: normal; color: #8d8698; }
-.compact .big { width: 60px; height: 60px; }
-.compact .body h3 { font-size: 20px; }
-.legendary { box-shadow: 0 0 0 2px #0d0b11, 0 0 0 4px #f0c35a, 0 0 18px rgba(240,195,90,.8) !important; animation: legGlow 2.6s ease-in-out infinite; }
-@keyframes legGlow { 50% { box-shadow: 0 0 0 2px #0d0b11, 0 0 0 4px #fff1c4, 0 0 28px rgba(255,210,110,1); } }
-.legTag { margin-left: 8px; font-family: var(--body); font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px; color: #231a0a; background: linear-gradient(#ffe39a, #d9a943); vertical-align: middle; }
-.missions { margin-top: 6px; padding: 8px 10px; border-radius: 10px; background: rgba(0,0,0,.25); display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
-.missions b { color: #ffe39a; font-size: 13px; }
-.missions div { display: flex; justify-content: space-between; gap: 10px; color: #d8cdb4; }
-.missions em { font-style: normal; color: #b9ae96; }
-.mDone span { text-decoration: line-through; color: #8d8698; } .mDone em { color: #7fe0a0 !important; }
-.missions small { color: #9d95ab; }
-@media (prefers-reduced-motion: reduce) { .legendary { animation: none; } }
+.portrait {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex: none;
+    box-shadow: 0 0 0 2px #0d0b11, 0 0 0 4px var(--fc), 0 0 14px color-mix(in srgb, var(--fc) 50%, transparent);
+}
+
+.portrait > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.portrait i {
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    width: 38%;
+    height: 38%;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--fc);
+    color: #fff8e8;
+    box-shadow: 0 0 0 1.5px #0d0b11;
+}
+
+.portrait i svg {
+    width: 70%;
+    height: 70%;
+}
+
+.card {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px;
+    border-radius: 16px;
+    background: linear-gradient(160deg, rgba(40, 32, 52, .92), rgba(22, 18, 30, .92));
+    box-shadow: 0 0 0 1px rgba(217, 169, 67, .3), inset 0 3px 0 var(--fc);
+    text-align: left;
+}
+
+.big {
+    width: 84px;
+    height: 84px;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.body h3 {
+    font-size: 24px;
+    color: #f3dfb0;
+    line-height: 1;
+}
+
+.body em {
+    color: #b9ae96;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.body p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #d8cdb4;
+}
+
+.body b {
+    color: #ffe39a;
+}
+
+.lore {
+    font-style: italic;
+    color: #b9ae96 !important;
+    margin-top: 4px !important;
+}
+
+.lore span {
+    font-style: normal;
+    color: #8d8698;
+}
+
+.compact .big {
+    width: 60px;
+    height: 60px;
+}
+
+.compact .body h3 {
+    font-size: 20px;
+}
+
+.legendary {
+    box-shadow: 0 0 0 2px #0d0b11, 0 0 0 4px #f0c35a, 0 0 18px rgba(240, 195, 90, .8) !important;
+    animation: legGlow 2.6s ease-in-out infinite;
+}
+
+@keyframes legGlow {
+    50% {
+        box-shadow: 0 0 0 2px #0d0b11, 0 0 0 4px #fff1c4, 0 0 28px rgba(255, 210, 110, 1);
+    }
+}
+
+.legTag {
+    margin-left: 8px;
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 999px;
+    color: #231a0a;
+    background: linear-gradient(#ffe39a, #d9a943);
+    vertical-align: middle;
+}
+
+.missions {
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, .25);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 13px;
+}
+
+.missions b {
+    color: #ffe39a;
+    font-size: 13px;
+}
+
+.missions div {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: #d8cdb4;
+}
+
+.missions em {
+    font-style: normal;
+    color: #b9ae96;
+}
+
+.mDone span {
+    text-decoration: line-through;
+    color: #8d8698;
+}
+
+.mDone em {
+    color: #7fe0a0 !important;
+}
+
+.missions small {
+    color: #9d95ab;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .legendary {
+        animation: none;
+    }
+}

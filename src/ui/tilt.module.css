@@ -1,4 +1,26 @@
-.tilt { position: relative; transform-style: preserve-3d; transform-perspective: 900px; will-change: transform; }
-.glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; mix-blend-mode: overlay; opacity: 0; transition: opacity .25s; }
-.tilt:hover .glare { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .tilt { transform: none !important; } }
+.tilt {
+    position: relative;
+    transform-style: preserve-3d;
+    transform-perspective: 900px;
+    will-change: transform;
+}
+
+.glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0;
+    transition: opacity .25s;
+}
+
+.tilt:hover .glare {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tilt {
+        transform: none !important;
+    }
+}
