@@ -2,7 +2,7 @@
 .screen {
   --uw: min(clamp(48px, calc((100vw - 290px) / 9 - 13px), 132px), calc((100vh - 500px) / 2.8));
   --uh: calc(var(--uw) * 1.4);
-  --hw: clamp(84px, 9.4vw, 150px);
+  --hw: clamp(96px, min(8.6vw, 15.5vh), 220px);
   position: fixed; inset: 0; z-index: 40; overflow: clip; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; color: #ece2cc;
   padding: env(safe-area-inset-top, 0px) 0 0;
   background:
@@ -82,9 +82,9 @@
 .heal { color: #8ff0a8; }
 
 /* ---------- Mano ---------- */
-.hand { position: relative; display: flex; justify-content: center; align-items: flex-start; height: calc(var(--hw) * 1.02); padding: 0 16px; z-index: 30; }
+.hand { position: relative; display: flex; justify-content: center; align-items: flex-start; height: calc(var(--hw) * 1.5); padding: 0 16px 6px; z-index: 30; }
 .handCard { width: var(--hw); flex: none; cursor: grab; touch-action: none; transform-origin: 50% 90%; filter: drop-shadow(0 10px 14px rgba(0,0,0,.55)); }
-.handCard + .handCard { margin-left: calc(var(--hw) * -.28); }
+.handCard + .handCard { margin-left: calc(var(--hw) * -.1); }
 .handCard:not(.playable) { filter: drop-shadow(0 10px 14px rgba(0,0,0,.55)) brightness(.62) saturate(.7); }
 .playable { filter: drop-shadow(0 0 10px rgba(120,200,255,.55)) drop-shadow(0 10px 14px rgba(0,0,0,.55)); }
 .oppHand { --ow: clamp(56px, 5.6vw, 84px); display: flex; justify-content: center; align-items: flex-start; height: 64px; position: relative; pointer-events: none; }
@@ -366,7 +366,7 @@ html.rm .legendRays { display: none; }
 .cMe .cPassive { font-size: 12px; -webkit-line-clamp: 2; }
 .cWho i { font-style: normal; text-transform: none; letter-spacing: 0; }
 .right { overflow: hidden; }
-@media (max-height: 740px) and (min-width: 981px) { .cMe .cPassive { display: none; } }
+@media (max-height: 820px) { .cMe .cPassive { display: none; } .right .endTurn { width: 104px; height: 104px; font-size: 21px; } }
 @media (max-height: 880px) and (min-width: 981px) { .right { gap: 8px; } .right .hint:not(.hintOn) { display: none; } }
 .hintOn { color: #ffd27a; font-weight: 700; }
 
@@ -376,7 +376,7 @@ html.rm .legendRays { display: none; }
 .custChip > span { width: 18px !important; height: 18px !important; }
 
 /* carta in mano ingrandita e leggibile sopra la mano */
-.handZoom { position: fixed; left: 50%; bottom: calc(var(--hw) * 1.1); transform: translateX(-50%); width: clamp(210px, 17vw, 260px); z-index: 80; pointer-events: none; filter: drop-shadow(0 0 18px rgba(240,195,90,.35)) drop-shadow(0 20px 30px rgba(0,0,0,.7)); animation: zoomIn .12s ease-out; }
+.handZoom { position: fixed; left: 50%; bottom: calc(var(--hw) * 1.55); transform: translateX(-50%); width: clamp(210px, 17vw, 260px); z-index: 80; pointer-events: none; filter: drop-shadow(0 0 18px rgba(240,195,90,.35)) drop-shadow(0 20px 30px rgba(0,0,0,.7)); animation: zoomIn .12s ease-out; }
 @keyframes zoomIn { from { opacity: 0; transform: translate(-50%, 12px) scale(.94); } }
 .timerBtn { border: 1px solid rgba(202,161,90,.45); background: rgba(20,16,24,.8); color: #cfc5ae; border-radius: 10px; padding: 6px 10px; cursor: pointer; font: inherit; font-size: 13px; }
 .timerBtn[aria-pressed="true"] { color: #ffd27a; border-color: #ffd27a; }

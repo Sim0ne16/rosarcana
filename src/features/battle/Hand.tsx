@@ -29,7 +29,7 @@ export function Hand({ G }: { G: Game }) {
             <motion.div key={h.hid} layoutId={`card-${h.hid}`} className={`${s.handCard} ${ok ? s.playable : ''}`} data-tut={`hand:${h.id}`}
               style={{ zIndex: up ? 50 : 10 + i }}
               initial={{ opacity: 0, y: 120, x: 300, rotate: 20 }}
-              animate={{ opacity: 1, x: 0, y: up ? -120 : Math.abs(off) * Math.abs(off) * 4, rotate: up ? 0 : off * 4.5, scale: up ? 1.45 : 1 }}
+              animate={{ opacity: 1, x: 0, y: up ? -14 : Math.abs(off) * Math.abs(off) * 2, rotate: up ? 0 : off * 2.5, scale: up ? 1.04 : 1 }}
               exit={{ opacity: 0, y: -80, transition: { duration: 0.25 } }}
               transition={{ type: 'spring', stiffness: 380, damping: 30 }}
               drag={ok && !lens} dragSnapToOrigin dragElastic={0.9} whileDrag={{ scale: 1.1, rotate: 0, zIndex: 100 }}
