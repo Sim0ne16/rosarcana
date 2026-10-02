@@ -514,3 +514,127 @@
 .unlOn b {
     color: #7fe0a0 !important;
 }
+
+/* Carta viva: cambiata dalla community */
+.live {
+    margin: 10px 0 0;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #e8dcff;
+    background: rgba(117, 82, 160, .18);
+    box-shadow: inset 0 0 0 1px rgba(162, 126, 224, .45);
+}
+
+.live b {
+    color: var(--gold2);
+}
+
+/* Barra dei filtri della collezione */
+.filters {
+    position: relative;
+    z-index: 12;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0 18px;
+    padding: 16px;
+    border-radius: 16px;
+    background: linear-gradient(160deg, rgba(40, 32, 52, .85), rgba(22, 18, 30, .85));
+    box-shadow: 0 0 0 1px rgba(217, 169, 67, .25);
+}
+
+.searchRow {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.search {
+    flex: 1;
+    font: inherit;
+    font-size: 17px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(217, 169, 67, .4);
+    background: rgba(12, 10, 16, .8);
+    color: var(--ink);
+}
+
+.search:focus {
+    outline: 2px solid #f0c35a;
+    outline-offset: 1px;
+}
+
+.sortWrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink2);
+}
+
+.sortWrap select {
+    font: inherit;
+    padding: 9px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(217, 169, 67, .4);
+    background: rgba(12, 10, 16, .8);
+    color: var(--ink);
+}
+
+.fRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.fLabel {
+    min-width: 116px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: #b9ae96;
+}
+
+.fLabel.gap {
+    min-width: 0;
+    margin-left: 18px;
+}
+
+.cost {
+    min-width: 40px;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.moreBtn {
+    margin-left: auto;
+}
+
+.advanced {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(217, 169, 67, .2);
+}
+
+.resultRow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #b9ae96;
+    font-size: 14px;
+}
+
+.reset {
+    border: 0;
+    background: none;
+    padding: 0;
+    color: #f0c35a;
+    text-decoration: underline;
+    cursor: pointer;
+    font: inherit;
+}

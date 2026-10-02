@@ -55,6 +55,7 @@
 }
 
 .opt {
+    position: relative;
     width: min(230px, 42vw);
     border: 0;
     background: none;

@@ -143,7 +143,8 @@ export function synergyBonus(G: Game, p: number, u: Unit): [number, number] {
 }
 
 /* ---------- Presagi di corsia: ogni partita, ogni corsia riceve una condizione ---------- */
-export type OmenId = 'nebbia' | 'consacrata' | 'cenere' | 'eclissi' | 'radici' | 'campane';
+export type OmenId = 'nebbia' | 'consacrata' | 'cenere' | 'eclissi' | 'radici' | 'campane'
+    | 'bastione' | 'palude' | 'miasma' | 'luna' | 'arena' | 'pozzo';
 export const OMENS: Record<OmenId, { name: string; text: string; icon: string; short: string }> = {
     nebbia: {
         name: 'Nebbia',
@@ -181,8 +182,51 @@ export const OMENS: Record<OmenId, { name: string; text: string; icon: string; s
         icon: '🔔',
         short: 'Ogni morte cura 1 il Sigillo'
     },
+    bastione: {
+        name: 'Bastione',
+        text: 'I colpi delle unità ai Sigilli di questa corsia infliggono 1 danno in meno (almeno 1).',
+        icon: '▣',
+        short: '-1 danno ai Sigilli'
+    },
+    palude: {
+        name: 'Palude',
+        text: 'Le unità in questa corsia hanno -1 attacco.',
+        icon: '≈',
+        short: '-1 attacco alle unità'
+    },
+    miasma: {
+        name: 'Miasma',
+        text: "All'inizio del tuo turno, le tue unità in questa corsia subiscono 1 danno.",
+        icon: '☣',
+        short: '1 danno a inizio turno'
+    },
+    luna: {
+        name: 'Luna crescente',
+        text: "All'inizio del tuo turno, la tua unità con meno attacco in questa corsia ottiene +1 attacco e +1 salute permanenti.",
+        icon: '☾',
+        short: '+1/+1 alla più debole'
+    },
+    arena: {
+        name: 'Arena di sangue',
+        text: "Quando un'unità in questa corsia uccide un'unità nemica in combattimento e sopravvive, ottiene +1 attacco permanente.",
+        icon: '⚔',
+        short: 'Chi uccide ottiene +1 attacco'
+    },
+    pozzo: {
+        name: 'Pozzo dei sussurri',
+        text: "All'inizio del tuo turno, se hai più unità dell'avversario in questa corsia, peschi una carta.",
+        icon: '◎',
+        short: 'Pesca se la controlli'
+    },
 };
 export const omenAt = (G: Game, l: number): OmenId | null => G.omens?.[l] ?? null;
+/** Il presagio che agisce su un'unità: nessuno se ha Auspicio, che la rende immune al campo (nel bene e nel male). */
+export const omenFor = (G: Game, l: number, u?: Unit): OmenId | null => (u?.kw.includes('Auspicio') ? null : omenAt(G, l));
+/** Danno di un colpo d'unità a un Sigillo, corretto dal presagio della corsia: Eclissi +1, Bastione -1 (mai sotto 1). */
+export const omenSealHit = (G: Game, l: number, n: number, u?: Unit) => {
+    const o = omenFor(G, l, u);
+    return o === 'eclissi' ? n + 1 : o === 'bastione' ? Math.max(1, n - 1) : n;
+};
 
 /* ---------- Ultimo Rintocco: quando un tuo Sigillo si spezza, la tua fazione risponde una volta ---------- */
 export const BELLS: Record<Faction, { name: string; text: string }> = {

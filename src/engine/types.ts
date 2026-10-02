@@ -85,11 +85,16 @@ export type GameEvent =
     | { t: 'bell'; p: number; l: number; f: Faction; name: string; text: string }
     | { t: 'ascend'; uid: number; p: number }
     | { t: 'crystal'; p: number; n: number }
-    | { t: 'reveal'; p: number; ids: string[] };
+    | { t: 'reveal'; p: number; ids: string[] }
+    | { t: 'night'; id: import('./night').NightId };
 
 export interface LogLine {
+    /** Testo italiano canonico. */
     txt: string;
-    cls: '' | 'me' | 'op' | 'big' | 'turn'
+    cls: '' | 'me' | 'op' | 'big' | 'turn';
+    /** Chiave e argomenti del messaggio (engine/log.ts), per riformattarlo in un'altra lingua. */
+    k?: import('./log').LogKey;
+    a?: readonly unknown[];
 }
 
 export interface Game {
@@ -105,6 +110,8 @@ export interface Game {
     sim?: boolean;
     omens?: (import('./mechanics').OmenId | null)[];
     bell?: (Faction | null)[];
+    /** Solo in Notte Incatenata: catene allentate finora (`busy` evita soglie annidate, vedi advanceNight). */
+    night?: { chains: number; busy?: boolean };
 }
 
 export type Target =
@@ -114,7 +121,9 @@ export type Target =
 
 export interface PlayOpt {
     lane?: number;
-    target?: Target
+    target?: Target;
+    /** Corsia di destinazione, per gli effetti che spostano il bersaglio (Effect.push). */
+    to?: number
 }
 
 export interface TargetSpec {

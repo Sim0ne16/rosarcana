@@ -1,6 +1,8 @@
 import {AnimatePresence, motion} from 'framer-motion';
 import {BYID} from '../../engine';
 import {Card} from '../../cards/Card';
+import {useT} from '../../i18n/lang';
+import {W} from '../../i18n/words';
 import {lookOf, useProfile} from '../../profile/store';
 import {useBattle} from './store';
 import s from './battle.module.css';
@@ -9,6 +11,7 @@ import s from './battle.module.css';
 export function StackZone() {
     const stack = useBattle(st => st.stack), sel = useBattle(st => st.sel);
     const profile = useProfile();
+    const t = useT();
     const b = useBattle.getState;
     return (
         <div className={s.stackZone}>
@@ -29,11 +32,11 @@ export function StackZone() {
                         {stack.targeting && sel?.kind === 'hand' && (
                             <div className={s.stackActions}>
                                 {sel.step === 'confirm' ? <button className={`${s.btn} ${s.gold}`}
-                                                                  onClick={() => b().confirm()}>Gioca</button> :
-                                    <span>Scegli un bersaglio</span>}
+                                                                  onClick={() => b().confirm()}>{t(W.play)}</button> :
+                                    <span>{sel.step === 'dest' ? t('Scegli la corsia di arrivo', 'Choose the destination lane') : t('Scegli un bersaglio', 'Choose a target')}</span>}
                                 {sel.skip &&
-                                    <button className={s.btn} onClick={() => b().skip()}>Salta effetto</button>}
-                                <button className={s.btn} onClick={() => b().cancel()}>Annulla</button>
+                                    <button className={s.btn} onClick={() => b().skip()}>{t('Salta effetto', 'Skip effect')}</button>}
+                                <button className={s.btn} onClick={() => b().cancel()}>{t(W.cancel)}</button>
                             </div>
                         )}
                     </motion.div>

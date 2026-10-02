@@ -13,8 +13,8 @@ import {
     healSeal,
     highestGraveUnit,
     kill,
-    nm,
     pushAuto,
+    pushTo,
     randomIntact,
     sacrifice,
     summon,
@@ -25,14 +25,26 @@ import type {Game, Target, TargetSpec, Unit} from './types';
 
 export interface Effect {
     enterT?: TargetSpec;
-    enter?: (G: Game, p: number, u: Unit, t: Target | undefined, lane: number) => void;
+    enter?: (G: Game, p: number, u: Unit, t: Target | undefined, lane: number, to?: number) => void;
+    /** Solo per enterT: il testo dice esplicitamente "puoi" - si può giocare la carta senza scegliere un bersaglio
+     * anche se ne esiste uno legale. Le altre abilità Quando entra con bersaglio sono obbligatorie: si può giocare
+     * la carta senza effetto solo se davvero non c'è nessun bersaglio legale (gestito a monte da playOptions). */
+    optional?: boolean;
     spellT?: TargetSpec;
-    spell?: (G: Game, p: number, t: Target | undefined) => void;
+    spell?: (G: Game, p: number, t: Target | undefined, to?: number) => void;
+    /** L'effetto sposta il bersaglio in una corsia vicina scelta da chi gioca: le opzioni di gioco portano la
+     * destinazione in `to`, e sono bersagli solo le unità che hanno davvero dove andare. */
+    push?: boolean;
 }
 
 const tgtU = (G: Game, t?: Target) => (t && t.type === 'unit' ? findU(G, t.uid) : null);
 const uidOf = (t?: Target) => (t && t.type === 'unit' ? t.uid : null);
 const notRooted = (_G: Game, u: Unit) => !u.kw.includes('Radicato');
+/** Sposta il bersaglio nella corsia scelta; senza scelta (vecchie chiamate) ne prende una a caso. */
+const pushChosen = (G: Game, t: Target | undefined, to: number | undefined) => {
+    const id = uidOf(t);
+    if (id != null) (to != null ? pushTo(G, id, to) : pushAuto(G, id));
+};
 
 export const EFFECTS: Record<string, Effect> = {
     'brace-c7': {
@@ -92,7 +104,7 @@ export const EFFECTS: Record<string, Effect> = {
             G.p[1 - p].board.forEach(B => B.forEach(x => {
                 x.stun = true;
             }));
-            glog(G, 'Il Kraken si risveglia: le unità nemiche saltano il prossimo attacco');
+            glog(G, 'krakenWakes', []);
         }
     },
     'marea-r5': {
@@ -165,7 +177,7 @@ export const EFFECTS: Record<string, Effect> = {
             if (i >= 0) {
                 const id = P.deck.splice(i, 1)[0];
                 toHand(G, p, id, 0);
-                glog(G, `${P.name} cerca nel mazzo: ${nm(id)}`, p === 0 ? 'me' : 'op');
+                glog(G, 'search', [p, id], p === 0 ? 'me' : 'op');
             }
         }
     },
@@ -181,12 +193,12 @@ export const EFFECTS: Record<string, Effect> = {
             if (bi >= 0 && lane != null) {
                 const id = P.grave.splice(bi, 1)[0];
                 summon(G, p, lane, id);
-                glog(G, `Il Negromante rialza ${nm(id)}`);
+                glog(G, 'necroRaises', [id]);
             }
         }
     },
     'vuoto-r4': {
-        enterT: {kind: 'unit', side: 'ally'}, enter: (G, p, u, t) => {
+        enterT: {kind: 'unit', side: 'ally'}, optional: true, enter: (G, p, u, t) => {
             const id = uidOf(t);
             if (id == null || id === u.uid) return;
             if (sacrifice(G, p, id)) {
@@ -212,7 +224,7 @@ export const EFFECTS: Record<string, Effect> = {
                 if (bi < 0 || lane == null) break;
                 const id = P.grave.splice(bi, 1)[0];
                 summon(G, p, lane, id);
-                glog(G, `Hel richiama ${nm(id)}`);
+                glog(G, 'helRecalls', [id]);
             }
         }
     },
@@ -228,7 +240,7 @@ export const EFFECTS: Record<string, Effect> = {
             const f = tgtU(G, t);
             if (f) {
                 f.u.stun = true;
-                glog(G, `${nm(f.u.id)} è ammaliata e salterà il prossimo attacco`);
+                glog(G, 'charmed', [f.u.id]);
             }
         }
     },
@@ -237,7 +249,7 @@ export const EFFECTS: Record<string, Effect> = {
             const P = G.p[p];
             if (P.maxC < 10) {
                 P.maxC += 1;
-                glog(G, `${P.name} ottiene un Cristallo massimo in più`);
+                glog(G, 'maxCrystal', [p]);
             }
         }
     },
@@ -247,7 +259,7 @@ export const EFFECTS: Record<string, Effect> = {
             if (i >= 0) {
                 const id = P.deck.splice(i, 1)[0];
                 toHand(G, p, id, 0);
-                glog(G, `${P.name} cerca nel mazzo: ${nm(id)}`, p === 0 ? 'me' : 'op');
+                glog(G, 'search', [p, id], p === 0 ? 'me' : 'op');
             }
         }
     },
@@ -283,6 +295,13 @@ export const EFFECTS: Record<string, Effect> = {
             });
         }
     },
+    'brace-l2': {
+        // "Il gigante che porterà il fuoco alla fine del mondo. Nella Rosa, lo porta adesso": un colpo che
+        // arde tutti i Sigilli nemici in un'unica entrata, non solo la sua corsia come Vulkara.
+        enter: (G, p) => {
+            [0, 1, 2].forEach(l => dmgSeal(G, 1 - p, l, 2));
+        }
+    },
     'marea-c0': {
         spellT: {kind: 'unit', side: 'any', filter: (_G, u) => cardInfo(u.id).c <= 2}, spell: (G, _p, t) => {
             const id = uidOf(t);
@@ -290,15 +309,12 @@ export const EFFECTS: Record<string, Effect> = {
         }
     },
     'marea-c2': {
-        enterT: {kind: 'unit', side: 'enemy', filter: notRooted}, enter: (G, _p, _u, t) => {
-            const id = uidOf(t);
-            if (id != null) pushAuto(G, id);
-        }
+        enterT: {kind: 'unit', side: 'enemy', filter: notRooted}, push: true,
+        enter: (G, _p, _u, t, _l, to) => pushChosen(G, t, to)
     },
     'marea-c4': {
-        spellT: {kind: 'unit', side: 'any', filter: notRooted}, spell: (G, p, t) => {
-            const id = uidOf(t);
-            if (id != null) pushAuto(G, id);
+        spellT: {kind: 'unit', side: 'any', filter: notRooted}, push: true, spell: (G, p, t, to) => {
+            pushChosen(G, t, to);
             draw(G, p, 1);
         }
     },
@@ -380,7 +396,8 @@ export const EFFECTS: Record<string, Effect> = {
             h.forEach(x => {
                 x.known = true;
             });
-            glog(G, h.length ? `Occhio Vacuo rivela: ${h.map(x => nm(x.id)).join(', ')}` : 'Occhio Vacuo: la mano avversaria è vuota', p === 0 ? 'me' : 'op');
+            if (h.length) glog(G, 'eyeReveals', ['vuoto-c4', h.map(x => x.id)], p === 0 ? 'me' : 'op');
+            else glog(G, 'eyeEmpty', ['vuoto-c4'], p === 0 ? 'me' : 'op');
             emit(G, {t: 'reveal', p, ids: h.map(x => x.id)});
         }
     },
@@ -396,12 +413,12 @@ export const EFFECTS: Record<string, Effect> = {
             if (bi >= 0) {
                 const id = P.grave.splice(bi, 1)[0];
                 toHand(G, p, id, 0);
-                glog(G, `${nm(id)} torna in mano dal cimitero`);
+                glog(G, 'backFromGrave', [id]);
             }
         }
     },
     'vuoto-u3': {
-        enterT: {kind: 'unit', side: 'ally'}, enter: (G, p, u, t) => {
+        enterT: {kind: 'unit', side: 'ally'}, optional: true, enter: (G, p, u, t) => {
             const id = uidOf(t);
             if (id == null || id === u.uid) return;
             const s = sacrifice(G, p, id);
@@ -425,7 +442,7 @@ export const EFFECTS: Record<string, Effect> = {
             if (lane == null) return;
             const id = P.grave.splice(bi, 1)[0];
             summon(G, p, lane, id);
-            glog(G, `Nyxa evoca ${nm(id)} dal cimitero`);
+            glog(G, 'nyxaRaises', [id]);
         }
     },
     'vuoto-l1': {

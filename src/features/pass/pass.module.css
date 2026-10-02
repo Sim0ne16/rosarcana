@@ -191,21 +191,3 @@
 .riBack {
     width: 32px;
 }
-
-.backOpt {
-    width: 84px;
-    border: 3px solid transparent;
-    border-radius: 10px;
-    padding: 0;
-    background: none;
-    cursor: pointer;
-}
-
-.backOpt[aria-pressed="true"] {
-    border-color: var(--gold2);
-}
-
-.backOpt:disabled {
-    opacity: .3;
-    cursor: default;
-}

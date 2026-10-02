@@ -15,6 +15,11 @@ export function useHighlights() {
         if (sel.step === 'target') sel.targets?.forEach(t => {
             if (t.type === 'unit') units.add(t.uid); else if (t.type === 'seal') seals.add(`${t.p}-${t.lane}`); else laneTargets.add(t.lane);
         });
+        // spostamento: resta evidenziata l'unità scelta e si accendono le corsie in cui può finire
+        if (sel.step === 'dest') {
+            if (sel.target?.type === 'unit') units.add(sel.target.uid);
+            sel.dests?.forEach(l => laneTargets.add(l));
+        }
     }
     if (sel?.kind === 'unit') sel.to.forEach(l => lanes.add(l));
     if (dragging != null) {

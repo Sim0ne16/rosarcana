@@ -1,6 +1,7 @@
 import {motion, useAnimationControls} from 'framer-motion';
 import {useEffect} from 'react';
 import {Lane} from './Lane';
+import {NightGauge} from './NightGauge';
 import {Hand, OppHand} from './Hand';
 import {PlayerBar, QuitButton, TurnControls} from './Hud';
 import {CustodeBadge} from './CustodeBadge';
@@ -43,20 +44,30 @@ export function BattleScreen() {
     return (
         <div className={`${s.screen} ${lens ? s.lensMode : ''}`}
              style={siteImg('tavolo') ? {['--table' as string]: `url(${siteImg('tavolo')})`} : undefined}>
-            <header className={s.top}><PlayerBar G={G} p={1}/><OppHand G={G}/><CustodeBadge G={G} p={1} row/></header>
+            {/* Fascia avversaria: targa (giocatore e Custode) a sinistra, mano coperta al centro. */}
+            <header className={s.top}>
+                <div className={s.plate}><PlayerBar G={G} p={1}/><CustodeBadge G={G} p={1} row/></div>
+                <OppHand G={G}/>
+                <span aria-hidden="true"/>
+            </header>
             <div className={s.field}>
                 <motion.main className={s.board} animate={board} data-tut="board">
                     {[0, 1, 2].map(l => <Lane key={l} G={G} l={l} h={h}/>)}
                 </motion.main>
+                {/* Leggio: il registro in alto, poi i comandi del turno vicino alla mano, gli strumenti in fondo. */}
                 <aside className={s.right}>
-                    <CustodeBadge G={G} p={0}/>
-                    <PlayerBar G={G} p={0}/>
+                    <Log G={G}/>
+                    <NightGauge G={G}/>
                     <TurnControls G={G}/>
                     {!replay && <div className={s.toolsRow}><QuitButton/></div>}
-                    <Log G={G}/>
                 </aside>
             </div>
-            <Hand G={G}/>
+            {/* Fascia inferiore speculare a quella dell'avversario: la tua targa a sinistra, la mano al centro. */}
+            <div className={s.bottom}>
+                <div className={s.plate}><PlayerBar G={G} p={0}/><CustodeBadge G={G} p={0} row/></div>
+                <Hand G={G}/>
+                <span aria-hidden="true"/>
+            </div>
             <Preview G={G}/>
             <InspectOverlay G={G}/>
             <Reveal/>

@@ -2,7 +2,9 @@
 // così lo stesso codice può girare su un server autoritativo.
 import {BYID, cardInfo, LANE_NAME, SLOTS} from './cards';
 import type {Game, GameEvent, HandCard, Keyword, LogLine, Unit} from './types';
-import {ASCEND_FIGHTS, BELLS, CUSTODI, omenAt, synergyBonus} from './mechanics';
+import {ASCEND_FIGHTS, BELLS, CUSTODI, omenFor, synergyBonus} from './mechanics';
+import {formatLog, IT_LOG, type LogArgs, type LogFmt, type LogKey} from './log';
+import {advanceNight, NIGHT_PER_BREAK, NIGHT_PER_SACRIFICE} from './night';
 
 export let random = Math.random;
 export const setRandom = (fn: () => number) => {
@@ -21,9 +23,25 @@ export function shuffle<T>(a: T[]): T[] {
 export const clone = <T, >(G: T): T => JSON.parse(JSON.stringify(G));
 export const nm = (id: string) => cardInfo(id).n;
 
-export function glog(G: Game, txt: string, cls: LogLine['cls'] = '') {
+/** Formattatore italiano del registro, uno per partita (i nomi dei giocatori non cambiano). */
+const itFmts = new WeakMap<Game, LogFmt>();
+const itFmt = (G: Game): LogFmt => {
+    let f = itFmts.get(G);
+    if (!f) {
+        const who = (p: number) => G.p[p].name;
+        f = {
+            who, poss: who, s: () => '', has: () => 'ha', card: nm, cards: ids => ids.map(nm).join(', '),
+            lane: l => LANE_NAME[l], bell: (c, fac) => (c ? CUSTODI[c].bellName : BELLS[fac].name)
+        };
+        itFmts.set(G, f);
+    }
+    return f;
+};
+
+/** Aggiunge una riga al registro: testo italiano canonico, più chiave e argomenti per le altre lingue. */
+export function glog<K extends LogKey>(G: Game, k: K, a: LogArgs<K>, cls: LogLine['cls'] = '') {
     if (G.sim) return;
-    G.log.push({txt, cls});
+    G.log.push({txt: formatLog(IT_LOG, itFmt(G), k, a), cls, k, a});
     if (G.log.length > 150) G.log.shift();
 }
 
@@ -36,9 +54,9 @@ export const relicIn = (G: Game, p: number, l: number) => G.p[p].seals[l] > 0 ? 
 const lords = (G: Game, p: number, id: string, u: Unit) => G.p[p].board.flat().filter(x => x.id === id && x.uid !== u.uid && !x.dead).length;
 const fac = (u: Unit) => cardInfo(u.id).f;
 export const uAtk = (G: Game, p: number, l: number, u: Unit) => Math.max(0, u.a + (relicIn(G, p, l) === 'brace-u2' ? 1 : 0) + (fac(u) === 'brace' ? lords(G, p, 'brace-r3', u) : 0) + synergyBonus(G, p, u)[0]
-    + (omenAt(G, l) === 'cenere' ? 1 : 0) + (u.kw.includes('Auspicio') && omenAt(G, l) ? 1 : 0) - (relicIn(G, 1 - p, l) === 'marea-u6' ? 1 : 0));
-export const uMax = (G: Game, p: number, l: number, u: Unit) => u.h + (relicIn(G, p, l) === 'radice-u2' ? 2 : 0) + synergyBonus(G, p, u)[1] + (omenAt(G, l) === 'consacrata' ? 1 : 0) + (l === 1 && G.p[p].custode === 'guardaboschi' ? 1 : 0)
-    + (u.kw.includes('Auspicio') && omenAt(G, l) ? 1 : 0) + (fac(u) === 'marea' ? lords(G, p, 'marea-r6', u) : 0);
+    + (omenFor(G, l, u) === 'cenere' ? 1 : 0) - (omenFor(G, l, u) === 'palude' ? 1 : 0) - (relicIn(G, 1 - p, l) === 'marea-u6' ? 1 : 0));
+export const uMax = (G: Game, p: number, l: number, u: Unit) => u.h + (relicIn(G, p, l) === 'radice-u2' ? 2 : 0) + synergyBonus(G, p, u)[1] + (omenFor(G, l, u) === 'consacrata' ? 1 : 0) + (l === 1 && G.p[p].custode === 'guardaboschi' ? 1 : 0)
+    + (fac(u) === 'marea' ? lords(G, p, 'marea-r6', u) : 0);
 
 export function hasKw(G: Game, p: number, u: Unit, k: Keyword) {
     if (u.kw.includes(k)) return true;
@@ -93,14 +111,14 @@ export function draw(G: Game, p: number, n = 1) {
     for (let k = 0; k < n; k++) {
         if (!P.deck.length) {
             const l = weakest(G, p);
-            glog(G, `${P.name} non ha più carte: 2 danni a un proprio Sigillo`);
+            glog(G, 'fatigue', [p]);
             if (l >= 0) dmgSeal(G, p, l, 2);
             continue;
         }
         const id = P.deck.pop()!;
         if (P.hand.length >= 10) {
             P.grave.push(id);
-            glog(G, `${P.name} ha la mano piena: ${nm(id)} va nel cimitero`);
+            glog(G, 'handFull', [p, id]);
         } else {
             P.hand.push({id, cm: 0, hid: ++G.uidc});
             emit(G, {t: 'draw', p});
@@ -126,7 +144,7 @@ export function dmgSeal(G: Game, p: number, l: number, n: number) {
     P.seals[l] = Math.max(0, P.seals[l] - n);
     emit(G, {t: 'dmgS', p, l, n: before - P.seals[l]});
     if (P.seals[l] === 0) {
-        glog(G, `Il Sigillo ${LANE_NAME[l]} di ${P.name} è spezzato!`, 'big');
+        glog(G, 'sealBroken', [p, l], 'big');
         emit(G, {t: 'break', p, l});
         if (P.relics[l]) {
             P.grave.push(P.relics[l]!);
@@ -134,6 +152,7 @@ export function dmgSeal(G: Game, p: number, l: number, n: number) {
         }
         checkWin(G);
         if (G.winner == null) ringBell(G, p, l);
+        advanceNight(G, NIGHT_PER_BREAK);
     }
 }
 
@@ -150,7 +169,7 @@ export function checkWin(G: Game) {
     for (let p = 0; p < 2; p++) if (G.p[p].seals.filter(s => s <= 0).length >= 2) {
         G.winner = 1 - p;
         G.phase = 'over';
-        glog(G, `${G.p[1 - p].name} vince la partita`, 'big');
+        glog(G, 'wins', [1 - p], 'big');
         return;
     }
 }
@@ -166,7 +185,7 @@ export function bounce(G: Game, uid: number) {
     const f = removeU(G, uid);
     if (!f) return;
     if (!f.u.token) toHand(G, f.p, f.u.id, 0, f.u.uid);
-    glog(G, `${nm(f.u.id)} torna in mano a ${G.p[f.p].name}`);
+    glog(G, 'bounce', [f.u.id, f.p]);
 }
 
 export function kill(G: Game, uid: number) {
@@ -179,7 +198,8 @@ export function sacrifice(G: Game, p: number, uid: number) {
     if (!f || f.p !== p) return null;
     const st = {a: uAtk(G, f.p, f.l, f.u), h: Math.max(1, uMax(G, f.p, f.l, f.u) - f.u.dmg)};
     f.u.dead = true;
-    glog(G, `${G.p[p].name} sacrifica ${nm(f.u.id)}`);
+    glog(G, 'sacrifice', [p, f.u.id]);
+    advanceNight(G, NIGHT_PER_SACRIFICE);
     const P = G.p[p];
     P.relics.forEach((r, l) => {
         if (r === 'vuoto-u2' && P.seals[l] > 0) {
@@ -198,15 +218,31 @@ export function summon(G: Game, p: number, l: number, id: string) {
     return u;
 }
 
-export function pushAuto(G: Game, uid: number) {
+/** Corsie vicine in cui un'unità del giocatore `p` può passare dalla corsia `l`: con spazio e senza Radici antiche.
+ * Le Radici antiche bloccano sia l'uscita sia l'entrata, per gli spostamenti volontari come per quelli forzati
+ * (non per chi ha Auspicio). */
+export const laneExits = (G: Game, p: number, l: number, u?: Unit) =>
+    (omenFor(G, l, u) === 'radici' ? [] : [l - 1, l + 1].filter(x => hasSpace(G, p, x) && omenFor(G, x, u) !== 'radici'));
+
+/** Dove una carta può spingere l'unità `uid` (vuoto se è Radicata o non ha corsie libere accanto). */
+export function pushTargets(G: Game, uid: number): number[] {
     const f = findU(G, uid);
-    if (!f || f.u.kw.includes('Radicato')) return;
-    const opts = [f.l - 1, f.l + 1].filter(l => hasSpace(G, f.p, l));
-    if (!opts.length) return;
-    const to = opts[rnd(opts.length)];
+    return !f || f.u.kw.includes('Radicato') ? [] : laneExits(G, f.p, f.l, f.u);
+}
+
+/** Spostamento forzato in una corsia scelta; ignorato se quella corsia non è una destinazione valida. */
+export function pushTo(G: Game, uid: number, to: number) {
+    const f = findU(G, uid);
+    if (!f || !pushTargets(G, uid).includes(to)) return;
     G.p[f.p].board[f.l].splice(f.i, 1);
     G.p[f.p].board[to].push(f.u);
-    glog(G, `${nm(f.u.id)} viene spinto nella corsia ${LANE_NAME[to]}`);
+    glog(G, 'pushed', [f.u.id, to]);
+}
+
+/** Spostamento forzato in una corsia vicina a caso (effetti che non fanno scegliere, come la Leviatana). */
+export function pushAuto(G: Game, uid: number) {
+    const opts = pushTargets(G, uid);
+    if (opts.length) pushTo(G, uid, opts[rnd(opts.length)]);
 }
 
 export function cleanup(G: Game) {
@@ -228,7 +264,7 @@ export function cleanup(G: Game) {
                     B.splice(i, 1);
                     again = true;
                     onDie(G, p, u, l);
-                    if (omenAt(G, l) === 'campane') healSeal(G, p, l, 1);
+                    if (omenFor(G, l, u) === 'campane') healSeal(G, p, l, 1);
                 }
             }
         }
@@ -241,10 +277,10 @@ function onDie(G: Game, p: number, u: Unit, l = -1) {
     P0.flags ??= {};
     if (P0.custode === 'traghettatore' && !P0.flags.ferry && l >= 0) {
         P0.flags.ferry = true;
-        glog(G, `Il Traghettatore riscuote: 1 danno al Sigillo nemico`);
+        glog(G, 'ferryman', []);
         dmgSeal(G, 1 - p, l, 1);
     }
-    glog(G, `${nm(u.id)} di ${G.p[p].name} muore`);
+    glog(G, 'dies', [u.id, p]);
     emit(G, {t: 'death', uid: u.uid, p});
     if (u.id === 'vuoto-c0') draw(G, p, 1);
     if (u.id === 'vuoto-c7') {
@@ -264,7 +300,7 @@ function onDie(G: Game, p: number, u: Unit, l = -1) {
     if (u.token) return;
     if (u.kw.includes('Eco') || (fac(u) === 'vuoto' && G.p[p].board.flat().some(x => x.id === 'vuoto-r6' && !x.dead))) {
         toHand(G, p, u.id, u.cm + 1, u.uid);
-        glog(G, `Eco: ${nm(u.id)} torna in mano a ${G.p[p].name}`);
+        glog(G, 'echo', [u.id, p]);
     } else G.p[p].grave.push(u.id);
 }
 
@@ -299,7 +335,7 @@ function ringBell(G: Game, p: number, l: number) {
         return;
     }
     const name = cu ? cu.bellName : BELLS[f!].name, text = cu ? cu.bell : BELLS[f!].text;
-    glog(G, `Ultimo Rintocco di ${P.name}: ${name}`, 'big');
+    glog(G, 'lastToll', [p, P.custode ?? null, cu ? cu.f : f!], 'big');
     emit(G, {t: 'bell', p, l, f: cu ? cu.f : f!, name, text});
     if (cu) {
         if (cu.id === 'vesta') [0, 1, 2].forEach(x => {
@@ -334,10 +370,12 @@ function ringBell(G: Game, p: number, l: number) {
             }
         }
         if (cu.id === 'ecate') {
-            const all = O.board.flat();
+            // Attacco effettivo (uAtk), non il valore base: come brace-u6 e vuoto-l3 poco sopra,
+            // altrimenti un'unità potenziata da relitto/aura/presagio non viene riconosciuta come la più forte.
+            const all = O.board.flatMap((B, x) => B.map(u => ({u, x})));
             if (all.length) {
-                const t = all.reduce((a, b) => (b.a > a.a ? b : a));
-                t.dead = true;
+                const t = all.reduce((a, b) => (uAtk(G, 1 - p, b.x, b.u) > uAtk(G, 1 - p, a.x, a.u) ? b : a));
+                t.u.dead = true;
             }
         }
     } else {
@@ -362,7 +400,7 @@ export function survivedFight(G: Game, p: number, u: Unit) {
         u.asc = true;
         u.a += 2;
         u.h += 2;
-        glog(G, `${nm(u.id)} ascende!`, 'big');
+        glog(G, 'ascends', [u.id], 'big');
         emit(G, {t: 'ascend', uid: u.uid, p});
     }
 }
@@ -387,7 +425,7 @@ function rintocco(G: Game, p: number, l: number) {
             }
         }
         if (['brace-c10', 'marea-u7', 'radice-u7', 'vuoto-u7'].includes(u.id)) {
-            glog(G, `Rintocco: ${nm(u.id)} risponde`);
+            glog(G, 'tollAnswer', [u.id]);
             emit(G, {t: 'relicTurn', p, id: u.id});
         }
     }));

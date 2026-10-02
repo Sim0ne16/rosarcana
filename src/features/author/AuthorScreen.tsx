@@ -19,6 +19,10 @@ import {
 import {simulateEconomy} from '../../economy/estimate';
 import {PageHeader} from '../../ui/PageHeader';
 import u from '../../ui/ui.module.css';
+import {useLang, useT} from '../../i18n/lang';
+import {W} from '../../i18n/words';
+import {EN_FACTION_NAMES, EN_SYNERGIES} from '../../i18n/en/mechanics';
+import {EN_CARDS} from '../../i18n/en/cards';
 import s from './author.module.css';
 
 type Row = [string, number, number];
@@ -139,43 +143,44 @@ export function AuthorScreen({back}: { back: () => void }) {
         };
         setTimeout(step, 0);
     };
-    const name = (id: string) => BYID[id]?.n ?? SYNERGIES.find(x => x.id === id)?.name ?? FACTIONS[id as Faction]?.name ?? id;
+    const t = useT(), lang = useLang(), en = lang === 'en';
+    const name = (id: string) => (en ? EN_CARDS[id]?.n ?? EN_SYNERGIES[id]?.name ?? EN_FACTION_NAMES[id as Faction] : undefined)
+        ?? BYID[id]?.n ?? SYNERGIES.find(x => x.id === id)?.name ?? FACTIONS[id as Faction]?.name ?? id;
     const flag = (v: number) => (v >= 56 ? s.hot : v <= 44 ? s.cold : '');
     return (
         <section className={u.page}>
-            <PageHeader title="Pannello autore"
-                        sub="Strumenti per bilanciare il gioco: partite simulate tra IA e stima dell'economia. I risultati hanno qualche punto di rumore: con più partite sono più affidabili.">
-                <button className={u.btn} onClick={back}>← Gioca</button>
+            <PageHeader title={t(W.authorPanel)}
+                        sub={t('Strumenti per bilanciare il gioco: partite simulate tra IA e stima dell\'economia. I risultati hanno qualche punto di rumore: con più partite sono più affidabili.', 'Tools to balance the game: simulated AI-vs-AI matches and an economy estimate. Results carry a few points of noise: more matches make them more reliable.')}>
+                <button className={u.btn} onClick={back}>← {t(W.play)}</button>
             </PageHeader>
             <div className={s.grid}>
                 <article className={s.box}>
-                    <h2>Bilanciamento</h2>
+                    <h2>{t('Bilanciamento', 'Balance')}</h2>
                     <div className={u.row}>
-                        <label>Partite <select value={n}
+                        <label>{t('Partite', 'Matches')} <select value={n}
                                                onChange={e => setN(Number(e.target.value))}>{[100, 200, 500, 1000].map(x =>
                             <option key={x}>{x}</option>)}</select></label>
-                        <label>Mazzi <select value={tier} onChange={e => setTier(Number(e.target.value))}>
-                            <option value={0}>Comuni e non comuni</option>
-                            <option value={1}>Con qualche rara</option>
-                            <option value={2}>Rare e leggendarie</option>
+                        <label>{t(W.decks)} <select value={tier} onChange={e => setTier(Number(e.target.value))}>
+                            <option value={0}>{t('Comuni e non comuni', 'Commons and uncommons')}</option>
+                            <option value={1}>{t('Con qualche rara', 'With a few rares')}</option>
+                            <option value={2}>{t('Rare e leggendarie', 'Rares and legendaries')}</option>
                         </select></label>
                         <button className={`${u.btn} ${u.primary}`} disabled={busy}
-                                onClick={run}>{busy ? `Simulo… ${Math.round(prog * 100)}%` : 'Avvia simulazione'}</button>
+                                onClick={run}>{busy ? t(`Simulo… ${Math.round(prog * 100)}%`, `Simulating… ${Math.round(prog * 100)}%`) : t('Avvia simulazione', 'Run simulation')}</button>
                     </div>
                     {busy && <div className={u.bar}><b style={{width: `${prog * 100}%`}}/></div>}
                     {rep && <>
-                        <p className={s.sum}>{rep.games} partite, {rep.turns.toFixed(1)} turni in media. Chi inizia
-                            vince il <b>{rep.first}%</b>.</p>
-                        <h3>Fazioni</h3>
+                        <p className={s.sum}>{t(`${rep.games} partite, ${rep.turns.toFixed(1)} turni in media. Chi inizia vince il `, `${rep.games} matches, ${rep.turns.toFixed(1)} turns on average. The first player wins `)}<b>{rep.first}%</b>.</p>
+                        <h3>{t(W.factions)}</h3>
                         <div className={s.bars}>{rep.facs.map(([k, v]) => <div key={k}><span>{name(k)}</span><i
                             style={{width: `${v}%`, background: FACTIONS[k as Faction].col}}/><b
                             className={flag(v)}>{v}%</b></div>)}</div>
-                        <h3>Carte (percentuale di vittoria quando giocate)</h3>
+                        <h3>{t('Carte (percentuale di vittoria quando giocate)', 'Cards (win rate when played)')}</h3>
                         <div className={s.cols}>
                             <table>
                                 <thead>
                                 <tr>
-                                    <th>Più forti</th>
+                                    <th>{t('Più forti', 'Strongest')}</th>
                                     <th>%</th>
                                     <th>n</th>
                                 </tr>
@@ -189,7 +194,7 @@ export function AuthorScreen({back}: { back: () => void }) {
                             <table>
                                 <thead>
                                 <tr>
-                                    <th>Più deboli</th>
+                                    <th>{t('Più deboli', 'Weakest')}</th>
                                     <th>%</th>
                                     <th>n</th>
                                 </tr>
@@ -201,32 +206,26 @@ export function AuthorScreen({back}: { back: () => void }) {
                                 </tr>)}</tbody>
                             </table>
                         </div>
-                        <h3>Sincronie</h3>
+                        <h3>{t(W.synergies)}</h3>
                         <table>
                             <tbody>{rep.syn.map(([k, v, c]) => <tr key={k}>
                                 <td>{name(k)}</td>
                                 <td className={flag(v)}>{v}%</td>
-                                <td>{c} partite</td>
+                                <td>{c} {t(W.matches)}</td>
                             </tr>)}</tbody>
                         </table>
-                        <p className={s.note}>Le carte giocate più spesso in partite lunghe tendono ad avere percentuali
-                            alte anche solo perché compaiono quando si sta già vincendo: usa questi dati come indizi,
-                            non come verdetti. Carte mai giocate
-                            dall'IA: {CARDS.filter(c => !rep.cards.some(r => r[0] === c.id)).length}.</p>
+                        <p className={s.note}>{t('Le carte giocate più spesso in partite lunghe tendono ad avere percentuali alte anche solo perché compaiono quando si sta già vincendo: usa questi dati come indizi, non come verdetti. Carte mai giocate dall\'IA:', 'Cards played more often in long matches tend to show high rates simply because they appear when you are already winning: treat this data as hints, not verdicts. Cards never played by the AI:')} {CARDS.filter(c => !rep.cards.some(r => r[0] === c.id)).length}.</p>
                     </>}
                 </article>
                 <article className={s.box}>
-                    <h2>Economia</h2>
-                    <label>Partite al giorno <input type="range" min={2} max={20} value={gpd}
+                    <h2>{t('Economia', 'Economy')}</h2>
+                    <label>{t('Partite al giorno', 'Matches per day')} <input type="range" min={2} max={20} value={gpd}
                                                     onChange={e => setGpd(Number(e.target.value))}/>
                         <b>{gpd}</b></label>
-                    <p className={s.sum}>Un giocatore che non paga e vince metà delle partite completa il Set Base in
-                        circa <b>{eco.days ?? 'più di 365'} giorni</b>. Nei primi 30 giorni apre
-                        circa {eco.packsFirst30} bustine.</p>
-                    <p className={s.note}>La stima include oro delle partite, prima vittoria del giorno, missioni (75%
-                        completate), pass gratuito, polvere dei doppioni e creazione delle carte mancanti. Con 60 carte
-                        il set si completa in fretta: per un obiettivo di circa due mesi servirà un set più ampio
-                        (almeno 150 carte) oppure ricompense più basse.</p>
+                    <p className={s.sum}>{en ? <>A non-paying player who wins half their matches completes the Base Set in about <b>{eco.days ?? 'more than 365'} days</b>. In the first 30 days they open about {eco.packsFirst30} packs.</>
+                        : <>Un giocatore che non paga e vince metà delle partite completa il Set Base in circa <b>{eco.days ?? 'più di 365'} giorni</b>. Nei primi 30 giorni apre circa {eco.packsFirst30} bustine.</>}</p>
+                    <p className={s.note}>{t('La stima include oro delle partite, prima vittoria del giorno, missioni (75% completate), pass gratuito, polvere dei doppioni e creazione delle carte mancanti. Con 60 carte il set si completa in fretta: per un obiettivo di circa due mesi servirà un set più ampio (almeno 150 carte) oppure ricompense più basse.',
+                        'The estimate includes match gold, the first win of the day, quests (75% completed), the free pass, duplicate dust and crafting missing cards. With 60 cards the set completes quickly: a target of about two months will need a larger set (at least 150 cards) or lower rewards.')}</p>
                 </article>
             </div>
         </section>

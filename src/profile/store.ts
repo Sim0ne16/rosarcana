@@ -18,6 +18,7 @@ import {
     QUEST_POOL,
     type QuestEvent,
     type Reward,
+    backName,
     rewardLabel,
     WIN_ORO,
     XP_LVL
@@ -40,6 +41,11 @@ import {
     RETIRED_FRAMES
 } from '../cards/styles';
 import {CUST_REWARD, custDone, type CustProgress} from '../economy/custodeMissions';
+import {EN_SET_NAME} from '../i18n/en/mechanics';
+import {dataLang, tr} from '../i18n/langState';
+import {cardName, frameName, fxName, styleName} from '../i18n/names';
+import {W} from '../i18n/words';
+
 import {weekIndex, WEEKLY_REWARD, WEEKLY_WINS} from '../economy/weekly';
 import {
     type CardMastery,
@@ -50,6 +56,9 @@ import {
     type MatchStats,
     matchXp
 } from '../economy/mastery';
+
+/** Nome di una carta nella lingua corrente, per i messaggi creati dallo store. */
+const cn = (id: string) => cardName(id, dataLang());
 
 export interface Quest {
     id: string;
@@ -84,7 +93,9 @@ export interface Settings {
     highContrast: boolean;
     volume: number;
     font: FontSet;
-    noTimer: boolean
+    noTimer: boolean;
+    /** Lingua dell'interfaccia e delle carte. I dati restano in italiano nel motore; questa è solo la vetrina. */
+    lang: 'it' | 'en'
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -93,7 +104,8 @@ export const DEFAULT_SETTINGS: Settings = {
     highContrast: false,
     volume: 0.8,
     font: 'classico',
-    noTimer: false
+    noTimer: false,
+    lang: 'it'
 };
 /** Tre coppie di caratteri: titoli e testo. */
 export const FONT_SETS: { id: FontSet; name: string; display: string; body: string }[] = [
@@ -131,6 +143,9 @@ export interface Profile {
     onboardSkip: boolean;
     custProg: Record<string, CustProgress>;
     custLeg: string[];
+    /** Carte vive: carte possedute prima che la community le cambiasse (Prima edizione) e cambi già registrati. */
+    firstEd: string[];
+    seenLive: string[];
     settings: Settings;
     weekly: { week: number; wins: Record<string, number>; claimed: string[] };
     avatar: string;
@@ -192,6 +207,8 @@ export function freshProfile(): Profile {
         onboardSkip: false,
         custProg: {},
         custLeg: [],
+        firstEd: [],
+        seenLive: [],
         settings: {...DEFAULT_SETTINGS},
         weekly: {week: weekIndex(), wins: {}, claimed: []},
         facStats: {},
@@ -222,7 +239,7 @@ export function freshProfile(): Profile {
         tutorialDone: false,
         log: [{
             t: Date.now(),
-            txt: 'Benvenuto: collezione iniziale, due mazzi pronti, 300 oro, 50 gemme, 3 bustine e un gettone stile'
+            txt: tr('Benvenuto: collezione iniziale, due mazzi pronti, 300 oro, 50 gemme, 3 bustine e un gettone stile', 'Welcome: starting collection, two ready decks, 300 gold, 50 gems, 3 packs and a style token')
         }]
     };
 }
@@ -260,6 +277,8 @@ interface Actions {
         removeCard: (id: string, card: string) => void;
         fill: (id: string) => void;
     };
+    /** `cardLines`: i progressi di maestria/sfide per singola carta, separati perché possono essere tanti -
+     * la UI li raccoglie in un riepilogo pieghevole invece di allungare la lista principale. */
     matchResult: (r: {
         mode: 'ranked' | 'casual' | 'adv' | 'tutorial' | 'other';
         win: boolean;
@@ -269,10 +288,12 @@ interface Actions {
         advReward?: Reward;
         advName?: string;
         stats?: MatchStats
-    }) => string[];
+    }) => { lines: string[]; cardLines: string[] };
     dev: (k: 'oro' | 'polvere' | 'xp' | 'rank' | 'maestria' | 'day' | 'sound' | 'reset' | 'unlock' | 'allcards') => void;
     lessonDone: (id: string, reward: Reward) => string[];
     recordCustode: (id: string, name: string, win: boolean, bells: number) => string[];
+    /** Registra le carte appena cambiate dalla community: chi le possedeva ne ottiene la Prima edizione. */
+    noteVariants: (cards: string[]) => void;
     skipOnboarding: () => void;
     setSetting: <K extends keyof Settings>(k: K, v: Settings[K]) => void;
     weeklyWin: (id: string) => void;
@@ -314,10 +335,10 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                     m.done.push(ch.id);
                     m.xp += ch.xp;
                     d.polvere += ch.polvere;
-                    lines.push(`Sfida completata con ${BYID[id].n}: ${ch.txt.toLowerCase()} (+${ch.polvere} polvere)`);
+                    lines.push(tr(`Sfida completata con ${BYID[id].n}: ${ch.txt[0].toLowerCase()} (+${ch.polvere} polvere)`, `Challenge completed with ${cn(id)}: ${ch.txt[1].toLowerCase()} (+${ch.polvere} dust)`));
                 }
                 const after = levelOf(m.xp);
-                if (after > before) lines.push(`${BYID[id].n} sale a maestria ${levelName(after)}: nuova cornice sbloccata`);
+                if (after > before) lines.push(tr(`${BYID[id].n} sale a maestria ${levelName(after)}: nuova cornice sbloccata`, `${cn(id)} reaches ${levelName(after)} mastery: new frame unlocked`));
             }
         });
         return lines;
@@ -356,9 +377,10 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 });
             });
             get().bump('open');
-            const leg = res.filter(x => x.rar === 'l').map(x => BYID[x.id].n),
-                foil = res.filter(x => x.foil).map(x => BYID[x.id].n);
-            get().logT(`Aperta una bustina ${SET.name}${leg.length ? `: Leggendaria ${leg.join(', ')}` : ''}${foil.length ? `, dorata: ${foil.join(', ')}` : ''}`);
+            const leg = res.filter(x => x.rar === 'l').map(x => cn(x.id)).join(', '),
+                foil = res.filter(x => x.foil).map(x => cn(x.id)).join(', ');
+            get().logT(tr(`Aperta una bustina ${SET.name}${leg ? `: Leggendaria ${leg}` : ''}${foil ? `, dorata: ${foil}` : ''}`,
+                `Opened a ${EN_SET_NAME} pack${leg ? `: Legendary ${leg}` : ''}${foil ? `, golden: ${foil}` : ''}`));
             return res;
         },
         buyPacks: (cur, n) => {
@@ -377,7 +399,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 patch(d => {
                     d.gemme += 1000;
                 });
-                s.logT('Acquisto di prova: +1000 gemme (nessun pagamento reale)');
+                s.logT(tr('Acquisto di prova: +1000 gemme (nessun pagamento reale)', 'Test purchase: +1000 gems (no real payment)'));
             }
         },
         craft: id => {
@@ -388,7 +410,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 d.owned[id] = (d.owned[id] || 0) + 1;
             });
             s.bump('craft');
-            s.logT(`Creata ${c.n} (-${R.craft} polvere)`);
+            s.logT(tr(`Creata ${c.n} (-${R.craft} polvere)`, `Crafted ${cn(c.id)} (-${R.craft} dust)`));
             return true;
         },
         disenchant: id => {
@@ -399,7 +421,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 d.polvere += R.dis;
             });
             s.bump('craft');
-            s.logT(`Disfatta ${c.n} (+${R.dis} polvere)`);
+            s.logT(tr(`Disfatta ${c.n} (+${R.dis} polvere)`, `Disenchanted ${cn(c.id)} (+${R.dis} dust)`));
             return true;
         },
         unlockStyle: (id, st, useToken) => {
@@ -411,7 +433,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 d.styles[id] = [...(d.styles[id] || []), st];
                 d.look[id] = {...lookOf(d, id), art: st};
             });
-            s.logT(`Stile ${ART_STYLES[st].name} per ${BYID[id].n} (${useToken ? '1 gettone' : `-${cost} polvere`})`);
+            s.logT(tr(`Stile ${ART_STYLES[st].name} per ${BYID[id].n} (${useToken ? '1 gettone' : `-${cost} polvere`})`, `${styleName(st, 'en')} style for ${cn(id)} (${useToken ? '1 token' : `-${cost} dust`})`));
             return true;
         },
         unlockEffect: (id, fx, useToken) => {
@@ -423,7 +445,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 addTo(d.effects, id, fx);
                 d.look[id] = {...lookOf(d, id), effect: fx};
             });
-            s.logT(`Effetto ${FX[fx].name} per ${BYID[id].n} (${useToken ? '1 gettone' : `-${cost} polvere`})`);
+            s.logT(tr(`Effetto ${FX[fx].name} per ${BYID[id].n} (${useToken ? '1 gettone' : `-${cost} polvere`})`, `${fxName(fx, 'en')} effect for ${cn(id)} (${useToken ? '1 token' : `-${cost} dust`})`));
             return true;
         },
         unlockFrame: (id, f) => {
@@ -435,7 +457,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 addTo(d.frames, id, f);
                 d.look[id] = {...lookOf(d, id), frame: f};
             });
-            s.logT(`Cornice ${FRAMES[f].name} per ${BYID[id].n} (-${cost} polvere)`);
+            s.logT(tr(`Cornice ${FRAMES[f].name} per ${BYID[id].n} (-${cost} polvere)`, `${frameName(f, 'en')} frame for ${cn(id)} (-${cost} dust)`));
             return true;
         },
         setLook: (id, look) => patch(d => {
@@ -493,7 +515,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 d.gemme -= PASS_GEMME;
                 d.premium = true;
             });
-            s.logT(`Pass premium sbloccato (-${PASS_GEMME} gemme)`);
+            s.logT(tr(`Pass premium sbloccato (-${PASS_GEMME} gemme)`, `Premium pass unlocked (-${PASS_GEMME} gems)`));
         },
         setBack: k => patch(d => {
             if (d.backs.includes(k)) d.back = k;
@@ -506,7 +528,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 d.backs.push(k);
                 d.back = k;
             });
-            s.logT(`Dorso ${BACKS[k]} acquistato (-${BACK_PRICE} oro)`);
+            s.logT(tr(`Dorso ${BACKS[k]} acquistato (-${BACK_PRICE} oro)`, `${backName(k)} card back bought (-${BACK_PRICE} gold)`));
             return true;
         },
         deck: {
@@ -526,7 +548,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
             create: () => {
                 const id = 'd' + Date.now();
                 patch(d => {
-                    d.decks.push({id, name: 'Nuovo mazzo', fac: [], cards: []});
+                    d.decks.push({id, name: tr(W.newDeck), fac: [], cards: []});
                 });
                 return id;
             },
@@ -549,7 +571,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                     if (k.fac.includes(f)) {
                         k.fac = k.fac.filter(x => x !== f);
                         k.cards = k.cards.filter(c => BYID[c].f !== f);
-                    } else if (k.fac.length < 2) k.fac.push(f); else msg = 'Al massimo due fazioni: togline una prima';
+                    } else if (k.fac.length < 2) k.fac.push(f); else msg = tr('Al massimo due fazioni: togline una prima', 'Two factions at most: remove one first');
                 });
                 return msg;
             },
@@ -561,16 +583,16 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                     const c = BYID[card], n = countMap(k.cards)[card] || 0,
                         lim = Math.min(d.owned[card] || 0, RARITY[c.r].max);
                     if (k.cards.length >= 30) {
-                        msg = 'Il mazzo ha già 30 carte';
+                        msg = tr('Il mazzo ha già 30 carte', 'The deck already has 30 cards');
                         return;
                     }
                     if (n >= lim) {
-                        msg = lim < RARITY[c.r].max ? 'Non possiedi altre copie: puoi crearle dalla Collezione' : 'Hai già il massimo di copie';
+                        msg = lim < RARITY[c.r].max ? tr('Non possiedi altre copie: puoi crearle dalla Collezione', 'You own no more copies: you can craft them from the Collection') : tr('Hai già il massimo di copie', 'You already have the maximum number of copies');
                         return;
                     }
                     if (!k.fac.includes(c.f)) {
                         if (k.fac.length >= 2) {
-                            msg = 'Questa carta è di una terza fazione';
+                            msg = tr('Questa carta è di una terza fazione', 'This card belongs to a third faction');
                             return;
                         }
                         k.fac.push(c.f);
@@ -598,7 +620,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                     if (r.win) d.wins++;
                     if (r.mode === 'ranked' && !r.win) d.rank = Math.max(0, d.rank - 15);
                 });
-                return r.mode === 'ranked' && !r.win ? ['-15 punti classifica'] : [];
+                return {lines: r.mode === 'ranked' && !r.win ? ['-15 punti classifica'] : [], cardLines: []};
             }
             const s = get(), lines: string[] = [];
             patch(d => {
@@ -612,7 +634,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 const xp = r.win ? 120 : 70, before = tierIdx(s.rank);
                 if (r.win && s.lastWinDay !== s.day) {
                     oro += FIRST_WIN_ORO;
-                    lines.push('Bonus prima vittoria del giorno incluso');
+                    lines.push(tr('Bonus prima vittoria del giorno incluso', 'First win of the day bonus included'));
                 }
                 patch(d => {
                     if (r.win) d.lastWinDay = d.day;
@@ -620,10 +642,10 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                     d.oro += oro;
                     d.xp += xp;
                 });
-                lines.unshift(`+${oro} oro, +${xp} XP pass`);
-                lines.push(`${r.win ? '+25' : '-15'} punti classificata`);
-                if (tierIdx(get().rank) > before) lines.push('Promozione di grado!');
-                s.logT(`Classificata ${r.win ? 'vinta' : 'persa'} contro ${r.foe}: +${oro} oro, +${xp} XP`);
+                lines.unshift(`+${oro} ${tr(W.gold)}, +${xp} XP pass`);
+                lines.push(tr(`${r.win ? '+25' : '-15'} punti classificata`, `${r.win ? '+25' : '-15'} ranked points`));
+                if (tierIdx(get().rank) > before) lines.push(tr('Promozione di grado!', 'Tier promotion!'));
+                s.logT(tr(`Classificata ${r.win ? 'vinta' : 'persa'} contro ${r.foe}: +${oro} oro, +${xp} XP`, `Ranked ${r.win ? 'won' : 'lost'} against ${r.foe}: +${oro} gold, +${xp} XP`));
             } else if (r.mode === 'other') {
                 const xp = r.win ? 80 : 50;
                 patch(d => {
@@ -636,8 +658,8 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                     d.oro += oro;
                     d.xp += xp;
                 });
-                lines.push(`+${oro} oro, +${xp} XP pass`);
-                s.logT(`Casual ${r.win ? 'vinta' : 'persa'} contro ${r.foe}: +${oro} oro`);
+                lines.push(`+${oro} ${tr(W.gold)}, +${xp} XP pass`);
+                s.logT(tr(`Casual ${r.win ? 'vinta' : 'persa'} contro ${r.foe}: +${oro} oro`, `Casual ${r.win ? 'won' : 'lost'} against ${r.foe}: +${oro} gold`));
             } else if (r.mode === 'adv') {
                 const xp = r.win ? 80 : 50;
                 patch(d => {
@@ -649,30 +671,29 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                         patch(d => {
                             d.adv.push(r.node!);
                         });
-                        lines.push('Prima vittoria: ' + s.grant(r.advReward || {}, `Avventura, ${r.advName}`));
+                        lines.push(`${tr(W.firstWin)}: ` + s.grant(r.advReward || {}, `${tr(W.adventure)}, ${r.advName}`));
                     } else {
                         patch(d => {
                             d.oro += 20;
                         });
-                        lines.push('+20 oro');
+                        lines.push(`+20 ${tr(W.gold)}`);
                     }
                 }
             } else if (r.win && !s.tutorialDone) {
                 patch(d => {
                     d.tutorialDone = true;
                 });
-                lines.push('Tutorial completato: ' + s.grant({oro: 100, pack: 1, gettoni: 1}, 'Tutorial'));
-            } else if (!r.win) lines.push('Puoi ripetere il tutorial quando vuoi.');
-            if (r.stats) lines.push(...recordMastery(r.stats, r.win));
-            return lines;
+                lines.push(tr('Tutorial completato: ', 'Tutorial complete: ') + s.grant({oro: 100, pack: 1, gettoni: 1}, 'Tutorial'));
+            } else if (!r.win) lines.push(tr('Puoi ripetere il tutorial quando vuoi.', 'You can replay the tutorial whenever you like.'));
+            return {lines, cardLines: r.stats ? recordMastery(r.stats, r.win) : []};
         },
         lessonDone: (id, rw) => {
             const s = get();
-            if (s.lessons.includes(id)) return ['Prova già completata: nessuna nuova ricompensa.'];
+            if (s.lessons.includes(id)) return [tr('Prova già completata: nessuna nuova ricompensa.', 'Trial already completed: no new reward.')];
             patch(d => {
                 d.lessons.push(id);
             });
-            return ['Prova superata: ' + s.grant(rw, 'Prove della Rosa')];
+            return [tr('Prova superata: ', 'Trial passed: ') + s.grant(rw, tr('Prove della Rosa', 'Trials of the Rose'))];
         },
         recordCustode: (id, name, win, bells) => {
             const lines: string[] = [];
@@ -687,9 +708,17 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 patch(d => {
                     d.custLeg.push(id);
                 });
-                lines.push(`${name} è ora un Custode leggendario: ` + s.grant(CUST_REWARD, `Missioni di ${name}`));
+                lines.push(tr(`${name} è ora un Custode leggendario: `, `${name} is now a legendary Custodian: `) + s.grant(CUST_REWARD, tr(`Missioni di ${name}`, `${name}'s missions`)));
             }
             return lines;
+        },
+        noteVariants: cards => {
+            const s = get(), fresh = cards.filter(c => !(s.seenLive ?? []).includes(c));
+            if (!fresh.length) return;
+            patch(d => {
+                d.seenLive = [...(d.seenLive ?? []), ...fresh];
+                d.firstEd = [...(d.firstEd ?? []), ...fresh.filter(c => d.owned[c])];
+            });
         },
         skipOnboarding: () => patch(d => {
             d.onboardSkip = true;
@@ -708,7 +737,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
                 d.pframes.push(f);
                 d.pframe = f;
             });
-            s.logT(`Cornice del profilo ${FRAMES[f as FrameId].name} (-${cost} polvere)`);
+            s.logT(tr(`Cornice del profilo ${FRAMES[f as FrameId].name} (-${cost} polvere)`, `${frameName(f as FrameId, 'en')} profile frame (-${cost} dust)`));
             return true;
         },
         setBackMode: m => patch(d => {
@@ -727,7 +756,7 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
             patch(d => {
                 d.weekly.claimed.push(id);
             });
-            return s.grant(WEEKLY_REWARD, 'Sfida della settimana');
+            return s.grant(WEEKLY_REWARD, tr('Sfida della settimana', 'Weekly challenge'));
         },
         recordFactions: (facs, win) => patch(d => {
             for (const f of facs) {

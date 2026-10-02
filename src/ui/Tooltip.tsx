@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import s from './tooltip.module.css';
 
-/** Tooltip globale: qualsiasi elemento con data-tip mostra il testo al passaggio del mouse. Usato per parole chiave e sincronie. */
+/** Qualsiasi elemento con data-tip, nel sottoalbero dove è montato, mostra il testo al passaggio del mouse. Usato per parole chiave e sincronie in modalità dettaglio (Inspect). */
 export function TooltipHost() {
     const [tip, setTip] = useState<{ text: string; title?: string; x: number; y: number } | null>(null);
     useEffect(() => {

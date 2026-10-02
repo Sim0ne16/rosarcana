@@ -1,6 +1,7 @@
 import {BYID, CARDS, RARITY} from '../engine/cards';
 import type {Faction} from '../engine/types';
 import type {CustodeId} from '../engine/mechanics';
+import {dataLang} from '../i18n/langState';
 
 export interface Deck {
     id: string;
@@ -93,12 +94,12 @@ export const starterDecks = (_owned?: Record<string, number>): Deck[] => PRESETS
 }));
 
 export function deckIssues(d: Deck, owned: Record<string, number>) {
-    const out: string[] = [];
-    if (d.cards.length !== 30) out.push(`${d.cards.length} carte su 30`);
-    if (new Set(d.cards.map(id => BYID[id].f)).size > 2) out.push('più di due fazioni');
+    const out: string[] = [], en = dataLang() === 'en';
+    if (d.cards.length !== 30) out.push(en ? `${d.cards.length} cards out of 30` : `${d.cards.length} carte su 30`);
+    if (new Set(d.cards.map(id => BYID[id].f)).size > 2) out.push(en ? 'more than two factions' : 'più di due fazioni');
     const cnt = countMap(d.cards);
     for (const id in cnt) if (cnt[id] > (owned[id] || 0)) {
-        out.push('contiene carte che non possiedi più');
+        out.push(en ? 'contains cards you no longer own' : 'contiene carte che non possiedi più');
         break;
     }
     return out;

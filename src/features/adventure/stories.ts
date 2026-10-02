@@ -6,6 +6,9 @@ import {persist} from 'zustand/middleware';
 import type {Adventure, AdvStage} from './model';
 import type {Faction, OmenId} from '../../engine';
 import {useAdventures} from './store';
+import {connectCommunity, type Db} from '../../app/community';
+import {applyVariants, VARIANTS} from '../../cards/variants';
+import {useProfile} from '../../profile/store';
 
 /** Evento che parte quando la community sceglie questa opzione: dura 7 giorni. */
 export interface StoryEvent {
@@ -19,7 +22,9 @@ export interface StoryOption {
     id: string;
     label: string;
     desc: string;
-    event?: StoryEvent
+    event?: StoryEvent;
+    /** Carta viva: se vince questa opzione, la carta cambia per sempre (id in cards/variants.ts). */
+    variant?: string
 }
 
 export interface StoryChapter {
@@ -75,19 +80,22 @@ export const EXAMPLE_STORY: Story = {
                 id: 'onde',
                 label: 'Sotto le onde',
                 desc: 'Seguire la luce del faro sommerso fino alle rovine di Atlantide.',
-                event: {title: 'Settimana delle Maree', faction: 'marea', omen: 'nebbia'}
+                event: {title: 'Settimana delle Maree', faction: 'marea', omen: 'nebbia'},
+                variant: 'sentinella-faro'
             },
             {
                 id: 'monte',
                 label: 'Verso il Monte',
                 desc: 'Salire dove il fumo di Vulkara oscura il cielo.',
-                event: {title: 'Settimana del Fuoco', faction: 'brace', omen: 'cenere'}
+                event: {title: 'Settimana del Fuoco', faction: 'brace', omen: 'cenere'},
+                variant: 'fabbro-monte'
             },
             {
                 id: 'bosco',
                 label: 'Nel bosco che respira',
                 desc: 'Entrare tra le radici di Yggrin, dove nessuna mappa arriva.',
-                event: {title: 'Settimana delle Radici', faction: 'radice', omen: 'consacrata'}
+                event: {title: 'Settimana delle Radici', faction: 'radice', omen: 'consacrata'},
+                variant: 'lupa-yggrin'
             },
         ],
     }],
@@ -107,17 +115,6 @@ const useLocal = create<LocalState>()(persist(set => ({
     remove: id => set(s => ({stories: s.stories.filter(x => x.id !== id)})),
     vote: (k, opt) => set(s => ({votes: {...s.votes, [k]: opt}})),
 }), {name: 'rosarcana-stories'}));
-
-type Db = {
-    collection: (p: string) => {
-        onSnapshot: (n: (q: {
-            docs: { id: string; data: () => Record<string, unknown> | undefined }[]
-        }) => void, e?: (err: unknown) => void) => () => void
-    };
-    doc: (p: string) => { set: (d: Record<string, unknown>) => Promise<void>; delete: () => Promise<void> }
-};
-type User = { id: () => Promise<string | null>; canEdit: () => Promise<boolean>; isOwner: () => Promise<boolean> };
-const claude = () => (window as unknown as { claude?: { use?: (n: string) => Promise<unknown> } }).claude;
 
 export interface StoriesApi {
     online: boolean;
@@ -140,19 +137,16 @@ export function useStories(): StoriesApi {
         let alive = true;
         const unsubs: (() => void)[] = [];
         (async () => {
-            const c = claude();
-            const d = (c?.use ? await c.use('db') : null) as Db | null,
-                u = (c?.use ? await c.use('user') : null) as User | null;
+            const com = await connectCommunity();
             if (!alive) return;
-            if (!d) {
+            if (!com) {
                 setReady(true);
                 return;
             }
+            const d = com.db;
             setDb(d);
-            if (u) {
-                setMyId(await u.id());
-                setMod((await u.canEdit()) || (await u.isOwner()));
-            }
+            setMyId(com.myId);
+            setMod(com.isMod);
             unsubs.push(d.collection('stories').onSnapshot(q => {
                 setStories(q.docs.map(x => x.data() as unknown as Story).filter(Boolean).sort((a, b) => a.updatedAt - b.updatedAt));
                 setReady(true);
@@ -238,14 +232,27 @@ export function activeEvent(stories: Story[], now = Date.now()) {
     return best;
 }
 
-/** Evento corrente condiviso con il resto del gioco (partite, schermata Gioca). */
-export const useEvent = create<{ ev: ReturnType<typeof activeEvent> }>(() => ({ev: null}));
+/** Carte vive: varianti scelte dalla community, dai capitoli chiusi (valgono per sempre, non 7 giorni). */
+export function activeVariants(stories: Story[]) {
+    const out: { variant: string; story: string; option: string }[] = [];
+    for (const st of stories) for (const c of st.chapters) {
+        const o = c.status === 'closed' ? c.options?.find(x => x.id === c.winner) : undefined;
+        if (o?.variant && VARIANTS[o.variant]) out.push({variant: o.variant, story: st.title, option: o.label});
+    }
+    return out;
+}
+
+/** Evento e carte vive correnti, condivisi con il resto del gioco (partite, schermata Gioca, collezione). */
+export const useEvent = create<{ ev: ReturnType<typeof activeEvent>; variants: ReturnType<typeof activeVariants> }>(() => ({ev: null, variants: []}));
 
 export function EventSync() {
     const api = useStories();
-    const ev = activeEvent(api.stories);
+    const ev = activeEvent(api.stories), variants = activeVariants(api.stories);
+    const key = JSON.stringify([ev, variants]);
     useEffect(() => {
-        useEvent.setState({ev});
-    }, [JSON.stringify(ev)]);
+        applyVariants(variants.map(v => v.variant));
+        useEvent.setState({ev, variants});
+        useProfile.getState().noteVariants(variants.map(v => VARIANTS[v.variant].card));
+    }, [key]);
     return null;
 }

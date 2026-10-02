@@ -21,11 +21,14 @@ export function portraitSrc(id: string): JSX.Element {
     return <CardArt id={id} style={defaultArt(id)} arch={false}/>;
 }
 
-/** Ritratto del giocatore con la cornice del profilo scelta. */
-export const Avatar = memo(function Avatar({width = 64, avatar, frame}: {
+/** Ritratto del giocatore con la cornice del profilo scelta.
+ * `border`: il bordo dorato è il segnaposto per "nessuna cornice scelta" - utile nei selettori del Profilo,
+ * ma va spento dove il ritratto deve restare trasparente come quello dell'avversario (es. la barra in partita). */
+export const Avatar = memo(function Avatar({width = 64, avatar, frame, border = true}: {
     width?: number;
     avatar?: string;
-    frame?: string | null
+    frame?: string | null;
+    border?: boolean
 }) {
     const p = useProfile();
     const av = avatar ?? p.avatar ?? 'vesta', fr = frame === undefined ? p.pframe : frame;
@@ -33,7 +36,8 @@ export const Avatar = memo(function Avatar({width = 64, avatar, frame}: {
     return (
         <span className={s.av} style={{width, ['--w' as string]: `${width}px`}}>
       <span className={s.pic}>{portraitSrc(av)}</span>
-            {img && FRAME_HOLES[fr!] ? <ImageFrame src={img} hole={FRAME_HOLES[fr!]}/> : <span className={s.plain}/>}
+            {img && FRAME_HOLES[fr!] ? <ImageFrame src={img} hole={FRAME_HOLES[fr!]}/> : border &&
+                <span className={s.plain}/>}
     </span>
     );
 });

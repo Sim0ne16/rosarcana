@@ -4,6 +4,8 @@ import {WEEKLY_WINS, type WeeklyChallenge} from '../../economy/weekly';
 import {useProfile} from '../../profile/store';
 import {useBattle} from '../battle/store';
 import {shuffled} from './pool';
+import {dataLang, tr} from '../../i18n/langState';
+import {EN_WEEKLY} from '../../i18n/en/ui';
 
 const commonsOf = (facs: string[]) => CARDS.filter(c => facs.includes(c.f) && c.r === 'c').flatMap(c => [c.id, c.id]);
 
@@ -20,17 +22,19 @@ export function startWeekly(ch: WeeklyChallenge, deck: Deck) {
             seal: R.mySeal
         },
         op: {
-            name: 'Sfidante della settimana',
+            name: tr('Sfidante della settimana', 'Challenger of the week'),
             deck: opDeck,
             noise: 3,
             seal: R.opSeal,
             custode: R.custodi?.[1] ?? oc[Math.floor(Math.random() * oc.length)].id
         },
         onEnd: win => {
-            if (!win) return [`${ch.title}: sconfitta, riprova`];
+            const title = (dataLang() === 'en' ? EN_WEEKLY[ch.id]?.title : undefined) ?? ch.title;
+            if (!win) return [tr(`${title}: sconfitta, riprova`, `${title}: defeat, try again`)];
             useProfile.getState().weeklyWin(ch.id);
             const n = useProfile.getState().weekly.wins[ch.id] ?? 0;
-            return [`${ch.title}: vittoria ${Math.min(n, WEEKLY_WINS)} di ${WEEKLY_WINS}${n >= WEEKLY_WINS ? ', ricompensa pronta da riscuotere' : ''}`];
+            return [tr(`${title}: vittoria ${Math.min(n, WEEKLY_WINS)} di ${WEEKLY_WINS}${n >= WEEKLY_WINS ? ', ricompensa pronta da riscuotere' : ''}`,
+                `${title}: win ${Math.min(n, WEEKLY_WINS)} of ${WEEKLY_WINS}${n >= WEEKLY_WINS ? ', reward ready to claim' : ''}`)];
         },
     });
 }

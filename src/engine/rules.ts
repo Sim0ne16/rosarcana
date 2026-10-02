@@ -1,7 +1,8 @@
 // Regole: opzioni di gioco, turni, spostamenti e combattimento.
-import {BYID, cardInfo, LANE_NAME} from './cards';
+import {BYID, cardInfo} from './cards';
 import {EFFECTS} from './effects';
-import {type CustodeId, omenAt, type OmenId, OMENS} from './mechanics';
+import {advanceNight, NIGHT_PER_ROUND} from './night';
+import {type CustodeId, omenAt, omenFor, type OmenId, OMENS, omenSealHit} from './mechanics';
 import {
     canAttack,
     cleanup,
@@ -15,10 +16,11 @@ import {
     guarded,
     hasKw,
     hasSpace,
+    laneExits,
+    pushTargets,
     healSeal,
     intactLanes,
     mkUnit,
-    nm,
     randomIntact,
     rnd,
     shuffle,
@@ -39,8 +41,7 @@ export function legalTargets(G: Game, p: number, spec?: TargetSpec): Target[] {
             if (spec.side === 'enemy' && q === p) continue;
             for (let l = 0; l < 3; l++) {
                 if (q !== p && guarded(G, q, l)) continue;
-                if (omenAt(G, l) === 'nebbia') continue;
-                for (const u of G.p[q].board[l]) if (!spec.filter || spec.filter(G, u)) out.push({
+                for (const u of G.p[q].board[l]) if (omenFor(G, l, u) !== 'nebbia' && (!spec.filter || spec.filter(G, u))) out.push({
                     type: 'unit',
                     p: q,
                     lane: l,
@@ -51,6 +52,13 @@ export function legalTargets(G: Game, p: number, spec?: TargetSpec): Target[] {
         return out;
     }
     if (spec.kind === 'seal') {
+        // Nessuna carta usa oggi side:'any' su un Sigillo, ma va gestito comunque: senza questo caso
+        // esplicito ricadrebbe silenziosamente su "solo i tuoi", come per 'unit' qualche riga sopra.
+        if (spec.side === 'any') return [0, 1].flatMap(q => intactLanes(G, q).map(l => ({
+            type: 'seal' as const,
+            p: q,
+            lane: l
+        })));
         const q = spec.side === 'enemy' ? 1 - p : p;
         return intactLanes(G, q).map(l => ({type: 'seal', p: q, lane: l}));
     }
@@ -59,6 +67,9 @@ export function legalTargets(G: Game, p: number, spec?: TargetSpec): Target[] {
 
 export const needsTarget = (id: string) => !!EFFECTS[id]?.spellT;
 export const enterSpec = (id: string) => EFFECTS[id]?.enterT;
+/** Vero solo se il testo dice esplicitamente "puoi": per le altre abilità Quando entra con bersaglio,
+ * scegliere un bersaglio (quando ne esiste uno legale) non è facoltativo. */
+export const enterOptional = (id: string) => !!EFFECTS[id]?.optional;
 
 export function playOptions(G: Game, p: number, hi: number): PlayOpt[] {
     const P = G.p[p], h = P.hand[hi];
@@ -66,14 +77,20 @@ export function playOptions(G: Game, p: number, hi: number): PlayOpt[] {
     const c = BYID[h.id], e = EFFECTS[h.id] ?? {};
     if (costOf(G, p, h) > P.crystals && !canOffer(G, p, h.id)) return [];
     const out: PlayOpt[] = [];
+    // Effetti che spostano il bersaglio: un'opzione per ogni corsia di destinazione, e solo per le unità che
+    // possono davvero spostarsi (un bersaglio bloccato renderebbe l'effetto nullo).
+    const withDest = (t: Target): PlayOpt[] => (e.push && t.type === 'unit' ? pushTargets(G, t.uid).map(to => ({target: t, to})) : [{target: t}]);
     if (c.t === 'U') {
-        const tg = e.enterT ? legalTargets(G, p, e.enterT) : [];
+        const tg = e.enterT ? legalTargets(G, p, e.enterT).flatMap(withDest) : [];
         for (let l = 0; l < 3; l++) if (hasSpace(G, p, l)) {
-            tg.forEach(t => out.push({lane: l, target: t}));
-            out.push({lane: l});
+            tg.forEach(t => out.push({lane: l, ...t}));
+            // Senza bersagli legali si gioca comunque, senza effetto. Con bersagli legali, si può rinunciare
+            // solo se il testo dice esplicitamente "puoi" (optional) - le altre "Quando entra" con bersaglio
+            // sono obbligatorie, non si aggirano giocando la carta senza scegliere.
+            if (!tg.length || e.optional) out.push({lane: l});
         }
     } else if (c.t === 'R') intactLanes(G, p).forEach(l => out.push({lane: l}));
-    else if (e.spellT) legalTargets(G, p, e.spellT).forEach(t => out.push({target: t}));
+    else if (e.spellT) out.push(...legalTargets(G, p, e.spellT).flatMap(withDest));
     else out.push({});
     return out;
 }
@@ -87,10 +104,10 @@ export function playCard(G: Game, p: number, hi: number, opt: PlayOpt) {
         const n = c.offer!, l = offerSeal(G, p);
         P.seals[l] -= n;
         emit(G, {t: 'dmgS', p, l, n});
-        glog(G, `${P.name} paga ${c.n} con ${n} punti vita del Sigillo ${LANE_NAME[l]}`, p === 0 ? 'me' : 'op');
+        glog(G, 'payHealth', [p, c.id, n, l], p === 0 ? 'me' : 'op');
     } else P.crystals -= cost;
     P.hand.splice(hi, 1);
-    glog(G, `${P.name} gioca ${c.n}`, p === 0 ? 'me' : 'op');
+    glog(G, 'play', [p, c.id], p === 0 ? 'me' : 'op');
     emit(G, {t: 'play', p, id: h.id});
     P.flags ??= {};
     if (c.t === 'I') P.flags.spell = true;
@@ -101,13 +118,13 @@ export function playCard(G: Game, p: number, hi: number, opt: PlayOpt) {
             P.flags.unit = true;
         }
         P.board[opt.lane!].push(u);
-        e.enter?.(G, p, u, opt.target, opt.lane!);
+        e.enter?.(G, p, u, opt.target, opt.lane!, opt.to);
     } else if (c.t === 'R') {
         const l = opt.lane!;
         if (P.relics[l]) P.grave.push(P.relics[l]!);
         P.relics[l] = h.id;
     } else {
-        e.spell?.(G, p, opt.target);
+        e.spell?.(G, p, opt.target, opt.to);
         P.grave.push(h.id);
     }
     cleanup(G);
@@ -119,8 +136,7 @@ export const moveCost = (G: Game, p: number) => (G.p[p].board.some(B => B.some(u
 export function moveTargets(G: Game, p: number, uid: number): number[] {
     const f = findU(G, uid);
     if (!f || f.p !== p || f.u.moved || f.u.kw.includes('Radicato') || G.p[p].crystals < moveCost(G, p)) return [];
-    if (omenAt(G, f.l) === 'radici') return [];
-    return [f.l - 1, f.l + 1].filter(l => hasSpace(G, p, l) && omenAt(G, l) !== 'radici');
+    return laneExits(G, p, f.l, f.u);
 }
 
 export function moveUnit(G: Game, p: number, uid: number, to: number) {
@@ -131,19 +147,21 @@ export function moveUnit(G: Game, p: number, uid: number, to: number) {
     G.p[p].board[f.l].splice(f.i, 1);
     f.u.moved = true;
     G.p[p].board[to].push(f.u);
-    glog(G, `${G.p[p].name} sposta ${nm(f.u.id)} nella corsia ${LANE_NAME[to]}`, p === 0 ? 'me' : 'op');
+    glog(G, 'move', [p, f.u.id, to], p === 0 ? 'me' : 'op');
     cleanup(G);
 }
 
 export function startTurn(G: Game, p: number) {
     G.active = p;
     G.turn++;
+    // un round è finito quando torna di turno chi ha iniziato la partita
+    if (p === G.first && G.turn > 1) advanceNight(G, NIGHT_PER_ROUND);
     G.phase = 'main';
     const P = G.p[p];
     P.crystals = P.maxC;
     P.flags = {};
     G.p[1 - p].flags = {...G.p[1 - p].flags, ferry: false};
-    glog(G, `Turno ${G.turn}: tocca a ${P.name}`, 'turn');
+    glog(G, 'turn', [G.turn, p], 'turn');
     P.board.forEach(B => B.forEach(u => {
         u.sick = false;
         u.moved = false;
@@ -157,11 +175,29 @@ export function startTurn(G: Game, p: number) {
             [0, 1, 2].forEach(x => healSeal(G, p, x, 2));
         }
     }));
+    // Presagi che agiscono all'inizio del turno di chi ha unità nella corsia.
+    [0, 1, 2].forEach(l => {
+        const o = omenAt(G, l), B = P.board[l].filter(u => !u.dead), hit = B.filter(u => omenFor(G, l, u));
+        if (o === 'miasma' && hit.length) {
+            hit.forEach(u => dmgUnit(G, u, 1));
+            glog(G, 'miasma', [p, l]);
+        }
+        if (o === 'luna' && hit.length) {
+            const u = hit.reduce((a, b) => (uAtk(G, p, l, b) < uAtk(G, p, l, a) ? b : a));
+            u.a++;
+            u.h++;
+            glog(G, 'moonGrows', [u.id]);
+        }
+        if (o === 'pozzo' && B.length > G.p[1 - p].board[l].filter(u => !u.dead).length) {
+            draw(G, p, 1);
+            glog(G, 'wellWhispers', [p]);
+        }
+    });
     P.relics.forEach((r, l) => {
         if (!r || P.seals[l] <= 0) return;
         emit(G, {t: 'relicTurn', p, id: r});
         if (r === 'brace-l1') {
-            glog(G, 'Il Primo Fuoco brucia i Sigilli nemici');
+            glog(G, 'firstFire', []);
             [0, 1, 2].forEach(x => dmgSeal(G, 1 - p, x, 1));
         }
         if (r === 'radice-l1') P.board.forEach(B => B.forEach(u => {
@@ -182,7 +218,7 @@ export function startTurn(G: Game, p: number) {
             if (all.length) {
                 const t = all.reduce((a, b) => (uAtk(G, p, b.x, b.u) < uAtk(G, p, a.x, a.u) ? b : a));
                 t.u.dead = true;
-                glog(G, `Il Grande Patto consuma ${nm(t.u.id)}`);
+                glog(G, 'pactConsumes', [t.u.id]);
                 const s = randomIntact(G, 1 - p);
                 if (s >= 0) dmgSeal(G, 1 - p, s, 2);
             }
@@ -192,7 +228,7 @@ export function startTurn(G: Game, p: number) {
             if (BYID[top].c > P.maxC + 1) {
                 P.deck.pop();
                 P.deck.unshift(top);
-                glog(G, `Faro Sommerso: ${P.name} mette in fondo una carta`);
+                glog(G, 'lighthouse', [r, p]);
             }
         }
     });
@@ -203,7 +239,7 @@ export function startTurn(G: Game, p: number) {
         emit(G, {t: 'crystal', p, n: P.maxC});
     } else if (G.turn > 1) {
         draw(G, p, 1);
-        glog(G, `${P.name} ha 10 Cristalli: pesca una carta in più`);
+        glog(G, 'tenCrystals', [p]);
     }
     if (G.turn > 1) draw(G, p, 1);
     cleanup(G);
@@ -214,10 +250,10 @@ export function chooseRes(G: Game, p: number, which: 'crystal' | 'draw') {
     if (which === 'crystal' && P.maxC < 10) {
         P.maxC++;
         P.crystals++;
-        glog(G, `${P.name} sceglie un Cristallo (ora ${P.maxC})`, p === 0 ? 'me' : 'op');
+        glog(G, 'pickCrystal', [p, P.maxC], p === 0 ? 'me' : 'op');
     } else {
         draw(G, p, 1);
-        glog(G, `${P.name} sceglie di pescare una carta`, p === 0 ? 'me' : 'op');
+        glog(G, 'pickDraw', [p], p === 0 ? 'me' : 'op');
     }
     G.phase = 'main';
 }
@@ -244,7 +280,7 @@ export function attackOne(G: Game, p: number, l: number, uid: number): { uid?: n
     if (atk <= 0 || !canAttack(G, p, u)) return null;
     if (u.stun) {
         u.stun = false;
-        glog(G, `${nm(u.id)} è stordito e salta l'attacco`);
+        glog(G, 'stunned', [u.id]);
         return null;
     }
     const foes = op.board[l].filter(x => !x.dead);
@@ -252,8 +288,8 @@ export function attackOne(G: Game, p: number, l: number, uid: number): { uid?: n
     if (foes.length && hasKw(G, p, u, 'Aggirare')) {
         const side = [l - 1, l + 1].filter(x => x >= 0 && x < 3 && op.seals[x] > 0 && !op.board[x].some(y => !y.dead));
         if (side.length) {
-            const x = side[Math.floor(Math.random() * side.length)], n = atk + (omenAt(G, x) === 'eclissi' ? 1 : 0);
-            glog(G, `${nm(u.id)} aggira i difensori e colpisce il Sigillo ${LANE_NAME[x]} per ${n}`, p === 0 ? 'me' : 'op');
+            const x = side[Math.floor(Math.random() * side.length)], n = omenSealHit(G, x, atk, u);
+            glog(G, 'flank', [u.id, x, n], p === 0 ? 'me' : 'op');
             const before = op.seals.reduce((a, y) => a + y, 0);
             dmgSeal(G, 1 - p, x, n);
             if (hasKw(G, p, u, 'Linfa vitale')) healSeal(G, p, l, n);
@@ -269,17 +305,26 @@ export function attackOne(G: Game, p: number, l: number, uid: number): { uid?: n
         if (ta > 0 && hasKw(G, 1 - p, t, 'Veleno')) u.dead = true;
         if (hasKw(G, p, u, 'Linfa vitale')) healSeal(G, p, l, atk);
         if (hasKw(G, 1 - p, t, 'Linfa vitale')) healSeal(G, 1 - p, l, ta);
-        glog(G, `${nm(u.id)} (${atk}) si scontra con ${nm(t.id)} (${ta})`);
+        glog(G, 'clash', [u.id, atk, t.id, ta]);
         if (t.id === 'marea-c5' && t.dmg >= uMax(G, 1 - p, l, t)) u.stun = true;
         cleanup(G);
+        // Arena di sangue: chi esce vivo da uno scontro in cui ha ucciso diventa più forte, attaccante o difensore.
+        if (omenFor(G, l, u) === 'arena' && !findU(G, t.uid) && findU(G, u.uid)) {
+            u.a++;
+            glog(G, 'arenaKill', [u.id]);
+        }
+        if (omenFor(G, l, t) === 'arena' && !findU(G, u.uid) && findU(G, t.uid)) {
+            t.a++;
+            glog(G, 'arenaKill', [t.id]);
+        }
         if (!findU(G, t.uid)) emit(G, {t: 'kill', p, id: u.id});
         if (findU(G, u.uid)) survivedFight(G, p, u);
         if (findU(G, t.uid)) survivedFight(G, 1 - p, t);
         return {uid: t.uid};
     }
     if (op.seals[l] > 0) {
-        const n = atk * (hasKw(G, p, u, 'Assedio') ? 2 : 1) + (omenAt(G, l) === 'eclissi' ? 1 : 0);
-        glog(G, `${nm(u.id)} colpisce il Sigillo ${LANE_NAME[l]} per ${n}`, p === 0 ? 'me' : 'op');
+        const n = omenSealHit(G, l, atk * (hasKw(G, p, u, 'Assedio') ? 2 : 1), u);
+        glog(G, 'hitSeal', [u.id, l, n], p === 0 ? 'me' : 'op');
         const before = op.seals.reduce((a, x) => a + x, 0);
         dmgSeal(G, 1 - p, l, n);
         if (hasKw(G, p, u, 'Linfa vitale')) healSeal(G, p, l, n);
@@ -310,7 +355,9 @@ export interface NewGameOpts {
     mySeal?: number;
     startC?: number;
     omens?: (OmenId | null)[];
-    custodi?: [CustodeId | null, CustodeId | null]
+    custodi?: [CustodeId | null, CustodeId | null];
+    /** Notte Incatenata: Nyxa come terzo giocatore (engine/night.ts). */
+    night?: boolean
 }
 
 export function newGame(me: { name: string; deck: string[] }, op: {
@@ -334,6 +381,7 @@ export function newGame(me: { name: string; deck: string[] }, op: {
     };
     G.omens = o.omens ?? (o.noOmens ? [null, null, null] : shuffle(Object.keys(OMENS) as OmenId[]).slice(0, 3));
     G.bell = o.noBell ? [null, null] : [mainFaction(me.deck), mainFaction(op.deck)];
+    if (o.night) G.night = {chains: 0};
     if (o.startC) G.p.forEach(P => {
         P.maxC = o.startC!;
     });
@@ -372,7 +420,7 @@ export function mulligan(G: Game, p: number, hids: number[]) {
     P.hand = P.hand.filter(h => !hids.includes(h.hid));
     P.deck = shuffle([...P.deck, ...back.map(h => h.id)]);
     draw(G, p, back.length);
-    glog(G, `${P.name} sostituisce ${back.length} ${back.length === 1 ? 'carta' : 'carte'}`, p === 0 ? 'me' : 'op');
+    glog(G, 'mulligan', [p, back.length], p === 0 ? 'me' : 'op');
 }
 
 /** L'IA sostituisce le carte troppo costose per l'inizio partita. */

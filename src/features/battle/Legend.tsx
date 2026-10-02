@@ -2,6 +2,9 @@ import {AnimatePresence, motion} from 'framer-motion';
 import {cardInfo, FACTIONS} from '../../engine';
 import {Card} from '../../cards/Card';
 import {loreOf} from '../../cards/lore';
+import {EN_CARDS} from '../../i18n/en/cards';
+import {EN_LORE} from '../../i18n/en/lore';
+import {useLang, useT} from '../../i18n/lang';
 import {lookOf, useProfile} from '../../profile/store';
 import {useBattle} from './store';
 import s from './battle.module.css';
@@ -9,10 +12,13 @@ import s from './battle.module.css';
 /** Entrata in scena delle leggendarie: la carta appare al centro con un'esplosione di luce nel colore della fazione. */
 export function LegendEntrance() {
     const L = useBattle(st => st.legend), profile = useProfile();
+    const lang = useLang(), t = useT();
     return (
         <AnimatePresence>
             {L && (() => {
                 const c = cardInfo(L.id), F = FACTIONS[c.f];
+                const name = (lang === 'en' ? EN_CARDS[c.id]?.n : undefined) ?? c.n;
+                const flavor = (lang === 'en' ? EN_LORE[c.id]?.flavor : undefined) ?? loreOf(c.id)?.flavor;
                 return (
                     <motion.div key={L.k} className={s.legend}
                                 style={{['--lc' as string]: F.col, ['--lc2' as string]: F.col2}}
@@ -32,9 +38,9 @@ export function LegendEntrance() {
                         <motion.div className={s.legendText} initial={{opacity: 0, y: 20, letterSpacing: '0.4em'}}
                                     animate={{opacity: 1, y: 0, letterSpacing: '0.04em'}}
                                     transition={{delay: 0.35, duration: 0.7}}>
-                            <span>{L.p === 0 ? 'Evochi una leggenda' : "L'avversario evoca una leggenda"}</span>
-                            <b>{c.n}</b>
-                            <em>{loreOf(c.id)?.flavor}</em>
+                            <span>{L.p === 0 ? t('Evochi una leggenda', 'You summon a legend') : t("L'avversario evoca una leggenda", 'The opponent summons a legend')}</span>
+                            <b>{name}</b>
+                            <em>{flavor}</em>
                         </motion.div>
                     </motion.div>);
             })()}

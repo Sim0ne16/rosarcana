@@ -8,6 +8,9 @@ import type {PackCard} from '../../economy/packs';
 import {useProfile} from '../../profile/store';
 import {CardBack} from '../battle/CardBack';
 import {PackArt} from './PackArt';
+import {useLang, useT} from '../../i18n/lang';
+import {cardName, rarityName} from '../../i18n/names';
+import {W} from '../../i18n/words';
 import s from './opening.module.css';
 
 type Phase = 'ready' | 'torn' | 'cards';
@@ -34,6 +37,7 @@ function useStage() {
 /** Rito d'apertura: il sigillo si incrina, la busta esplode di luce, le carte si dispongono coperte e si girano una a una. */
 export function PackOpening({onClose}: { onClose: () => void }) {
     const packs = useProfile(p => p.packs);
+    const t = useT(), lang = useLang();
     const [phase, setPhase] = useState<Phase>('ready');
     const [res, setRes] = useState<PackCard[]>([]);
     const [flipped, setFlipped] = useState<boolean[]>([]);
@@ -149,9 +153,9 @@ export function PackOpening({onClose}: { onClose: () => void }) {
                                     initial={{opacity: 0, y: 60, scale: 0.8}} animate={{opacity: 1, y: 0, scale: 1}}
                                     exit={{opacity: 0, y: 260, rotate: 8, transition: {duration: 0.5, ease: 'easeIn'}}}
                                     transition={{type: 'spring', stiffness: 160, damping: 18}}>
-                            <h2 className={s.title}>{phase === 'ready' ? 'Strappa la bustina' : ''}</h2>
+                            <h2 className={s.title}>{phase === 'ready' ? t('Strappa la bustina', 'Tear open the pack') : ''}</h2>
                             <motion.div className={s.packBtn} role="button" tabIndex={0}
-                                        aria-label="Strappa la bustina: trascina lungo la linea in alto o tocca"
+                                        aria-label={t('Strappa la bustina: trascina lungo la linea in alto o tocca', 'Tear open the pack: drag along the line at the top or tap')}
                                         onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp}
                                         onKeyDown={e => {
                                             if (e.key === 'Enter' && phase === 'ready') void animate(tear, 1, {
@@ -185,8 +189,8 @@ export function PackOpening({onClose}: { onClose: () => void }) {
                                     <motion.div className={s.tearGlow} style={{width: glowW}}/>
                                     <span className={s.tearHint}>✂</span></>}
                             </motion.div>
-                            <p className={s.muted}>{phase === 'ready' ? `Trascina lungo la linea tratteggiata, oppure tocca. Te ne restano ${packs}.` : ''}</p>
-                            {phase === 'ready' && <button className={s.btn} onClick={onClose}>Chiudi</button>}
+                            <p className={s.muted}>{phase === 'ready' ? t(`Trascina lungo la linea tratteggiata, oppure tocca. Te ne restano ${packs}.`, `Drag along the dashed line, or tap. You have ${packs} left.`) : ''}</p>
+                            {phase === 'ready' && <button className={s.btn} onClick={onClose}>{t(W.close)}</button>}
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -204,7 +208,7 @@ export function PackOpening({onClose}: { onClose: () => void }) {
                                          style={{['--g' as string]: RARITY[x.rar].color}}/>}
                                 <motion.button className={s.cardBtn} onClick={() => flip(i)}
                                                whileHover={!flipped[i] ? {y: -10, scale: 1.04} : undefined}
-                                               aria-label={flipped[i] ? `${BYID[x.id].n}, ${RARITY[x.rar].name}` : `Carta coperta ${i + 1}, tocca per girarla`}>
+                                               aria-label={flipped[i] ? `${cardName(x.id, lang)}, ${rarityName(x.rar, lang)}` : t(`Carta coperta ${i + 1}, tocca per girarla`, `Face-down card ${i + 1}, tap to flip it`)}>
                                     <motion.div className={s.inner} animate={{rotateY: flipped[i] ? 180 : 0}}
                                                 transition={{duration: 0.7, ease: [0.3, 0.7, 0.2, 1]}}>
                                         <div className={s.face}><CardBack/></div>
@@ -229,7 +233,7 @@ export function PackOpening({onClose}: { onClose: () => void }) {
                                     <motion.span className={`${s.tag} ${x.dust ? s.dust : ''}`}
                                                  initial={{opacity: 0, y: 8}} animate={{opacity: 1, y: 0}}
                                                  transition={{delay: 0.45}}>
-                                        {x.dust ? `+${x.dust} polvere` : x.foil ? 'Dorata!' : x.isNew ? 'Nuova' : RARITY[x.rar].name}
+                                        {x.dust ? `+${x.dust} ${t(W.dust)}` : x.foil ? t('Dorata!', 'Golden!') : x.isNew ? t('Nuova', 'New') : rarityName(x.rar, lang)}
                                     </motion.span>
                                 )}
                             </motion.div>
@@ -243,13 +247,13 @@ export function PackOpening({onClose}: { onClose: () => void }) {
                     <motion.div className={s.footer} initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}}
                                 transition={{delay: 0.5}}>
                         {!all ? (
-                            <><span className={s.muted}>Tocca le carte per girarle</span>
+                            <><span className={s.muted}>{t('Tocca le carte per girarle', 'Tap the cards to flip them')}</span>
                                 <button className={s.btn} onClick={flipAll}>Gira tutte</button>
                             </>
                         ) : (
                             <>
                                 <span
-                                    className={s.sum}>{summary.nuove === 1 ? '1 carta nuova' : `${summary.nuove} carte nuove`}{summary.dust ? `, ${summary.dust} polvere` : ''}{summary.foil ? `, ${summary.foil} dorata` : ''}{res.some(x => x.pity) ? '. Garanzia Leggendaria attivata' : ''}</span>
+                                    className={s.sum}>{summary.nuove === 1 ? t('1 carta nuova', '1 new card') : t(`${summary.nuove} carte nuove`, `${summary.nuove} new cards`)}{summary.dust ? `, ${summary.dust} ${t(W.dust)}` : ''}{summary.foil ? t(`, ${summary.foil} dorata`, `, ${summary.foil} golden`) : ''}{res.some(x => x.pity) ? t('. Garanzia Leggendaria attivata', '. Legendary guarantee triggered') : ''}</span>
                                 <button className={`${s.btn} ${s.primary}`} onClick={onClose}>Continua</button>
                                 {packs > 0 &&
                                     <button className={s.btn} onClick={next}>Apri la prossima ({packs})</button>}

@@ -3,6 +3,10 @@ import {memo} from 'react';
 import {activeSynergies, cardInfo, type Game, hasKw, uAtk, uMax, type Unit} from '../../engine';
 import {Card} from '../../cards/Card';
 import {defaultArt} from '../../cards/styles';
+import {EN_CARDS} from '../../i18n/en/cards';
+import {EN_SYNERGIES} from '../../i18n/en/mechanics';
+import {useLang, useT} from '../../i18n/lang';
+import {W} from '../../i18n/words';
 import {lookOf, useProfile} from '../../profile/store';
 import {Floaters} from './Floaters';
 import {dropAt, pointOf} from './dnd';
@@ -20,6 +24,8 @@ interface Props {
 /** Unità sul tavolo: la stessa carta del giocatore (stile, effetto, cornice) in formato ridotto, senza testo. */
 export const UnitCard = memo(function UnitCard({G, p, l, u, targetable}: Props) {
     const c = cardInfo(u.id);
+    const lang = useLang(), t = useT();
+    const name = (lang === 'en' ? EN_CARDS[c.id]?.n : undefined) ?? c.n;
     const look = useProfile(st => (p === 0 && !c.token ? lookOf(st, u.id) : null));
     const lk = look ?? {art: defaultArt(u.id), effect: null, frame: null};
     const attacking = useBattle(st => st.attacking?.uid === u.uid);
@@ -42,7 +48,7 @@ export const UnitCard = memo(function UnitCard({G, p, l, u, targetable}: Props) 
         <motion.div layoutId={`card-${u.uid}`} layout="position"
                     className={`${s.unit} ${targetable ? s.targetable : ''} ${selected ? s.selected : ''} ${sleepy ? s.sleepy : ''} ${u.asc ? s.ascended : ''} ${syn.length ? s.synced : ''}`}
                     data-drop={`unit:${u.uid}`} data-tut={`unit:${u.id}`} role="button" tabIndex={0}
-                    aria-label={`${c.n}, attacco ${a}, salute ${hp}`}
+                    aria-label={t(`${name}, attacco ${a}, salute ${hp}`, `${name}, attack ${a}, health ${hp}`)}
                     initial={{opacity: 0, scale: 0.6}}
                     animate={{
                         opacity: 1,
@@ -93,12 +99,13 @@ export const UnitCard = memo(function UnitCard({G, p, l, u, targetable}: Props) 
                         if (pv?.uid === u.uid) b().setPreview(null);
                     }}>
             <Card card={c} look={lk} atk={a} hp={hp} mini kws={kws}/>
-            {syn.length > 0 && <span className={s.usyn} title={`Sincronia: ${syn.map(x => x.name).join(', ')}`}><svg
+            {syn.length > 0 && <span className={s.usyn}
+                                     title={t(`Sincronia: ${syn.map(x => x.name).join(', ')}`, `Synergy: ${syn.map(x => EN_SYNERGIES[x.id]?.name ?? x.name).join(', ')}`)}><svg
                 viewBox="0 0 24 24" aria-hidden="true"><path
                 d="M9.5 14.5 14.5 9.5M8 11l-2 2a3.5 3.5 0 0 0 5 5l2-2M16 13l2-2a3.5 3.5 0 0 0-5-5l-2 2" fill="none"
                 stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"/></svg></span>}
-            {u.asc && <span className={s.uasc} title="Ascesa">♛</span>}
-            {(sleepy || u.stun) && <div className={s.zz}>{u.stun ? 'stordita' : 'in attesa'}</div>}
+            {u.asc && <span className={s.uasc} title={t(W.ascension)}>♛</span>}
+            {(sleepy || u.stun) && <div className={s.zz}>{u.stun ? t('stordita', 'stunned') : t('in attesa', 'waiting')}</div>}
             {hp < mh && <span className={s.hurtBar} style={{width: `${(hp / mh) * 100}%`}}/>}
             <Floaters fx={fx}/>
         </motion.div>

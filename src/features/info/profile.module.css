@@ -111,9 +111,11 @@
 .fav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 8px;
-    padding: 4px 0;
+    padding: 4px 0 4px 8px;
     border-bottom: 1px solid var(--line);
+    border-left: 3px solid var(--fc, transparent);
     font-size: 14px;
 }
 
@@ -123,6 +125,19 @@
 
 .fav span {
     color: #b9ae96;
+}
+
+.favName {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.favGem {
+    width: 15px;
+    height: 15px;
+    flex: none;
 }
 
 .levels {
@@ -208,6 +223,11 @@
     grid-column: 1 / -1;
 }
 
+.histWrap {
+    max-height: 340px;
+    overflow: auto;
+}
+
 .hist {
     width: 100%;
     border-collapse: collapse;
@@ -221,7 +241,31 @@
 }
 
 .hist th {
+    position: sticky;
+    top: 0;
+    background: rgba(26, 21, 34, .98);
     color: #b9ae96;
+}
+
+.hist tbody tr:hover {
+    background: rgba(255, 255, 255, .04);
+}
+
+.esito {
+    position: relative;
+    padding-left: 20px !important;
+}
+
+.esito::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
 }
 
 .won {

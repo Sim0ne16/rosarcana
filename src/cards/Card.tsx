@@ -1,7 +1,12 @@
 import {memo} from 'react';
-import {cardInfo, FACTIONS, KEYWORDS, RARITY, TYPES} from '../engine/cards';
+import {FACTIONS, KEYWORDS, RARITY} from '../engine/cards';
 import {synergiesOf} from '../engine/mechanics';
 import type {CardDef} from '../engine/types';
+import {EN_CARDS} from '../i18n/en/cards';
+import {EN_FACTION_NAMES, EN_KEYWORD_WORD, EN_KEYWORDS, EN_SYNERGIES} from '../i18n/en/mechanics';
+import {EN_LORE} from '../i18n/en/lore';
+import {useLang} from '../i18n/lang';
+import {cardName, rarityName, typeName} from '../i18n/names';
 import {CardArt} from './art/CardArt';
 import {hasIllustration} from './art/illustrations';
 import {Icon, kwIcon, RichText, splitText} from './cardText';
@@ -51,11 +56,21 @@ function CostShard({v, delta}: { v: number; delta: number }) {
  * e la targa di attacco e salute.
  */
 export const Card = memo(function Card({card: c, look, cost, atk, hp, className, mini, kws: miniKws}: CardProps) {
+    const lang = useLang();
+    const loc = lang === 'en' ? EN_CARDS[c.id] : undefined;
+    const name = loc?.n ?? c.n;
     const art = look?.art === 'illustrata' && !hasIllustration(c.id) ? DEFAULT_ART : look?.art ?? defaultArt(c.id);
     const cc = cost ?? c.c, a = atk ?? c.a, h = hp ?? c.h;
-    const F = FACTIONS[c.f], {kws, rest} = splitText(c.tx, c.kw);
-    const flavor = !rest && !kws.length ? loreOf(c.id)?.flavor : undefined;
-    const syn = synergiesOf(c.id).map(x => cardInfo(x.a === c.id ? x.b : x.a).n);
+    const F = FACTIONS[c.f], facName = lang === 'en' ? EN_FACTION_NAMES[c.f] : F.name,
+        tName = typeName(c.t, lang),
+        rarName = rarityName(c.r, lang);
+    const {kws, rest} = splitText(loc?.tx ?? c.tx, c.kw, lang);
+    const flavor = !rest && !kws.length
+        ? (lang === 'en' ? EN_LORE[c.id]?.flavor : loreOf(c.id)?.flavor) : undefined;
+    const otherName = (id: string) => cardName(id, lang);
+    const syn = synergiesOf(c.id).map(x => otherName(x.a === c.id ? x.b : x.a));
+    const kwWord = (k: string) => (lang === 'en' ? EN_KEYWORD_WORD[k as keyof typeof EN_KEYWORD_WORD] : undefined) ?? k;
+    const offerLabel = (k: string) => k === 'Offerta' && c.offer ? `${kwWord(k)} ${c.offer}` : kwWord(k);
     const len = rest.length + kws.length * 12 + (flavor ? flavor.length : 0) + (syn.length ? 20 : 0);
     const dense = len > 110 ? s.dense : len > 70 ? s.mid : '';
     return (
@@ -68,31 +83,37 @@ export const Card = memo(function Card({card: c, look, cost, atk, hp, className,
                  }}
                  onPointerMove={look?.effect ? track : undefined} onPointerLeave={look?.effect ? reset : undefined}>
                 <div className={s.art}><CardArt id={c.id} style={art} arch={false}/></div>
-                <div className={`${s.name} ${c.n.length > 22 ? s.longer : c.n.length > 16 ? s.long : ''}`}>
-                    <span className={s.nm}>{c.n}</span>
+                <div className={`${s.name} ${name.length > 22 ? s.longer : name.length > 16 ? s.long : ''}`}>
+                    <span className={s.nm}>{name}</span>
                     {!mini && <CostShard v={cc} delta={cc - c.c}/>}
-                    <span className={s.tFac} title={`Fazione: ${F.name}`}><Glyph>{FACTION_GLYPH[c.f]}</Glyph></span>
+                    <span className={s.tFac}
+                          title={`${lang === 'en' ? 'Faction' : 'Fazione'}: ${facName}`}><Glyph>{FACTION_GLYPH[c.f]}</Glyph></span>
                 </div>
                 {mini && miniKws && miniKws.length > 0 &&
-                    <div className={s.miniKw}>{miniKws.map(k => <span key={k} title={k}><Icon
+                    <div className={s.miniKw}>{miniKws.map(k => <span key={k} title={kwWord(k)}><Icon
                         k={`kw-${k}`}/></span>)}</div>}
                 {!mini && <div className={s.bottom}>
                     <div className={s.type}>
                         <Glyph className={s.tIcon}>{TYPE_GLYPH[c.t]}</Glyph>
-                        <span className={s.tName}>{TYPES[c.t]} · <em>{F.name}</em></span>
-                        <span title={`Rarità: ${RARITY[c.r].name}`}><RarityGem r={c.r} className={s.gem}/></span>
+                        <span className={s.tName}>{tName} · <em>{facName}</em></span>
+                        <span
+                            title={`${lang === 'en' ? 'Rarity' : 'Rarità'}: ${rarName}`}><RarityGem r={c.r} className={s.gem}/></span>
                     </div>
                     {(kws.length > 0 || rest || flavor || syn.length > 0) && <div className={`${s.body} ${dense}`}>
                         {kws.length > 0 && <div className={s.kw}>{kws.map((k, i) => <span key={k}
-                                                                                          data-tip={KEYWORDS[k as keyof typeof KEYWORDS]}
-                                                                                          data-tip-title={k === 'Offerta' && c.offer ? `Offerta ${c.offer}` : k}
+                                                                                          data-tip={lang === 'en' ? EN_KEYWORDS[k] : KEYWORDS[k as keyof typeof KEYWORDS]}
+                                                                                          data-tip-title={offerLabel(k)}
                                                                                           className={s.tipped}>{i > 0 && ' · '}<Icon
                             k={kwIcon(k)}
-                            className={s.kwIcon}/><b>{k === 'Offerta' && c.offer ? `Offerta ${c.offer}` : k}</b></span>)}</div>}
-                        {rest && <div className={s.text}><RichText text={rest}/></div>}
+                            className={s.kwIcon}/><b>{offerLabel(k)}</b></span>)}</div>}
+                        {rest && <div className={s.text}><RichText text={rest} lang={lang}/></div>}
                         {flavor && <div className={s.flavor}>{flavor}</div>}
-                        {syn.length > 0 && <div className={`${s.syn} ${s.tipped}`} data-tip-title="Sincronia"
-                                                data-tip={synergiesOf(c.id).map(x => `${x.name}: ${x.text}`).join(' ')}>
+                        {syn.length > 0 && <div className={`${s.syn} ${s.tipped}`}
+                                                data-tip-title={lang === 'en' ? 'Synergy' : 'Sincronia'}
+                                                data-tip={synergiesOf(c.id).map(x => {
+                                                    const t = lang === 'en' ? EN_SYNERGIES[x.id] : undefined;
+                                                    return `${t?.name ?? x.name}: ${t?.text ?? x.text}`;
+                                                }).join(' ')}>
                             <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <path
                                     d="M9.5 14.5 14.5 9.5M8 11l-2 2a3.5 3.5 0 0 0 5 5l2-2M16 13l2-2a3.5 3.5 0 0 0-5-5l-2 2"
@@ -102,7 +123,8 @@ export const Card = memo(function Card({card: c, look, cost, atk, hp, className,
                     </div>}
                 </div>}
                 {c.t === 'U' && (
-                    <div className={s.pt} aria-label={`Attacco ${a}, salute ${h}`}>
+                    <div className={s.pt}
+                         aria-label={lang === 'en' ? `Attack ${a}, health ${h}` : `Attacco ${a}, salute ${h}`}>
                         <span className={s.ptA}
                               data-delta={a > c.a ? 'up' : a < c.a ? 'down' : undefined}><Glyph>{SWORD}</Glyph>{a}</span>
                         <i/>

@@ -13,17 +13,14 @@ import {
     clone,
     costOf,
     type CustodeId,
-    CUSTODI,
     custodiOf,
     EFFECTS,
     endTurnEffects,
     type Faction,
-    FACTIONS,
     findU,
     type Game,
     type GameEvent,
     hasAttackTarget,
-    legalTargets,
     mainFaction,
     moveTargets,
     moveUnit,
@@ -45,6 +42,12 @@ import {useEvent} from '../adventure/stories';
 import {findAdventure, useAdventures} from '../adventure/store';
 import {type TutExpect, TUTORIAL} from '../tutorial/script';
 import type {MatchStats} from '../../economy/mastery';
+import {aiReact, resetEmotes} from './emoteStore';
+import {recordWar, warOmen} from '../war/war';
+import {dataLang, tr} from '../../i18n/langState';
+import {playerName} from '../../i18n/log';
+import {bellInfo, cardName, custodeName, factionName, nightText} from '../../i18n/names';
+import {W} from '../../i18n/words';
 
 export interface Fx {
     id: number;
@@ -61,9 +64,12 @@ export type Sel =
     hi: number;
     hid: number;
     opts: PlayOpt[];
-    step: 'lane' | 'target' | 'confirm';
+    /** 'dest': bersaglio scelto, manca la corsia in cui spostarlo (effetti che spingono un'unità). */
+    step: 'lane' | 'target' | 'dest' | 'confirm';
     lane?: number;
     targets?: Target[];
+    target?: Target;
+    dests?: number[];
     skip?: boolean
 }
     | { kind: 'unit'; uid: number; to: number[] };
@@ -78,6 +84,8 @@ export interface CustomMatch {
     omens?: (OmenId | null)[];
     coach?: { title: string; tips: string[] };
     timed?: boolean;
+    /** Notte Incatenata: Nyxa come terzo giocatore (engine/night.ts). */
+    night?: boolean;
     onEnd: (win: boolean) => string[];
 }
 
@@ -104,7 +112,8 @@ interface BattleState {
     fx: Fx[];
     banner: { txt: string; sub?: string; id: number } | null;
     busy: boolean;
-    result: { win: boolean; lines: string[] } | null;
+    /** `cardLines`: progressi di maestria/sfide per singola carta - possono essere tanti, la UI li raccoglie a parte. */
+    result: { win: boolean; lines: string[]; cardLines: string[] } | null;
     preview: { id: string; uid?: number; cost?: number; rect?: { x: number; y: number; w: number; h: number } } | null;
     shake: number;
     tutStep: number;
@@ -117,7 +126,7 @@ interface BattleState {
     closeReveal: () => void;
     /** Entrata in scena di una leggendaria appena giocata. */
     legend: { id: string; p: number; k: number } | null;
-    replay: { i: number; n: number; note: string; title: string } | null;
+    replay: { i: number; n: number; title: string } | null;
     openReplay: () => void;
     replayGo: (i: number) => void;
     mull: { sel: number[] } | null;
@@ -187,6 +196,11 @@ export const turnMs = () => TURN_SECONDS * 1000 * timeK(), reserveMs = () => RES
 let fxId = 0;
 const wait = (ms: number) => new Promise(r => setTimeout(r, ms));
 const STACK_MS = 650;
+/** Tempo per leggere una carta appena rivelata sulla pila: più testo o parole chiave ha, più tempo resta esposta. */
+const playRevealMs = (id: string) => {
+    const c = BYID[id];
+    return Math.min(2400, 900 + c.tx.length * 9 + c.kw.length * 260);
+};
 
 export const useBattle = create<BattleState>((set, get) => {
     const alive = (G: Game | null) => !!G && g === G && !get().result;
@@ -208,10 +222,16 @@ export const useBattle = create<BattleState>((set, get) => {
             if (e.t === 'break') {
                 fx.push({id: ++fxId, kind: 'break', p: e.p, l: e.l});
                 sfx('seal');
+                aiReact(e.p === 0 ? 'sealTaken' : 'sealLost');
             }
             if (e.t === 'death') sfx('death');
             if (e.t === 'draw' && e.p === 0) sfx('draw');
             if (e.t === 'crystal' && e.p === 0) setTimeout(() => sfx('crystal'), 350);
+            if (e.t === 'night') {
+                const txt = nightText(e.id, dataLang());
+                sfx('toll');
+                banner(txt.name, txt.text, 2600);
+            }
             if (e.t === 'ascend') {
                 fx.push({id: ++fxId, kind: 'ascend', uid: e.uid});
                 sfx('ascend');
@@ -241,7 +261,8 @@ export const useBattle = create<BattleState>((set, get) => {
         const broke = fx.some(f => f.kind === 'break');
         for (const b of bells) setTimeout(() => {
             sfx('toll');
-            banner('Ultimo Rintocco', `${g?.p[b.p].name ?? ''}: ${b.name}. ${b.text}`, 2600);
+            const toll = g ? bellInfo(g.p[b.p].custode, b.f, dataLang()) : b;
+            banner(tr(W.lastToll), `${g ? playerName(g, b.p, dataLang()) : ''}: ${toll.name}. ${toll.text}`, 2600);
         }, 700);
         set(s => ({G: clone(g!), fx: [...s.fx, ...fx], shake: broke ? s.shake + 1 : s.shake}));
         if (fx.length) {
@@ -250,10 +271,23 @@ export const useBattle = create<BattleState>((set, get) => {
         }
     }
 
+    // I banner si mettono in fila invece di sostituirsi: un colpo della Notte o un Ultimo Rintocco che arriva
+    // insieme a "Il tuo turno" non viene cancellato prima di poterlo leggere.
+    const bannerQueue: { txt: string; sub?: string; ms: number }[] = [];
+    let bannerSeq = 0;
+    const showNextBanner = () => {
+        const b = bannerQueue.shift();
+        if (!b) return;
+        const id = ++bannerSeq;
+        set({banner: {txt: b.txt, sub: b.sub, id}});
+        setTimeout(() => {
+            set(s => (s.banner?.id === id ? {banner: null} : s));
+            showNextBanner();
+        }, b.ms);
+    };
     const banner = (txt: string, sub?: string, ms = 1500) => {
-        const id = Date.now();
-        set({banner: {txt, sub, id}});
-        setTimeout(() => set(s => (s.banner?.id === id ? {banner: null} : s)), ms);
+        bannerQueue.push({txt, sub, ms});
+        if (bannerQueue.length === 1 && !get().banner) showNextBanner();
     };
 
     // ---- tutorial ----
@@ -270,7 +304,7 @@ export const useBattle = create<BattleState>((set, get) => {
         if (st.kind !== 'do' || !x) {
             {
                 sfx('error');
-                set({hint: 'Segui il suggerimento in alto.'});
+                set({hint: tr('Segui il suggerimento in alto.', 'Follow the hint at the top.')});
             }
             return false;
         }
@@ -284,7 +318,7 @@ export const useBattle = create<BattleState>((set, get) => {
         }
         if (!ok) {
             sfx('error');
-            set({hint: 'Nel tutorial segui il passo indicato in alto.'});
+            set({hint: tr('Nel tutorial segui il passo indicato in alto.', 'In the tutorial, follow the step shown at the top.')});
         }
         return ok;
     }
@@ -321,12 +355,12 @@ export const useBattle = create<BattleState>((set, get) => {
                 lastSec = secs;
                 sfx('tick');
             }
-            if (turnLeft <= 0 && s.turnLeft > 0 && reserveLeft > 0) banner('Riserva di tempo', `Il tempo del turno è finito: ti restano ${Math.ceil(reserveLeft / 1000)} secondi di riserva`, 1800);
+            if (turnLeft <= 0 && s.turnLeft > 0 && reserveLeft > 0) banner(tr('Riserva di tempo', 'Reserve time'), tr(`Il tempo del turno è finito: ti restano ${Math.ceil(reserveLeft / 1000)} secondi di riserva`, `Turn time is up: ${Math.ceil(reserveLeft / 1000)} seconds of reserve left`), 1800);
             set({turnLeft, reserveLeft});
             if (turnLeft <= 0 && reserveLeft <= 0) {
                 stopClock();
                 cancelStack();
-                set({hint: 'Tempo scaduto: il turno passa all\'avversario.'});
+                set({hint: tr('Tempo scaduto: il turno passa all\'avversario.', 'Time is up: the turn passes to your opponent.')});
                 sfx('error');
                 void get().endTurn();
             }
@@ -336,30 +370,47 @@ export const useBattle = create<BattleState>((set, get) => {
     /** Primo turno della partita (dopo l'eventuale mulligan). */
     function begin(label: string) {
         if (!g) return;
+        aiReact('start', 1800);
         if (g.first === 0) {
             startTurn(g, 0);
             commit();
-            banner('Il tuo turno', `${label}. ${turnNote(g)}`);
+            banner(tr(W.yourTurn), `${label}. ${turnNote(g)}`);
             startClock();
         } else {
-            banner(g.p[1].name, 'inizia per primo');
+            banner(g.p[1].name, tr('inizia per primo', 'goes first'));
             void aiTurn();
         }
+    }
+
+    /** Azzera le statistiche della partita appena creata; `quiet` spegne le emote dell'avversario (tutorial). */
+    function resetMatch(quiet: boolean) {
+        stats = {};
+        bellsMe = 0;
+        myMoves = 0;
+        frames = [];
+        resetEmotes(quiet);
+        bannerQueue.length = 0;
     }
 
     function finish() {
         stopClock();
         if (g) {
             frames.push({G: clone(g), note: g.winner === 0 ? 'Vittoria' : 'Sconfitta'});
-            lastReplay = {frames, title: `${g.p[0].name} contro ${g.p[1].name}`, win: g.winner === 0};
+            lastReplay = {frames, title: tr(`${g.p[0].name} contro ${g.p[1].name}`, `You vs ${g.p[1].name}`), win: g.winner === 0};
+            aiReact(g.winner === 0 ? 'playerWon' : 'playerLost', 1500);
             frames = [];
         }
         if (!g || get().result) return;
         const win = g.winner === 0, s = get(), prof = useProfile.getState();
         const short = s.mode !== 'tutorial' && myMoves < MIN_MOVES;
         const cu = g.p[0].custode,
-            custLines = cu && s.mode !== 'tutorial' && !short ? prof.recordCustode(cu, CUSTODI[cu].name, win, bellsMe) : [];
+            custLines = cu && s.mode !== 'tutorial' && !short ? prof.recordCustode(cu, custodeName(cu, dataLang()), win, bellsMe) : [];
         if (s.mode !== 'tutorial' && !s.replay) prof.recordFactions(myFacs, win);
+        if (s.mode !== 'tutorial' && !short) {
+            // Guerra della Rosa: i punti vanno alla Casata principale del mazzo giocato (tutte le carte, ovunque siano)
+            const P = g.p[0];
+            recordWar(mainFaction([...P.deck, ...P.grave, ...P.hand.map(h => h.id), ...P.board.flat().map(u => u.id)]), win);
+        }
         prof.addHistory({
             t: Date.now(),
             mode: s.mode,
@@ -375,42 +426,46 @@ export const useBattle = create<BattleState>((set, get) => {
             stage = adv && s.node != null ? adv.stages[s.node] : undefined;
         const builtin = adv?.id === 'cap1';
         if (s.mode === 'custom' && custom) {
-            const lines = short ? [...(win ? [] : custom.onEnd(false)), `Meno di ${MIN_MOVES} mosse: nessuna ricompensa`] : [...custom.onEnd(win), ...prof.matchResult({
-                mode: 'other',
-                win,
-                foe: g.p[1].name,
-                stats
-            }), ...custLines];
+            let lines: string[], cardLines: string[] = [];
+            if (short) lines = [...(win ? [] : custom.onEnd(false)), tr(`Meno di ${MIN_MOVES} mosse: nessuna ricompensa`, `Fewer than ${MIN_MOVES} moves: no rewards`)];
+            else {
+                const r = prof.matchResult({mode: 'other', win, foe: g.p[1].name, stats});
+                lines = [...custom.onEnd(win), ...r.lines, ...custLines];
+                cardLines = r.cardLines;
+            }
             sfx(win ? 'win' : 'lose');
-            set({result: {win, lines}, busy: true, sel: null, stack: null, pending: null});
+            set({result: {win, lines, cardLines}, busy: true, sel: null, stack: null, pending: null});
             return;
         }
-        const lines = short ? [...prof.matchResult({
-            mode: s.mode === 'custom' ? 'other' : s.mode,
-            win,
-            foe: g.p[1].name,
-            noReward: true
-        }), `Meno di ${MIN_MOVES} mosse: nessuna ricompensa`] : prof.matchResult({
-            mode: s.mode === 'custom' ? 'other' : s.mode,
-            win,
-            node: builtin ? s.node : undefined,
-            foe: g.p[1].name,
-            advReward: stage && builtin ? stageReward(adv!, stage) : undefined,
-            advName: stage?.n,
-            stats
-        });
-        if (adv && stage && !builtin && win && !short) {
-            if (useAdventures.getState().complete(adv.id, s.node!)) lines.unshift('Prima vittoria: ' + prof.grant(stageReward(adv, stage), `${adv.title}, ${stage.n}`));
-            else {
-                prof.grant({oro: 10}, adv.title);
-                lines.unshift('+10 oro');
+        let lines: string[], cardLines: string[] = [];
+        if (short) {
+            const r = prof.matchResult({mode: s.mode === 'custom' ? 'other' : s.mode, win, foe: g.p[1].name, noReward: true});
+            lines = [...r.lines, tr(`Meno di ${MIN_MOVES} mosse: nessuna ricompensa`, `Fewer than ${MIN_MOVES} moves: no rewards`)];
+        } else {
+            const r = prof.matchResult({
+                mode: s.mode === 'custom' ? 'other' : s.mode,
+                win,
+                node: builtin ? s.node : undefined,
+                foe: g.p[1].name,
+                advReward: stage && builtin ? stageReward(adv!, stage) : undefined,
+                advName: stage?.n,
+                stats
+            });
+            lines = r.lines;
+            cardLines = r.cardLines;
+            if (adv && stage && !builtin && win) {
+                if (useAdventures.getState().complete(adv.id, s.node!)) lines.unshift(`${tr(W.firstWin)}: ` + prof.grant(stageReward(adv, stage), `${adv.title}, ${stage.n}`));
+                else {
+                    prof.grant({oro: 10}, adv.title);
+                    lines.unshift(`+10 ${tr(W.gold)}`);
+                }
             }
+            lines.push(...custLines);
+            const ev = useEvent.getState().ev?.ev;
+            if (win && ev?.faction && s.mode !== 'tutorial' && g.p[0].grave.concat(g.p[0].hand.map(h => h.id), g.p[0].deck).some(id => BYID[id]?.f === ev.faction)) lines.push(`${ev.title}: ` + prof.grant({oro: 15}, ev.title) + tr(' per aver giocato ', ' for playing ') + factionName(ev.faction, dataLang()));
         }
-        lines.push(...custLines);
-        const ev = useEvent.getState().ev?.ev;
-        if (!short && win && ev?.faction && s.mode !== 'tutorial' && g.p[0].grave.concat(g.p[0].hand.map(h => h.id), g.p[0].deck).some(id => BYID[id]?.f === ev.faction)) lines.push(`${ev.title}: ` + prof.grant({oro: 15}, ev.title) + ' per aver giocato ' + FACTIONS[ev.faction].name);
         sfx(win ? 'win' : 'lose');
-        set({result: {win, lines}, busy: true, sel: null, stack: null, pending: null});
+        set({result: {win, lines, cardLines}, busy: true, sel: null, stack: null, pending: null});
     }
 
     // ---- azioni del giocatore ----
@@ -453,8 +508,11 @@ export const useBattle = create<BattleState>((set, get) => {
                 opts,
                 step: 'target',
                 lane,
-                targets: withT.map(o => o.target!),
-                skip: lane != null
+                // più opzioni per lo stesso bersaglio (una per destinazione): ognuno compare una volta sola
+                targets: withT.map(o => o.target!).filter((t, i, a) => a.findIndex(x => sameTarget(x, t)) === i),
+                // "Salta effetto" esiste solo se opts contiene ancora l'opzione senza bersaglio per questa corsia:
+                // playOptions() la toglie per le abilità obbligatorie quando un bersaglio legale esiste davvero.
+                skip: lane != null && opts.some(o => o.lane === lane && !o.target)
             }, stack: {id: h.id, hid: h.hid, p: 0, targeting: true}, pending: h.hid, hint: ''
         });
     }
@@ -479,7 +537,26 @@ export const useBattle = create<BattleState>((set, get) => {
         if (!s || s.kind !== 'hand' || s.step !== 'target') return false;
         const match = s.targets!.find(x => x.type === t.type && (x.type !== 'unit' || (t.type === 'unit' && x.uid === t.uid)) && (x.type === 'unit' || x.lane === t.lane) && (x.type !== 'seal' || (t.type === 'seal' && x.p === t.p)));
         if (!match) return false;
-        void doPlay(s.hi, s.lane != null ? {lane: s.lane, target: match} : {target: match}, true);
+        const os = optsFor(s, match);
+        // Effetti che spostano il bersaglio: con più corsie possibili si chiede dove, con una sola si gioca subito.
+        if (os.length > 1 && os.every(o => o.to != null)) {
+            set({sel: {...s, step: 'dest', target: match, dests: os.map(o => o.to!)}});
+            return true;
+        }
+        void doPlay(s.hi, os[0] ?? (s.lane != null ? {lane: s.lane, target: match} : {target: match}), true);
+        return true;
+    }
+
+    /** Opzioni di gioco della carta selezionata per quel bersaglio (e per la corsia già scelta, se è un'unità). */
+    const optsFor = (s: Extract<Sel, { kind: 'hand' }>, t: Target) =>
+        s.opts.filter(o => o.target && sameTarget(o.target, t) && (s.lane == null || o.lane === s.lane));
+
+    function destChosen(l: number) {
+        const s = get().sel;
+        if (!s || s.kind !== 'hand' || s.step !== 'dest' || !s.target) return false;
+        const o = optsFor(s, s.target).find(x => x.to === l);
+        if (!o) return false;
+        void doPlay(s.hi, o, true);
         return true;
     }
 
@@ -516,7 +593,7 @@ export const useBattle = create<BattleState>((set, get) => {
         set({busy: true, sel: null});
         startTurn(g!, 1);
         commit();
-        banner(`Turno di ${g!.p[1].name}`);
+        banner(tr(`Turno di ${g!.p[1].name}`, `${g!.p[1].name}'s turn`));
         await wait(1000);
         if (!alive(G)) return;
         if (g!.winner != null) return finish();
@@ -529,7 +606,7 @@ export const useBattle = create<BattleState>((set, get) => {
                     const h = g!.p[1].hand[hi];
                     set({stack: {id: h.id, hid: h.hid, p: 1}, pending: h.hid, preview: {id: h.id}});
                     sfx('play');
-                    await wait(900);
+                    await wait(playRevealMs(h.id));
                     if (!alive(G)) return;
                     playCard(g!, 1, hi, {lane: a.lane});
                     set({stack: null, pending: null});
@@ -551,7 +628,7 @@ export const useBattle = create<BattleState>((set, get) => {
                         preview: {id: h.id, cost: costOf(g!, 1, h)}
                     });
                     sfx('play');
-                    await wait(900);
+                    await wait(playRevealMs(h.id));
                     if (!alive(G)) return;
                 }
                 apply(g!, 1, a);
@@ -575,7 +652,7 @@ export const useBattle = create<BattleState>((set, get) => {
         startTurn(g!, 0);
         commit();
         set({busy: false, preview: null});
-        banner('Il tuo turno', turnNote(g!));
+        banner(tr(W.yourTurn), turnNote(g!));
         sfx('turn');
         tutOnMyTurn();
         startClock();
@@ -629,7 +706,7 @@ export const useBattle = create<BattleState>((set, get) => {
             stopClock();
             g = null;
             set({
-                replay: {i: 0, n: r.frames.length, note: r.frames[0].note, title: r.title},
+                replay: {i: 0, n: r.frames.length, title: r.title},
                 G: r.frames[0].G,
                 result: null,
                 busy: true,
@@ -649,7 +726,7 @@ export const useBattle = create<BattleState>((set, get) => {
             const r = lastReplay;
             if (!r) return;
             const k = Math.max(0, Math.min(r.frames.length - 1, i));
-            set(s => ({replay: s.replay ? {...s.replay, i: k, note: r.frames[k].note} : null, G: r.frames[k].G}));
+            set(s => ({replay: s.replay ? {...s.replay, i: k} : null, G: r.frames[k].G}));
         },
         toggleMull: hid => set(s => (s.mull ? {mull: {sel: s.mull.sel.includes(hid) ? s.mull.sel.filter(x => x !== hid) : [...s.mull.sel, hid]}} : s)),
         confirmMull: () => {
@@ -669,12 +746,10 @@ export const useBattle = create<BattleState>((set, get) => {
                 seal: m.op.seal,
                 startC: m.startC,
                 omens: m.omens,
-                custodi: [m.me.custode ?? null, m.op.custode ?? null]
+                custodi: [m.me.custode ?? null, m.op.custode ?? null],
+                night: m.night
             });
-            stats = {};
-            bellsMe = 0;
-            myMoves = 0;
-            frames = [];
+            resetMatch(false);
             myFacs = facsOf(m.me.deck);
             matchLabel = m.label;
             deckName = m.label;
@@ -759,9 +834,11 @@ export const useBattle = create<BattleState>((set, get) => {
                 }
             }
             const ev = useEvent.getState().ev?.ev;
-            if (mode !== 'tutorial' && ev?.omen) {
-                const others = (Object.keys(OMENS) as OmenId[]).filter(o => o !== ev.omen).sort(() => Math.random() - 0.5);
-                opts = {...opts, omens: [others[0], ev.omen, others[1]]};
+            // Corsia centrale: il presagio dell'evento della community, altrimenti quello della Guerra della Rosa
+            const centre = mode !== 'tutorial' ? ev?.omen ?? warOmen() : null;
+            if (centre) {
+                const others = (Object.keys(OMENS) as OmenId[]).filter(o => o !== centre).sort(() => Math.random() - 0.5);
+                opts = {...opts, omens: [others[0], centre, others[1]]};
             }
             if (mode !== 'tutorial') {
                 const oc = custodiOf(mainFaction(op.deck));
@@ -770,10 +847,7 @@ export const useBattle = create<BattleState>((set, get) => {
                 } else opts = {...opts, custodi: [myCustode, oc[Math.floor(Math.random() * oc.length)].id]};
             }
             g = newGame(me, op, opts);
-            stats = {};
-            bellsMe = 0;
-            myMoves = 0;
-            frames = [];
+            resetMatch(mode === 'tutorial');
             myFacs = facsOf(me.deck);
             matchLabel = ({
                 ranked: 'Classificata',
@@ -814,9 +888,9 @@ export const useBattle = create<BattleState>((set, get) => {
             });
             if (mode === 'tutorial') {
                 dealSounds(g.p[0].hand.length);
-                begin('Inizi tu');
+                begin(tr('Inizi tu', 'You go first'));
             } else {
-                beginLabel = 'Inizi tu';
+                beginLabel = tr('Inizi tu', 'You go first');
                 set({mull: {sel: []}});
                 dealSounds(g.p[0].hand.length);
             }
@@ -838,7 +912,7 @@ export const useBattle = create<BattleState>((set, get) => {
                 sfx('error');
                 set({
                     sel: null,
-                    hint: costOf(g, 0, h) > g.p[0].crystals ? `Servono ${costOf(g, 0, h)} Cristalli per ${c.n}.` : `Nessun bersaglio valido per ${c.n}.`
+                    hint: costOf(g, 0, h) > g.p[0].crystals ? tr(`Servono ${costOf(g, 0, h)} Cristalli per ${c.n}.`, `You need ${costOf(g, 0, h)} Crystals for ${cardName(c.id, 'en')}.`) : tr(`Nessun bersaglio valido per ${c.n}.`, `No valid target for ${cardName(c.id, 'en')}.`)
                 });
                 return;
             }
@@ -879,13 +953,10 @@ export const useBattle = create<BattleState>((set, get) => {
             }
             if (EFFECTS[h.id]?.spellT) {
                 // rilasciata su un bersaglio valido: giocala subito, altrimenti apri la freccia di mira
+                // (passa dalla stessa scelta del clic, così uno spostamento chiede anche la corsia di arrivo)
                 const tgt = dropToTarget(drop);
-                const match = tgt && legalTargets(g, 0, EFFECTS[h.id].spellT).find(t => sameTarget(t, tgt));
-                if (match) {
-                    void doPlay(hi, {target: match});
-                    return;
-                }
                 beginTargeting(hi, opts);
+                if (tgt) targetChosen(tgt);
                 return;
             }
             void doPlay(hi, {});
@@ -899,6 +970,10 @@ export const useBattle = create<BattleState>((set, get) => {
             }
             if (s.kind === 'hand' && s.step === 'target') {
                 targetChosen({type: 'lane', lane: l});
+                return;
+            }
+            if (s.kind === 'hand' && s.step === 'dest') {
+                destChosen(l);
                 return;
             }
             if (s.kind === 'unit' && s.to.includes(l)) get().dropUnit(s.uid, `lane:${l}`);
@@ -935,7 +1010,7 @@ export const useBattle = create<BattleState>((set, get) => {
             const to = moveTargets(g, 0, uid);
             set(to.length ? {sel: {kind: 'unit', uid, to}, hint: ''} : {
                 sel: null,
-                hint: f.u.kw.includes('Radicato') ? 'Questa unità è Radicata e non può spostarsi.' : f.u.moved ? 'Si è già spostata in questo turno.' : g.p[0].crystals < 1 ? 'Serve 1 Cristallo per spostare un\'unità.' : 'Nessuna corsia adiacente ha spazio.'
+                hint: f.u.kw.includes('Radicato') ? tr('Questa unità è Radicata e non può spostarsi.', 'This unit is Rooted and cannot move.') : f.u.moved ? tr('Si è già spostata in questo turno.', 'It has already moved this turn.') : g.p[0].crystals < 1 ? tr('Serve 1 Cristallo per spostare un\'unità.', 'You need 1 Crystal to move a unit.') : tr('Nessuna corsia adiacente ha spazio.', 'No nearby lane has space.')
             });
         },
         dropUnit: (uid, drop) => {
@@ -991,6 +1066,7 @@ export const useBattle = create<BattleState>((set, get) => {
         },
         exit: () => {
             stopClock();
+            resetEmotes();
             g = null;
             set({replay: null});
             set({G: null, result: null, busy: false, stack: null, sel: null, fx: []});
@@ -1008,7 +1084,7 @@ function laneOfDrop(drop: string) {
     return drop;
 }
 
-const turnNote = (G: Game) => (G.p[0].maxC >= 10 ? 'Cristalli al massimo: peschi due carte' : `+1 Cristallo: ora ne hai ${G.p[0].maxC}`);
+const turnNote = (G: Game) => (G.p[0].maxC >= 10 ? tr('Cristalli al massimo: peschi due carte', 'Crystals maxed out: you draw two cards') : tr(`+1 Cristallo: ora ne hai ${G.p[0].maxC}`, `+1 Crystal: you now have ${G.p[0].maxC}`));
 
 function dropToTarget(drop: string): Target | null {
     const [k, v] = drop.split(':');

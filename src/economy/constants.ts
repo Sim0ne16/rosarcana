@@ -1,3 +1,6 @@
+import {dataLang} from '../i18n/langState';
+import {EN_BACKS} from '../i18n/en/ui';
+
 export const ODDS = {std: {l: 0.01, r: 0.05, u: 0.23, c: 0.71}, slot5: {l: 0.08, r: 0.92}};
 export const FOIL_CHANCE = 0.05;
 export const PITY_MAX = 10, FIRST_LEG_BY = 5;
@@ -57,14 +60,18 @@ export const PASS_PREM: Reward[] = [{back: 'brace'}, {
 export const RANKS = ['Bronzo', 'Argento', 'Oro', 'Platino', 'Diamante', 'Leggenda'];
 export const OPP_NAMES = ['Varek il Bruciato', 'Sorella Salsedine', 'Ortensia dei Rovi', 'Il Velato', 'Maestra Brina', 'Corvo di Cenere', 'Lia delle Secche', 'Barone Muschio', 'Tessa Mezzanotte', 'Ugo Spaccasigilli'];
 
+/** Nome del dorso nella lingua dell'interfaccia. */
+export const backName = (id: string) => (dataLang() === 'en' ? EN_BACKS[id] : undefined) ?? BACKS[id];
+
 export function rewardLabel(rw: Reward) {
+    const en = dataLang() === 'en';
     const p: string[] = [];
-    if (rw.oro) p.push(`${rw.oro} oro`);
-    if (rw.polvere) p.push(`${rw.polvere} polvere`);
-    if (rw.gemme) p.push(`${rw.gemme} gemme`);
-    if (rw.pack) p.push(rw.pack > 1 ? `${rw.pack} bustine` : '1 bustina');
-    if (rw.gettoni) p.push(rw.gettoni > 1 ? `${rw.gettoni} gettoni stile` : '1 gettone stile');
-    if (rw.back) p.push(`Dorso ${BACKS[rw.back]}`);
-    if (rw.legChoice) p.push('Leggendaria a scelta');
-    return p.join(' e ');
+    if (rw.oro) p.push(en ? `${rw.oro} gold` : `${rw.oro} oro`);
+    if (rw.polvere) p.push(en ? `${rw.polvere} dust` : `${rw.polvere} polvere`);
+    if (rw.gemme) p.push(en ? `${rw.gemme} gems` : `${rw.gemme} gemme`);
+    if (rw.pack) p.push(en ? (rw.pack > 1 ? `${rw.pack} packs` : '1 pack') : rw.pack > 1 ? `${rw.pack} bustine` : '1 bustina');
+    if (rw.gettoni) p.push(en ? (rw.gettoni > 1 ? `${rw.gettoni} style tokens` : '1 style token') : rw.gettoni > 1 ? `${rw.gettoni} gettoni stile` : '1 gettone stile');
+    if (rw.back) p.push(en ? `${backName(rw.back)} card back` : `Dorso ${BACKS[rw.back]}`);
+    if (rw.legChoice) p.push(en ? 'Legendary of your choice' : 'Leggendaria a scelta');
+    return p.join(en ? ' and ' : ' e ');
 }

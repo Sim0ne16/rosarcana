@@ -212,53 +212,6 @@
     fill: #f3dfb0;
 }
 
-.curve {
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    height: 30px;
-}
-
-.curve > div {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 2px;
-}
-
-.curve b {
-    position: relative;
-    display: block;
-    width: 100%;
-    min-height: 2px;
-    background: linear-gradient(#bfe6ff, #3f7ed6);
-    border-radius: 3px 3px 0 0;
-}
-
-.curveBig {
-    height: 90px;
-    margin: 6px 0 10px;
-}
-
-.curveBig b em {
-    position: absolute;
-    top: -16px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-style: normal;
-    font-size: 11px;
-    color: #cfe6ff;
-}
-
-.curveBig span {
-    font-size: 12px;
-    color: var(--ink2);
-}
-
 /* ---------- editor ---------- */
 .editorPage {
     max-width: 1320px;
@@ -533,7 +486,6 @@
     color: #ffe39a;
     text-shadow: 0 1px 2px #000;
 }
-
 
 .custodi {
     margin-bottom: 20px;
@@ -826,26 +778,4 @@
     font-size: 24px;
     color: #ffe39a;
     margin: 10px 0 4px;
-}
-
-/* numeri del costo sotto le barre, anche nelle scatole dei mazzi */
-.curve {
-    height: 44px;
-}
-
-.curve span {
-    font-size: 10px;
-    line-height: 1;
-    font-weight: 700;
-    color: #b9ae96;
-    font-variant-numeric: tabular-nums;
-}
-
-.curveBig {
-    height: 90px;
-}
-
-.curveBig span {
-    font-size: 12px;
-    font-weight: 400;
 }

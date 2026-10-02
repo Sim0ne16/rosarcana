@@ -1,0 +1,59 @@
+/* Notte Incatenata: indicatore delle Catene di Nyxa */
+.gauge {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: linear-gradient(160deg, rgba(36, 22, 56, .92), rgba(14, 10, 22, .92));
+    box-shadow: 0 0 0 1px rgba(117, 82, 160, .55), 0 0 18px rgba(117, 82, 160, .25);
+    color: #d8cfe8;
+    font-size: 12px;
+}
+
+.gauge header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+}
+
+.gauge header b {
+    font-family: var(--display);
+    font-size: 17px;
+    color: #cdb4ff;
+}
+
+.gauge header span {
+    font-variant-numeric: tabular-nums;
+    color: #b9a7dd;
+}
+
+.bar {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .08);
+    overflow: hidden;
+}
+
+.bar i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: repeating-linear-gradient(90deg, #7552a0 0 10px, #a27ee0 10px 14px);
+    box-shadow: 0 0 10px rgba(162, 126, 224, .7);
+}
+
+.gauge p {
+    margin: 8px 0 4px;
+    line-height: 1.35;
+}
+
+.gauge p em {
+    font-style: normal;
+    font-weight: 700;
+    color: #e6d6ff;
+}
+
+.gauge small {
+    display: block;
+    color: #8f82a8;
+    line-height: 1.3;
+}

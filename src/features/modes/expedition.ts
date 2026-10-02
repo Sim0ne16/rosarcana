@@ -43,6 +43,8 @@ function makeStages(fac: Faction): ExpStage[] {
     return stages;
 }
 
+/** Partite da giocare prima che la Spedizione si sblocchi. */
+export const EXP_MIN_GAMES = 5;
 export const EXP_BLESSING = 2;
 
 interface ExpState {
