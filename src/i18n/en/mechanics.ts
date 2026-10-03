@@ -19,11 +19,13 @@ export const EN_KEYWORD_WORD: Record<Keyword, string> = {
     'Linfa vitale': 'Lifesap',
     Offerta: 'Offering',
     Auspicio: 'Favor',
+    Slancio: 'Surge',
+    Sfondare: 'Breach',
 };
 
 export const EN_KEYWORDS: Record<Keyword, string> = {
     Rapido: 'Can attack the turn it enters play.',
-    Guardiano: "Your units in the lanes next to it can't be targeted by the opponent's spells and effects. Doesn't protect its own lane or itself.",
+    Guardiano: "Must be attacked first: attackers in its lane have to hit it. Also, your units in the lanes next to it can't be targeted by the opponent's spells and effects.",
     Scossa: 'When it hits a Seal, it also deals 1 damage to a random intact Seal next to it.',
     Radicato: "Can't be moved to another lane, by you or the opponent.",
     Eco: 'When it dies, it returns to your hand and costs 1 more (the surcharge stacks on each return).',
@@ -34,10 +36,12 @@ export const EN_KEYWORDS: Record<Keyword, string> = {
     Auspicio: "Immune to its lane's omen: it gets neither the drawbacks nor the benefits.",
     Veleno: 'A unit that takes damage from this unit in combat is destroyed.',
     'Linfa vitale': 'When it deals damage, it restores that much health to your Seal in its lane.',
+    Slancio: 'Can attack even on the turn it moves (normally a unit that changes lanes does not attack).',
+    Sfondare: 'Ignores Guardians: in combat it can hit any enemy unit in its lane.',
 };
 export const EN_KW_SHORT: Record<Keyword, string> = {
     Rapido: 'attacks the turn it enters',
-    Guardiano: 'shields your lanes next to it',
+    Guardiano: 'must be attacked first',
     Scossa: '+1 damage to a Seal nearby',
     Radicato: "can't change lanes",
     Eco: 'returns to hand on death, costs +1',
@@ -48,6 +52,8 @@ export const EN_KW_SHORT: Record<Keyword, string> = {
     'Linfa vitale': 'its damage heals the Seal',
     Offerta: 'paid with Seal health',
     Auspicio: 'Ignores omens',
+    Slancio: 'attacks even after moving',
+    Sfondare: 'ignores Guardians',
 };
 
 export const EN_TYPES: Record<CardType, string> = {U: 'Unit', I: 'Spell', R: 'Relic'};
@@ -166,7 +172,7 @@ export const EN_CUSTODI: Record<CustodeId, {
     },
     nocchiero: {
         name: 'The Helmsman of the Shoals', title: 'Guide Among the Rocks',
-        passive: "The first move you make each turn costs no Crystals.",
+        passive: "The first move you make each turn costs no Crystals, and that unit can still attack.",
         bellName: 'Storm Surge', bell: "Returns the opponent's units that cost 3 or less to their hand.",
         lore: 'Knows every current between Scylla and Charybdis. They say he once brought home a king the sea did not want to let go.'
     },

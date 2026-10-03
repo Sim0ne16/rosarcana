@@ -29,6 +29,8 @@ import s from './battle.module.css';
 /** Anteprima al passaggio (o al tocco) su un'unità o una reliquia: compare accanto all'elemento e sparisce appena lo lasci. */
 export function Preview({G}: { G: Game }) {
     const pv = useBattle(st => st.preview), profile = useProfile();
+    // l'unità appena selezionata per attaccare o spostarsi non apre la sua anteprima: coprirebbe i bersagli
+    const selUid = useBattle(st => (st.sel?.kind === 'unit' ? st.sel.uid : null));
     const lang = useLang();
     useEffect(() => {
         if (!pv?.rect) return;
@@ -40,7 +42,7 @@ export function Preview({G}: { G: Game }) {
         return () => window.removeEventListener('pointerdown', off);
     }, [pv]);
     const f = pv?.uid != null ? findU(G, pv.uid) : null;
-    const show = !!pv?.rect && (pv.uid == null || !!f);
+    const show = !!pv?.rect && (pv.uid == null || !!f) && (pv.uid == null || pv.uid !== selUid);
     const c = pv ? cardInfo(pv.id) : null;
     const vw = window.innerWidth, vh = window.innerHeight, narrow = vw < 700;
     const W = narrow ? Math.min(200, vw * 0.5) : 240, H = W * 1.4, total = narrow ? W : W + 240;
@@ -93,7 +95,6 @@ export function Preview({G}: { G: Game }) {
 
 /** Registro degli eventi: aperto di default, la riga appena arrivata si illumina e lo scroll torna in cima da solo. */
 export function Log({G}: { G: Game }) {
-    const [open, setOpen] = useState(true);
     const [flash, setFlash] = useState(false);
     const prevLen = useRef(G.log.length);
     const list = useRef<HTMLUListElement>(null);
@@ -109,14 +110,13 @@ export function Log({G}: { G: Game }) {
         }
         prevLen.current = G.log.length;
     }, [G.log.length]);
-    return <details className={s.log} open={open}
-                     onToggle={e => setOpen((e.target as HTMLDetailsElement).open)}>
-        <summary>{t(W.log)}{G.log.length > 0 &&
-            <span className={s.logCount}>{G.log.length}</span>}</summary>
+    return <section className={s.log} aria-label={t(W.log)}>
+        <h3 className={s.logHead}>{t(W.log)}{G.log.length > 0 &&
+            <span className={s.logCount}>{G.log.length}</span>}</h3>
         <ul ref={list}>{[...G.log].reverse().slice(0, 50).map((l, i) => <li key={i}
                                                                             className={`${s[l.cls || 'plain']} ${i === 0 && flash ? s.logNew : ''}`}><LogText
             text={fmt(l)} lang={lang}/></li>)}</ul>
-    </details>;
+    </section>;
 }
 
 /** Riga del registro: i nomi di carte citati aprono il dettaglio al tocco, e ne mostrano l'anteprima al passaggio del mouse. */

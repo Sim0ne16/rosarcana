@@ -17,7 +17,7 @@ export interface CardVariant {
     a?: number;
     h?: number;
     kw?: Keyword[];
-    /** Usa l'effetto (Quando entra, incantesimo...) di questa carta invece del proprio. */
+    /** Usa l'effetto (Ingresso, incantesimo...) di questa carta invece del proprio. */
     effectFrom?: string;
     en: { n: string; tx: string; flavor: string }
 }
@@ -31,8 +31,8 @@ export const VARIANTS: Record<string, CardVariant> = {
     },
     'fabbro-monte': {
         id: 'fabbro-monte', card: 'brace-c1', h: 3,
-        n: 'Fabbro del Monte', tx: "Quando entra: un'altra tua unità ottiene +1 attacco.", flavor: "Elia gli ha portato una mappa del Monte. Da allora forgia seguendo le sue linee.",
-        en: {n: 'Smith of the Mountain', tx: 'When it enters: another unit of yours gets +1 attack.', flavor: 'Elia brought him a map of the Mountain. Since then he forges along its lines.'}
+        n: 'Fabbro del Monte', tx: "Ingresso: un'altra tua unità ottiene +1 attacco.", flavor: "Elia gli ha portato una mappa del Monte. Da allora forgia seguendo le sue linee.",
+        en: {n: 'Smith of the Mountain', tx: 'Entrance: another unit of yours gets +1 attack.', flavor: 'Elia brought him a map of the Mountain. Since then he forges along its lines.'}
     },
     'lupa-yggrin': {
         id: 'lupa-yggrin', card: 'radice-u3', h: 4, kw: ['Cresce', 'Radicato'],

@@ -47,7 +47,14 @@ export function App() {
     }, [bump]);
     useEffect(() => {
         window.scrollTo({top: 0});
+        // a ogni cambio di sezione, e quando si torna sulla finestra, controlla se è cominciato un nuovo giorno
+        useProfile.getState().rollDay();
     }, [tab]);
+    useEffect(() => {
+        const roll = () => document.visibilityState === 'visible' && useProfile.getState().rollDay();
+        document.addEventListener('visibilitychange', roll);
+        return () => document.removeEventListener('visibilitychange', roll);
+    }, []);
     const st = useProfile(x => x.settings), [opts, setOpts] = useState(false);
     // Le carte vive cambiano i dati delle carte sul posto: al cambio (raro) si rimonta il contenuto, così anche
     // le carte già disegnate (componenti memo) mostrano la nuova versione.

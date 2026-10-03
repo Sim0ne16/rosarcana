@@ -27,7 +27,7 @@ export interface Effect {
     enterT?: TargetSpec;
     enter?: (G: Game, p: number, u: Unit, t: Target | undefined, lane: number, to?: number) => void;
     /** Solo per enterT: il testo dice esplicitamente "puoi" - si può giocare la carta senza scegliere un bersaglio
-     * anche se ne esiste uno legale. Le altre abilità Quando entra con bersaglio sono obbligatorie: si può giocare
+     * anche se ne esiste uno legale. Le altre abilità di Ingresso con bersaglio sono obbligatorie: si può giocare
      * la carta senza effetto solo se davvero non c'è nessun bersaglio legale (gestito a monte da playOptions). */
     optional?: boolean;
     spellT?: TargetSpec;
@@ -119,10 +119,6 @@ export const EFFECTS: Record<string, Effect> = {
         enter: (G, p, _u, _t, l) => {
             if (l == null) return;
             [...G.p[1 - p].board[l]].forEach(x => bounce(G, x.uid));
-            G.p[p].board[l].forEach(x => {
-                x.a += 1;
-                x.h += 1;
-            });
         }
     },
     'radice-c8': {
@@ -158,7 +154,7 @@ export const EFFECTS: Record<string, Effect> = {
                 x.dmg = 0;
             }));
             [0, 1, 2].forEach(x => healSeal(G, p, x, 4));
-            draw(G, p, 2);
+            draw(G, p, 1);
         }
     },
     'vuoto-c8': {
@@ -299,7 +295,7 @@ export const EFFECTS: Record<string, Effect> = {
         // "Il gigante che porterà il fuoco alla fine del mondo. Nella Rosa, lo porta adesso": un colpo che
         // arde tutti i Sigilli nemici in un'unica entrata, non solo la sua corsia come Vulkara.
         enter: (G, p) => {
-            [0, 1, 2].forEach(l => dmgSeal(G, 1 - p, l, 2));
+            [0, 1, 2].forEach(l => dmgSeal(G, 1 - p, l, 1));
         }
     },
     'marea-c0': {
@@ -334,13 +330,13 @@ export const EFFECTS: Record<string, Effect> = {
     'marea-r1': {enter: (G, p, _u, _t, l) => [...G.p[1 - p].board[l]].forEach(x => pushAuto(G, x.uid))},
     'marea-l0': {
         enter: (G, p) => G.p[1 - p].board.forEach(B => [...B].forEach(x => {
-            if (cardInfo(x.id).c <= 3) bounce(G, x.uid);
+            if (cardInfo(x.id).c <= 2) bounce(G, x.uid);
         }))
     },
     'marea-l1': {
         spell: (G, p) => {
             G.p[1 - p].board.forEach(B => [...B].forEach(x => bounce(G, x.uid)));
-            draw(G, p, 2);
+            draw(G, p, 1);
         }
     },
     'radice-c3': {
@@ -404,7 +400,7 @@ export const EFFECTS: Record<string, Effect> = {
     'vuoto-c5': {
         spellT: {kind: 'unit', side: 'enemy'}, spell: (G, _p, t) => {
             const f = tgtU(G, t);
-            if (f) f.u.a = Math.max(0, f.u.a - 2);
+            if (f) f.u.a = Math.max(0, f.u.a - 3);
         }
     },
     'vuoto-u1': {

@@ -20,7 +20,7 @@ export const EN_SECRETS: Record<string, string> = {
     'marea-c2': 'All eels are born in the same spot: above the tomb of Atlantis, where the sea is warmest.',
     'marea-c3': 'Coral has grown on the soldiers for a thousand years, but inside the armour a very slow heart still beats.',
     'marea-c4': 'The pebbles the undertow counts are not pebbles: they are the teeth of sailors who defied Thalassa.',
-    'marea-c5': 'The Medusa does not turn anyone to stone. She shows whoever looks at her the moment of their death, and the body freezes in fright.',
+    'marea-c5': 'The Medusa does not turn anyone to stone. Her venom shows whoever touches her the moment of their death, and the heart stops in fright.',
     'marea-u0': 'The Seer has seen her own end too: she will die the day someone believes her.',
     'marea-u1': 'The Current does not hate sailors: it protects them from a shore that no longer exists.',
     'marea-u2': 'The Lighthouse\'s light is fed by the last breath of the shipwrecked. That is why it never goes out.',

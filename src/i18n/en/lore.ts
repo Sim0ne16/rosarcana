@@ -151,8 +151,8 @@ export const EN_LORE: Record<string, EnLore> = {
         flavor: 'It takes away, gives back, counts.', insp: 'The songs of sailors'
     },
     'marea-c5': {
-        text: 'Whoever looks at her too long freezes like stone, if only for an instant. She is all that remains of an ancient Gorgon\'s gaze.',
-        flavor: 'One look, and time stops.', insp: 'Medusa and the Gorgons'
+        text: 'She drifts pale through the shallows, and whoever brushes against her never rises again. The last venom of an ancient Gorgon flows through her threads.',
+        flavor: 'One touch, and the sea closes over.', insp: 'Medusa and the Gorgons'
     },
     'marea-u0': {
         text: "She reads the future in pearls but speaks only in riddles. Three times she has foretold Nyxa's return, and three times no one believed her.",

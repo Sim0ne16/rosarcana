@@ -10,11 +10,14 @@
     "preview": "vite preview",
     "icons": "node scripts/extract-icons.mjs",
     "art": "node scripts/generate-art.mjs",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "sim": "esbuild scripts/sim-balance.ts --bundle --platform=node --outfile=node_modules/.cache/sim-balance.cjs --log-level=warning && node node_modules/.cache/sim-balance.cjs",
+    "sim:arch": "esbuild scripts/sim-archetypes.ts --bundle --platform=node --outfile=node_modules/.cache/sim-archetypes.cjs --log-level=warning && node node_modules/.cache/sim-archetypes.cjs"
   },
   "dependencies": {
     "d3-delaunay": "^6.0.4",
     "framer-motion": "^11.11.17",
+    "peerjs": "^1.5.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "zustand": "^4.5.5"

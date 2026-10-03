@@ -62,6 +62,60 @@ const POOL: WeeklyChallenge[] = [
         desc: 'Sigilli da 14 punti vita e presagio Terra consacrata ovunque: partite lunghe.',
         rules: {mySeal: 14, opSeal: 14, omens: ['consacrata', 'consacrata', 'consacrata']}
     },
+    {
+        id: 'luna',
+        title: 'Luna piena',
+        desc: 'Luna crescente su tutte le corsie: ogni turno la tua unità più debole cresce. Conta chi resiste.',
+        rules: {omens: ['luna', 'luna', 'luna']}
+    },
+    {
+        id: 'miasma',
+        title: 'Aria avvelenata',
+        desc: 'Miasma ovunque: le unità perdono 1 salute a ogni tuo turno. Meglio colpire in fretta.',
+        rules: {omens: ['miasma', 'miasma', 'miasma']}
+    },
+    {
+        id: 'arena',
+        title: 'Giochi di sangue',
+        desc: 'Arena di sangue su tutte le corsie: ogni unità che uccide e sopravvive diventa più forte.',
+        rules: {omens: ['arena', 'arena', 'arena']}
+    },
+    {
+        id: 'palude',
+        title: 'Terre sommerse',
+        desc: 'Palude ovunque: tutte le unità hanno -1 attacco. Vince chi trova un altro modo di colpire.',
+        rules: {omens: ['palude', 'palude', 'palude']}
+    },
+    {
+        id: 'mura',
+        title: 'Mura e brecce',
+        desc: 'Bastione ai lati, Eclissi al centro: la corsia centrale decide la partita.',
+        rules: {omens: ['bastione', 'eclissi', 'bastione']}
+    },
+    {
+        id: 'golia',
+        title: 'Davide e Golia',
+        desc: 'I Sigilli avversari hanno 16 punti vita, ma tu parti con 3 Cristalli.',
+        rules: {opSeal: 16, startC: 3}
+    },
+    {
+        id: 'traghetto',
+        title: "L'ultimo traghetto",
+        desc: 'Entrambi i giocatori hanno il Traghettatore come Custode: ogni prima morte del turno ferisce un Sigillo.',
+        rules: {custodi: ['traghettatore', 'traghettatore']}
+    },
+    {
+        id: 'stagioni',
+        title: 'Cambio di stagione',
+        desc: 'Entrambi i giocatori hanno la Madre delle Stagioni come Custode, e i Sigilli hanno 12 punti vita.',
+        rules: {custodi: ['madre', 'madre'], mySeal: 12, opSeal: 12}
+    },
+    {
+        id: 'pozzi',
+        title: 'Il coro dei pozzi',
+        desc: 'Pozzo dei sussurri su tutte le corsie: chi controlla una corsia pesca una carta in più.',
+        rules: {omens: ['pozzo', 'pozzo', 'pozzo']}
+    },
 ];
 /** Numero della settimana (cambia il lunedì). */
 export const weekIndex = (now = Date.now()) => Math.floor((now - Date.UTC(2026, 0, 5)) / 604800000);

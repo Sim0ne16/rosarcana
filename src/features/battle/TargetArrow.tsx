@@ -33,10 +33,12 @@ export function TargetArrow() {
     const [x1, y1] = from, [x2, y2] = pt, mx = (x1 + x2) / 2, my = Math.min(y1, y2) - 120;
     const ang = Math.atan2(y2 - my, x2 - mx);
     const head = [[x2, y2], [x2 - 22 * Math.cos(ang - 0.45), y2 - 22 * Math.sin(ang - 0.45)], [x2 - 22 * Math.cos(ang + 0.45), y2 - 22 * Math.sin(ang + 0.45)]].map(p => p.join(',')).join(' ');
+    // la linea (tratteggiata e animata) finisce sotto la base della punta, così non sporge oltre il triangolo
+    const ex = x2 - 17 * Math.cos(ang), ey = y2 - 17 * Math.sin(ang), d = `M${x1} ${y1} Q${mx} ${my} ${ex} ${ey}`;
     return (
         <svg className={s.arrow} aria-hidden="true">
-            <path d={`M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`} className={s.arrowGlow}/>
-            <path d={`M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`} className={s.arrowLine}/>
+            <path d={d} className={s.arrowGlow}/>
+            <path d={d} className={s.arrowLine}/>
             <polygon points={head} className={s.arrowHead}/>
         </svg>
     );

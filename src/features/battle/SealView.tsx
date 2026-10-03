@@ -1,21 +1,24 @@
 import {AnimatePresence, motion} from 'framer-motion';
 import {useMemo} from 'react';
 import {type Game} from '../../engine';
-import {Rose} from '../../cards/art/CardArt';
-import {rose} from '../../cards/art/rose';
 import {SEAL_PAL} from '../../cards/art/palettes';
 import {useLang, useT} from '../../i18n/lang';
 import {cardName} from '../../i18n/names';
 import {Floaters} from './Floaters';
 import {Icon} from '../../cards/cardText';
+import {CardArt} from '../../cards/art/CardArt';
+import {defaultArt} from '../../cards/styles';
 import {useBattle} from './store';
 import s from './battle.module.css';
 
 export function SealView({G, p, l, targetable}: { G: Game; p: number; l: number; targetable: boolean }) {
     const P = G.p[p], hp = P.seals[l], relic = P.relics[l];
-    const fx = useBattle(st => st.fx).filter(f => f.p === p && f.l === l);
+    const allFx = useBattle(st => st.fx), fx = allFx.filter(f => f.p === p && f.l === l);
+    // la reliquia si illumina quando il suo effetto scatta
+    const relicOn = !!relic && allFx.some(f => f.kind === 'relic' && f.p === p && f.card === relic);
     const broke = fx.find(f => f.kind === 'break');
-    const svg = useMemo(() => rose(SEAL_PAL[p], {n: P.sealMax, lit: hp, dead: hp <= 0, core: 12}), [p, P.sealMax, hp]);
+    // il cero si consuma in cinque fasi, in proporzione alla vita rimasta (vale per Sigilli da 6 come da 16)
+    const phase = hp <= 0 ? 0 : Math.max(1, Math.ceil((hp / P.sealMax) * 5));
     const b = useBattle.getState;
     const lang = useLang(), t = useT();
     const relicName = relic ? (cardName(relic, lang)) : '';
@@ -32,18 +35,18 @@ export function SealView({G, p, l, targetable}: { G: Game; p: number; l: number;
             aria-label={t(`Sigillo di ${P.name}: ${hp <= 0 ? 'spezzato' : `${hp} su ${P.sealMax}`}`, `${p === 0 ? 'Your' : `${P.name}'s`} Seal: ${hp <= 0 ? 'broken' : `${hp} of ${P.sealMax}`}`)}
             title={hp > 0 ? t(`${hp} / ${P.sealMax} punti vita`, `${hp} / ${P.sealMax} health`) : undefined}
             animate={fx.some(f => f.kind === 'dmg') ? {x: [0, -5, 5, -2, 0]} : {x: 0}} transition={{duration: 0.4}}>
-      <span className={s.medal}>
-        <svg className={s.gauge} viewBox="0 0 100 100" aria-hidden="true">
-          <circle cx="50" cy="50" r="46" className={s.gaugeTrack}/>
-          <circle cx="50" cy="50" r="46" className={s.gaugeFill}
-                  style={{strokeDasharray: `${(Math.max(0, hp) / P.sealMax) * 289} 289`}}/>
-        </svg>
-        <Rose svg={svg} className={s.rose}/>
-        <b className={s.sealHp}>{hp > 0 ? hp : ''}</b>
-      </span>
-            {hp <= 0 && <span className={s.sLabel}>{t('Spezzato', 'Broken')}</span>}
-            {/* Reliquia: una piccola targa accanto al rosone, con l'anteprima al passaggio del mouse. */}
-            {relic && <span className={s.relic} data-relic title={relicName}
+            {/* cero votivo: si accorcia a ogni fase, la fiamma cala; spezzato resta un filo di fumo */}
+            <span className={`${s.candle} ${s['ph' + phase]}`} aria-hidden="true">
+                {phase > 0 ? <span className={s.flame}/> : <span className={s.smoke}/>}
+                <span className={s.wax}>
+                    <span className={s.drip}/>
+                    {phase <= 3 && phase > 0 && <span className={s.drip2}/>}
+                    {hp > 0 && <b className={s.sealHp}>{hp}</b>}
+                </span>
+                <span className={s.candleBase}/>
+            </span>
+            {/* Reliquia: un piccolo reliquiario accanto al cero (che resta al centro), con l'anteprima al passaggio del mouse. */}
+            {relic && <span className={`${s.relic} ${relicOn ? s.relicOn : ''}`} data-relic title={relicName} aria-label={relicName}
                             onMouseEnter={e => showRelic(e.currentTarget)}
                             onMouseLeave={() => b().setPreview(null)} onClick={e => {
                 e.stopPropagation();
@@ -51,7 +54,10 @@ export function SealView({G, p, l, targetable}: { G: Game; p: number; l: number;
             }} onContextMenu={e => {
                 e.preventDefault();
                 b().inspect({id: relic, p});
-            }}><Icon k="type-R"/><span>{relicName}</span></span>}
+            }}>
+                <span className={s.relicArt}><CardArt id={relic} style={defaultArt(relic)} arch={false}/></span>
+                <span className={s.relicIcon}><Icon k="type-R"/></span>
+            </span>}
             <Floaters fx={fx}/>
             <AnimatePresence>{broke && <Shatter key={broke.id} colors={SEAL_PAL[p]}/>}</AnimatePresence>
         </motion.button>

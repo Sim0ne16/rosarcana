@@ -3,6 +3,7 @@
 import {create} from 'zustand';
 import {
     aiDeck,
+    aiGuards,
     aiMulligan,
     apply,
     attackers,
@@ -21,6 +22,7 @@ import {
     type Game,
     type GameEvent,
     hasAttackTarget,
+    LANE_NAME,
     mainFaction,
     moveTargets,
     moveUnit,
@@ -33,9 +35,13 @@ import {
     playOptions,
     startTurn,
     type Target,
+    toggleGuard,
+    readyToAttack,
+    aimTargets,
+    setAim,
 } from '../../engine';
 import {legendSfx, sfx} from '../../audio/sfx';
-import {OPP_NAMES} from '../../economy/constants';
+import {OPP_NAMES, type QuestEvent} from '../../economy/constants';
 import {tierIdx, useProfile} from '../../profile/store';
 import {DIFFS, stageReward} from '../adventure/model';
 import {useEvent} from '../adventure/stories';
@@ -45,14 +51,20 @@ import type {MatchStats} from '../../economy/mastery';
 import {aiReact, resetEmotes} from './emoteStore';
 import {recordWar, warOmen} from '../war/war';
 import {dataLang, tr} from '../../i18n/langState';
-import {playerName} from '../../i18n/log';
+import {logTexts, playerName} from '../../i18n/log';
+import {oppAim, type OppPlay, oppTone, revealMs} from './oppPlay';
+import {EN_LANE_NAME} from '../../i18n/en/mechanics';
 import {bellInfo, cardName, custodeName, factionName, nightText} from '../../i18n/names';
 import {W} from '../../i18n/words';
+import {flipGame, flipOpt} from '../online/flip';
+import type {Link, Msg, RemoteAct} from '../online/net';
 
 export interface Fx {
     id: number;
-    kind: 'dmg' | 'heal' | 'break' | 'death' | 'ascend';
+    kind: 'dmg' | 'heal' | 'break' | 'death' | 'ascend' | 'relic';
     uid?: number;
+    /** Carta coinvolta (per 'relic': la reliquia che si è attivata). */
+    card?: string;
     p?: number;
     l?: number;
     n?: number
@@ -72,7 +84,7 @@ export type Sel =
     dests?: number[];
     skip?: boolean
 }
-    | { kind: 'unit'; uid: number; to: number[] };
+    | { kind: 'unit'; uid: number; to: number[]; aims: number[] };
 export type Mode = 'ranked' | 'casual' | 'adv' | 'tutorial' | 'custom';
 
 /** Partita configurata da un'altra modalità (Draft, Spedizione, prove, allenamento). */
@@ -86,14 +98,41 @@ export interface CustomMatch {
     timed?: boolean;
     /** Notte Incatenata: Nyxa come terzo giocatore (engine/night.ts). */
     night?: boolean;
+    /** Nessuna ricompensa, missione o statistica: solo le righe di `onEnd` (prove degli archetipi, sfide tra amici). */
+    noRewards?: boolean;
     onEnd: (win: boolean) => string[];
+}
+
+/** Avvio di una sfida tra amici (features/online/FriendMatch.tsx). */
+export interface OnlineStart {
+    link: Link;
+    me: { name: string; deck: string[]; custode: CustodeId | null; deckName: string };
+    foe: { name: string; deck: string[]; custode: CustodeId | null };
+    /** Solo per l'ospite: lo stato iniziale inviato da chi ospita. */
+    start?: Game;
+}
+
+export type CoinFace = 'testa' | 'croce';
+
+export interface Toss {
+    /** Chi chiama la moneta: 0 il giocatore, 1 l'avversario (sorteggiato a caso). */
+    caller: number;
+    call: CoinFace | null;
+    result: CoinFace | null;
+    phase: 'call' | 'flip' | 'done';
+    /** Scadenza della scelta del giocatore (ms): allo scadere la moneta viene chiamata a caso. */
+    until?: number;
+    /** Chi inizia, noto alla fine del lancio. */
+    first?: number
 }
 
 interface Stack {
     id: string;
     hid: number;
     p: number;
-    targeting?: boolean
+    targeting?: boolean;
+    /** Spostamento verso il bersaglio con cui la carta esce dalla pila (incantesimi e reliquie dell'avversario). */
+    flyTo?: { x: number; y: number }
 }
 
 interface BattleState {
@@ -105,6 +144,17 @@ interface BattleState {
     sel: Sel | null;
     hint: string;
     stack: Stack | null;
+    /** Giocata dell'avversario in corso, raccontata in tre tempi (vedi oppPlay.ts). */
+    opp: OppPlay | null;
+    /** Carta che l'avversario sta sfilando dalla mano (si solleva prima di volare sulla pila). */
+    oppLift: number | null;
+    /** Carta in mano sotto il mouse (hid): la riserva di Cristalli mostra quanti ne spenderebbe. */
+    hoverHid: number | null;
+    setHoverHid: (hid: number | null) => void;
+    /** Testa o croce di inizio partita: chi chiama, cosa ha chiamato, cosa è uscito. */
+    toss: Toss | null;
+    /** Il giocatore chiama la moneta (quando il sorteggio ha scelto lui). */
+    chooseToss: (call: CoinFace) => void;
     pending: number | null;
     dragging: number | null;
     attacking: { uid: number; p: number } | null;
@@ -136,6 +186,8 @@ interface BattleState {
     confirmMull: () => void;
     coach: { title: string; tips: string[] } | null;
     startCustom: (m: CustomMatch) => void;
+    /** Sfida tra amici: chi ospita crea la partita, l'ospite la riceve (`start`) dal primo messaggio. */
+    startOnline: (o: OnlineStart) => void;
     lens: boolean;
     inspected: { id: string; uid?: number; cost?: number; p?: number } | null;
     toggleLens: () => void;
@@ -146,6 +198,10 @@ interface BattleState {
     clickLane: (l: number) => void;
     clickSeal: (p: number, l: number) => void;
     clickUnit: (uid: number) => void;
+    /** Attacca o resta in guardia (per il turno in corso). */
+    toggleGuard: (uid: number) => void;
+    /** Tutte le unità pronte in guardia (true) o tutte all'attacco (false). */
+    guardAll: (on: boolean) => void;
     dropUnit: (uid: number, drop: string | null) => void;
     confirm: () => void;
     skip: () => void;
@@ -161,6 +217,17 @@ interface BattleState {
 let g: Game | null = null;
 let stats: MatchStats = {};
 let custom: CustomMatch | null = null;
+/** Sfida tra amici in corso. Chi ospita fa girare il motore (l'amico è il giocatore 1); l'ospite manda le sue
+ * azioni e riceve ogni stato capovolto, così per l'interfaccia resta sempre il giocatore 0. `wait`: l'ospite
+ * aspetta la risposta a un'azione ('act') o la fine del proprio turno ('end'). */
+let online: { link: Link; foe: string; mull: [boolean, boolean]; wait: 'act' | 'end' | null } | null = null;
+let hostQ: Promise<unknown> = Promise.resolve();
+const isHost = () => online?.link.role === 'host', isGuest = () => online?.link.role === 'guest';
+const guestSend = (a: RemoteAct, w: 'act' | 'end' = 'act') => {
+    if (!online) return;
+    online.wait = w;
+    online.link.send({t: 'act', a});
+};
 let bellsMe = 0;
 /** Mosse del giocatore (carte giocate e spostamenti): sotto le 5 la partita non dà ricompense. */
 let myMoves = 0;
@@ -195,18 +262,19 @@ const timeK = () => 1;
 export const turnMs = () => TURN_SECONDS * 1000 * timeK(), reserveMs = () => RESERVE_SECONDS * 1000 * timeK();
 let fxId = 0;
 const wait = (ms: number) => new Promise(r => setTimeout(r, ms));
+/** Argomenti dell'ultima partita creata: se la moneta sceglie un altro primo giocatore, si rifà la distribuzione. */
+let lastArgs: Parameters<typeof newGame> | null = null;
+let afterToss: ((call: CoinFace) => void) | null = null;
 const STACK_MS = 650;
 /** Tempo per leggere una carta appena rivelata sulla pila: più testo o parole chiave ha, più tempo resta esposta. */
-const playRevealMs = (id: string) => {
-    const c = BYID[id];
-    return Math.min(2400, 900 + c.tx.length * 9 + c.kw.length * 260);
-};
 
 export const useBattle = create<BattleState>((set, get) => {
     const alive = (G: Game | null) => !!G && g === G && !get().result;
 
     function commit() {
         if (!g) return;
+        // chi ospita manda all'amico lo stato con gli eventi ancora dentro, prima che vengano consumati qui
+        const snap = isHost() ? clone(g) : null;
         if (frames.length < 600) {
             const note = g.log[g.log.length - 1]?.txt ?? '';
             const last = frames[frames.length - 1];
@@ -219,6 +287,7 @@ export const useBattle = create<BattleState>((set, get) => {
             if (e.t === 'dmgU') fx.push({id: ++fxId, kind: 'dmg', uid: e.uid, n: e.n});
             if (e.t === 'dmgS') fx.push({id: ++fxId, kind: 'dmg', p: e.p, l: e.l, n: e.n});
             if (e.t === 'healS') fx.push({id: ++fxId, kind: 'heal', p: e.p, l: e.l, n: e.n});
+            if (e.t === 'relicTurn') fx.push({id: ++fxId, kind: 'relic', p: e.p, card: e.id});
             if (e.t === 'break') {
                 fx.push({id: ++fxId, kind: 'break', p: e.p, l: e.l});
                 sfx('seal');
@@ -265,6 +334,7 @@ export const useBattle = create<BattleState>((set, get) => {
             banner(tr(W.lastToll), `${g ? playerName(g, b.p, dataLang()) : ''}: ${toll.name}. ${toll.text}`, 2600);
         }, 700);
         set(s => ({G: clone(g!), fx: [...s.fx, ...fx], shake: broke ? s.shake + 1 : s.shake}));
+        if (snap) online!.link.send({t: 'state', G: snap});
         if (fx.length) {
             const ids = new Set(fx.map(f => f.id));
             setTimeout(() => set(s => ({fx: s.fx.filter(f => !ids.has(f.id))})), 1400);
@@ -367,6 +437,62 @@ export const useBattle = create<BattleState>((set, get) => {
         }, 200);
     }
 
+    const mkGame = (...args: Parameters<typeof newGame>) => {
+        lastArgs = args;
+        return newGame(...args);
+    };
+
+    /** Testa o croce: un giocatore a caso chiama, la moneta gira, chi indovina (o chi vince, se chiama l'avversario)
+     * inizia. Le carte si distribuiscono solo dopo, con il primo giocatore deciso dal lancio. */
+    function tossThenMulligan() {
+        const G0 = g, caller = Math.random() < 0.5 ? 0 : 1;
+        const flip = async (call: CoinFace) => {
+            const result: CoinFace = Math.random() < 0.5 ? 'testa' : 'croce';
+            set({toss: {caller, call, result, phase: 'flip'}});
+            sfx('coinFlip');
+            // la moneta atterra poco prima della fine dell'animazione
+            setTimeout(() => g === G0 && sfx('coin'), 1800);
+            await wait(2100);
+            if (!g || g !== G0 || get().result) return;
+            const first = call === result ? caller : 1 - caller;
+            set({toss: {caller, call, result, phase: 'done', first}});
+            sfx(first === 0 ? 'claim' : 'turn');
+            await wait(1700);
+            if (!g || g !== G0 || get().result) return;
+            if (first !== g.first && lastArgs) {
+                const [me, op, opts] = lastArgs;
+                g = mkGame(me, op, {...opts, first});
+            }
+            set({toss: null, G: clone(g), mull: {sel: []}});
+            dealSounds(g.p[0].hand.length);
+        };
+        if (caller === 0) {
+            // cinque secondi per chiamare; poi sceglie la sorte
+            const until = Date.now() + 5000;
+            set({toss: {caller, call: null, result: null, phase: 'call', until}, mull: null});
+            const timer = setTimeout(() => {
+                if (g === G0 && afterToss) get().chooseToss(Math.random() < 0.5 ? 'testa' : 'croce');
+            }, 5000);
+            afterToss = c => {
+                clearTimeout(timer);
+                void flip(c);
+            };
+        } else {
+            set({toss: {caller, call: null, result: null, phase: 'call'}, mull: null});
+            afterToss = null;
+            // l'avversario ci pensa un attimo, poi chiama
+            void wait(1300).then(() => {
+                if (g === G0 && get().toss?.phase === 'call') {
+                    const call: CoinFace = Math.random() < 0.5 ? 'testa' : 'croce';
+                    set({toss: {caller, call, result: null, phase: 'call'}});
+                    void wait(900).then(() => {
+                        if (g === G0) void flip(call);
+                    });
+                }
+            });
+        }
+    }
+
     /** Primo turno della partita (dopo l'eventuale mulligan). */
     function begin(label: string) {
         if (!g) return;
@@ -378,13 +504,18 @@ export const useBattle = create<BattleState>((set, get) => {
             startClock();
         } else {
             banner(g.p[1].name, tr('inizia per primo', 'goes first'));
-            void aiTurn();
+            if (isHost()) remoteTurnStart(); else void aiTurn();
         }
     }
 
     /** Azzera le statistiche della partita appena creata; `quiet` spegne le emote dell'avversario (tutorial). */
     function resetMatch(quiet: boolean) {
+        online?.link.close();
+        online = null;
+        hostQ = Promise.resolve();
         stats = {};
+        set({opp: null, oppLift: null, toss: null});
+        afterToss = null;
         bellsMe = 0;
         myMoves = 0;
         frames = [];
@@ -402,11 +533,29 @@ export const useBattle = create<BattleState>((set, get) => {
         }
         if (!g || get().result) return;
         const win = g.winner === 0, s = get(), prof = useProfile.getState();
-        const short = s.mode !== 'tutorial' && myMoves < MIN_MOVES;
+        // partite senza conseguenze (tutorial, prove degli archetipi, sfide tra amici): niente ricompense né statistiche
+        const free = s.mode === 'tutorial' || (s.mode === 'custom' && !!custom?.noRewards);
+        const short = !free && myMoves < MIN_MOVES;
         const cu = g.p[0].custode,
-            custLines = cu && s.mode !== 'tutorial' && !short ? prof.recordCustode(cu, custodeName(cu, dataLang()), win, bellsMe) : [];
-        if (s.mode !== 'tutorial' && !s.replay) prof.recordFactions(myFacs, win);
-        if (s.mode !== 'tutorial' && !short) {
+            custLines = cu && !free && !short ? prof.recordCustode(cu, custodeName(cu, dataLang()), win, bellsMe) : [];
+        if (!free && !s.replay) prof.recordFactions(myFacs, win);
+        if (!free && !s.replay && !short) {
+            // Missioni del giorno legate a ciò che è successo in partita (le carte giocate vengono da `stats`).
+            const all = Object.entries(stats), sum = (k: 'plays' | 'seal' | 'kills', t?: string) =>
+                all.reduce((a, [id, st]) => a + (!t || BYID[id]?.t === t ? st[k] : 0), 0);
+            prof.bump('unit', sum('plays', 'U'));
+            prof.bump('spell', sum('plays', 'I'));
+            prof.bump('relic', sum('plays', 'R'));
+            prof.bump('sealDmg', sum('seal'));
+            prof.bump('kill', sum('kills'));
+            prof.bump('sealBreak', g.p[1].seals.filter(x => x <= 0).length);
+            if (win) {
+                if (s.mode === 'ranked') prof.bump('winRanked');
+                if (g.p[0].seals.every(x => x > 0)) prof.bump('flawless');
+                for (const f of myFacs) prof.bump(`win-${f}` as QuestEvent);
+            }
+        }
+        if (!free && !short) {
             // Guerra della Rosa: i punti vanno alla Casata principale del mazzo giocato (tutte le carte, ovunque siano)
             const P = g.p[0];
             recordWar(mainFaction([...P.deck, ...P.grave, ...P.hand.map(h => h.id), ...P.board.flat().map(u => u.id)]), win);
@@ -427,7 +576,8 @@ export const useBattle = create<BattleState>((set, get) => {
         const builtin = adv?.id === 'cap1';
         if (s.mode === 'custom' && custom) {
             let lines: string[], cardLines: string[] = [];
-            if (short) lines = [...(win ? [] : custom.onEnd(false)), tr(`Meno di ${MIN_MOVES} mosse: nessuna ricompensa`, `Fewer than ${MIN_MOVES} moves: no rewards`)];
+            if (custom.noRewards) lines = custom.onEnd(win);
+            else if (short) lines = [...(win ? [] : custom.onEnd(false)), tr(`Meno di ${MIN_MOVES} mosse: nessuna ricompensa`, `Fewer than ${MIN_MOVES} moves: no rewards`)];
             else {
                 const r = prof.matchResult({mode: 'other', win, foe: g.p[1].name, stats});
                 lines = [...custom.onEnd(win), ...r.lines, ...custLines];
@@ -480,6 +630,13 @@ export const useBattle = create<BattleState>((set, get) => {
         }
         set({busy: true, sel: null, hint: '', stack: {id: h.id, hid: h.hid, p: 0}, pending: h.hid});
         sfx('play');
+        if (isGuest()) {
+            // la carta resta sulla pila finché chi ospita non risponde con lo stato aggiornato
+            myMoves++;
+            guestSend({k: 'play', hi, o: flipOpt(opt)});
+            return;
+        }
+        if (isHost()) online!.link.send({t: 'stack', id: h.id, hid: h.hid});
         await wait(alreadyOnStack ? 250 : STACK_MS);
         if (!alive(G)) return;
         playCard(g, 0, hi, opt);
@@ -532,6 +689,16 @@ export const useBattle = create<BattleState>((set, get) => {
 
     const myTurn = () => !!g && g.active === 0 && g.winner == null && !get().busy;
 
+    /** Sceglie il bersaglio dell'attacco di una tua unità (per l'ospite lo decide chi ospita). */
+    const aimAt = (uid: number, target: number) => {
+        if (!g) return false;
+        if (!isGuest()) return setAim(g, 0, uid, target);
+        if (!aimTargets(g, 0, uid).includes(target)) return false;
+        set({busy: true});
+        guestSend({k: 'aim', uid, target});
+        return true;
+    };
+
     function targetChosen(t: Target) {
         const s = get().sel;
         if (!s || s.kind !== 'hand' || s.step !== 'target') return false;
@@ -565,13 +732,22 @@ export const useBattle = create<BattleState>((set, get) => {
         const G = g!;
         for (let l = 0; l < 3; l++) {
             const ids = attackers(g!, p, l).filter(uid => hasAttackTarget(g!, p, l, uid));
-            if (!ids.length) continue;
+            // le stordite saltano l'attacco senza scattare in avanti: il motore consuma lo stordimento e lo annota
+            const skip = ids.filter(uid => g!.p[p].board[l].find(x => x.uid === uid)?.stun);
+            if (skip.length) {
+                skip.forEach(uid => attackOne(g!, p, l, uid));
+                commit();
+            }
+            const strikers = ids.filter(uid => !skip.includes(uid));
+            if (!strikers.length) continue;
             set({laneHl: l});
+            atkSend(null, l);
             await wait(220);
             if (!alive(G)) return;
-            for (const uid of ids) {
+            for (const uid of strikers) {
                 if (!hasAttackTarget(g!, p, l, uid)) continue;
                 set({attacking: {uid, p}});
+                atkSend({uid, p}, l);
                 await wait(190);
                 if (!alive(G)) return;
                 sfx('hit');
@@ -579,6 +755,7 @@ export const useBattle = create<BattleState>((set, get) => {
                 commit();
                 await wait(150);
                 set({attacking: null});
+                atkSend(null, l);
                 await wait(300);
                 if (!alive(G)) return;
                 if (g!.winner != null) break;
@@ -586,6 +763,192 @@ export const useBattle = create<BattleState>((set, get) => {
             if (g!.winner != null) break;
         }
         set({laneHl: -1});
+        atkSend(null, -1);
+    }
+
+    const atkSend = (a: { uid: number; p: number } | null, lane: number) => {
+        if (isHost()) online!.link.send({t: 'atk', a, lane});
+    };
+
+    // ---- sfida tra amici ----
+    /** Chi ospita: inizia il turno dell'amico e aspetta le sue azioni (hostAct). */
+    function remoteTurnStart() {
+        if (!g) return;
+        set({busy: true, sel: null});
+        startTurn(g, 1);
+        commit();
+        banner(tr(`Turno di ${g.p[1].name}`, `${g.p[1].name}'s turn`));
+        if (g.winner != null) finish();
+    }
+
+    /** Chi ospita: l'amico ha finito il turno. Combattimento, poi tocca di nuovo a chi ospita. */
+    async function remoteEnd() {
+        const G = g!;
+        endTurnEffects(G, 1);
+        commit();
+        await combat(1);
+        if (!alive(G)) return;
+        if (G.winner != null) return finish();
+        startTurn(G, 0);
+        commit();
+        set({busy: false, preview: null});
+        banner(tr(W.yourTurn), turnNote(G));
+        sfx('turn');
+        startClock();
+        if (G.winner != null) finish();
+    }
+
+    const sameOpt = (a: PlayOpt, b: PlayOpt) => a.lane === b.lane && a.to === b.to && (!a.target ? !b.target : !!b.target && sameTarget(a.target, b.target));
+
+    /** Chi ospita: applica un'azione dell'amico (giocatore 1). Ogni azione finisce con un commit, che manda lo
+     * stato all'amico e lo sblocca anche quando l'azione non era valida. */
+    async function hostAct(a: RemoteAct) {
+        const G = g;
+        if (!G || !online || get().result) return;
+        if (a.k === 'mull') {
+            if (online.mull[1]) return;
+            mulligan(G, 1, a.hids);
+            online.mull[1] = true;
+            commit();
+            if (online.mull[0]) begin(beginLabel);
+            return;
+        }
+        if (G.active !== 1 || G.phase !== 'main' || G.winner != null) return;
+        if (a.k === 'play') {
+            const h = G.p[1].hand[a.hi];
+            if (h && playOptions(G, 1, a.hi).some(o => sameOpt(o, a.o))) {
+                set({stack: {id: h.id, hid: h.hid, p: 1}, pending: h.hid, preview: {id: h.id, cost: costOf(G, 1, h)}});
+                sfx('play');
+                await wait(STACK_MS);
+                if (!alive(G)) return;
+                playCard(G, 1, a.hi, a.o);
+                set({stack: null, pending: null});
+            }
+        } else if (a.k === 'move') {
+            if (moveTargets(G, 1, a.uid).includes(a.to)) {
+                moveUnit(G, 1, a.uid, a.to);
+                sfx('move');
+            }
+        } else if (a.k === 'guard') toggleGuard(G, 1, a.uid);
+        else if (a.k === 'guardAll') G.p[1].board.forEach((B, l) => B.forEach(u => {
+            if (readyToAttack(G, 1, l, u)) u.guard = a.on;
+        }));
+        else if (a.k === 'aim') setAim(G, 1, a.uid, a.target);
+        else if (a.k === 'end') return remoteEnd();
+        commit();
+        if (G.winner != null) finish();
+    }
+
+    function hostMsg(m: Msg) {
+        if (!g || !online) return;
+        if (m.t === 'quit') {
+            if (!get().result) {
+                banner(tr(`${online.foe} si è ritirato`, `${online.foe} conceded`));
+                g.winner = 0;
+                commit();
+                finish();
+            }
+            return;
+        }
+        if (m.t === 'act') {
+            const a = m.a;
+            hostQ = hostQ.then(() => hostAct(a)).catch(e => console.error(e));
+        }
+    }
+
+    /** L'ospite: tutto ciò che arriva da chi ospita. */
+    function guestMsg(m: Msg) {
+        if (!online) return;
+        if (m.t === 'quit') {
+            if (g && !get().result) {
+                banner(tr(`${online.foe} si è ritirato`, `${online.foe} conceded`));
+                g.winner = 0;
+                finish();
+            }
+            return;
+        }
+        if (m.t === 'atk') {
+            set({attacking: m.a ? {uid: m.a.uid, p: 1 - m.a.p} : null, laneHl: m.lane});
+            if (m.a) setTimeout(() => sfx('hit'), 190);
+            return;
+        }
+        if (m.t === 'stack') {
+            if (m.id && m.hid != null) {
+                set({stack: {id: m.id, hid: m.hid, p: 1}, pending: m.hid, preview: {id: m.id}});
+                sfx('play');
+            } else set({stack: null, pending: null});
+            return;
+        }
+        if (m.t !== 'state' || get().result) return;
+        const prev = g;
+        g = flipGame(m.G, 'Tu', online.foe);
+        const st = get();
+        if (st.stack && !st.stack.targeting) set({stack: null, pending: null});
+        commit();
+        if (g.winner != null) {
+            finish();
+            return;
+        }
+        if (g.turn > 0 && (!prev || prev.turn !== g.turn || prev.active !== g.active)) {
+            online.wait = null;
+            if (g.active === 0) {
+                set({busy: false, preview: null});
+                banner(tr(W.yourTurn), turnNote(g));
+                sfx('turn');
+                startClock();
+            } else {
+                stopClock();
+                set({busy: true, sel: null});
+                banner(tr(`Turno di ${g.p[1].name}`, `${g.p[1].name}'s turn`));
+            }
+        } else if (online.wait === 'act' && g.active === 0) {
+            online.wait = null;
+            set({busy: false});
+        }
+    }
+
+    /** Giocata dell'avversario: la carta si mostra, punta il bersaglio, si risolve e lascia scritto cosa è successo. */
+    async function oppPlays(G: Game, hi: number, o: PlayOpt): Promise<boolean> {
+        const h = g!.p[1].hand[hi], lang = dataLang(), c = BYID[h.id];
+        const {aim, aimLabel} = oppAim(g!, h.id, o, lang);
+        // la carta si stacca dalla mano coperta prima di volare sulla pila
+        set({oppLift: h.hid});
+        await wait(480);
+        if (!alive(G)) return false;
+        set({
+            oppLift: null,
+            stack: {id: h.id, hid: h.hid, p: 1}, pending: h.hid, preview: {id: h.id, cost: costOf(g!, 1, h)},
+            opp: {id: h.id, phase: 'reveal', tone: oppTone(h.id), aim, aimLabel}
+        });
+        sfx('play');
+        await wait(revealMs(h.id));
+        if (!alive(G)) return false;
+        set(st => ({opp: st.opp && {...st.opp, phase: 'aim'}}));
+        await wait(aim ? 1000 : 500);
+        if (!alive(G)) return false;
+        // incantesimi e reliquie escono dalla pila volando verso il bersaglio; le unità ci arrivano da sole (layoutId)
+        const from = document.getElementById('stack-card')?.getBoundingClientRect(),
+            to = aim ? document.querySelector(aim)?.getBoundingClientRect() : undefined;
+        if (c.t !== 'U' && from && to) {
+            const flyTo = {x: to.left + to.width / 2 - (from.left + from.width / 2), y: to.top + to.height / 2 - (from.top + from.height / 2)};
+            set(st => ({stack: st.stack && {...st.stack, flyTo}}));
+            await wait(30);
+        }
+        const before = g!.log.length;
+        playCard(g!, 1, hi, o);
+        set({stack: null, pending: null});
+        commit();
+        const fmt = logTexts(g!, lang);
+        const lines = g!.log.slice(before).filter(l => l.k !== 'play').map(fmt).slice(0, 4);
+        // giocate senza effetti da raccontare: almeno dire dove sono finite
+        const {aimLabel: where} = oppAim(g!, h.id, o, lang);
+        if (!lines.length && c.t === 'U') lines.push(tr(`Entra in campo, ${where}`, `Enters the board, ${where}`));
+        if (!lines.length && c.t === 'R') lines.push(tr(`Posta sul Sigillo, ${where}`, `Placed on the Seal, ${where}`));
+        set(st => ({opp: st.opp && {...st.opp, phase: 'resolve', lines}}));
+        // il tempo per vedere l'impatto sul bersaglio; le frasi dell'esito vanno solo ai lettori di schermo
+        await wait(1000);
+        set({opp: null});
+        return alive(G);
     }
 
     async function aiTurn() {
@@ -603,15 +966,8 @@ export const useBattle = create<BattleState>((set, get) => {
                 if (a.play) {
                     const hi = g!.p[1].hand.findIndex(h => h.id === a.play);
                     if (hi < 0) continue;
-                    const h = g!.p[1].hand[hi];
-                    set({stack: {id: h.id, hid: h.hid, p: 1}, pending: h.hid, preview: {id: h.id}});
-                    sfx('play');
-                    await wait(playRevealMs(h.id));
-                    if (!alive(G)) return;
-                    playCard(g!, 1, hi, {lane: a.lane});
-                    set({stack: null, pending: null});
-                    commit();
-                    await wait(500);
+                    if (!(await oppPlays(G, hi, {lane: a.lane}))) return;
+                    await wait(300);
                 }
             }
         } else {
@@ -621,20 +977,24 @@ export const useBattle = create<BattleState>((set, get) => {
                 const a = bestAction(g!, 1, get().noise);
                 if (!a) break;
                 if (a.k === 'play') {
-                    const h = g!.p[1].hand[a.hi];
-                    set({
-                        stack: {id: h.id, hid: h.hid, p: 1},
-                        pending: h.hid,
-                        preview: {id: h.id, cost: costOf(g!, 1, h)}
+                    if (!(await oppPlays(G, a.hi, a.o))) return;
+                } else {
+                    // spostamento: prima si indica quale unità e dove va, poi si muove
+                    const f = findU(g!, a.uid), lang = dataLang();
+                    if (f) set({
+                        opp: {
+                            id: f.u.id, phase: 'aim', tone: 'tide', aim: `[data-drop="unit:${a.uid}"]`,
+                            aimLabel: tr(`sposta ${cardName(f.u.id, lang)} nella corsia ${LANE_NAME[a.to]}`, `moves ${cardName(f.u.id, lang)} to the ${EN_LANE_NAME[a.to]} lane`)
+                        }
                     });
-                    sfx('play');
-                    await wait(playRevealMs(h.id));
+                    await wait(900);
                     if (!alive(G)) return;
+                    apply(g!, 1, a);
+                    sfx('move');
+                    commit();
+                    await wait(500);
+                    set({opp: null});
                 }
-                apply(g!, 1, a);
-                if (a.k === 'move') sfx('move');
-                set({stack: null, pending: null});
-                commit();
                 if (get().legend) {
                     await wait(2000);
                     if (!alive(G)) return;
@@ -644,6 +1004,7 @@ export const useBattle = create<BattleState>((set, get) => {
                 if (!alive(G)) return;
             }
         }
+        aiGuards(g!, 1);
         endTurnEffects(g!, 1);
         commit();
         await combat(1);
@@ -666,6 +1027,16 @@ export const useBattle = create<BattleState>((set, get) => {
         sel: null,
         hint: '',
         stack: null,
+        opp: null,
+        oppLift: null,
+        hoverHid: null,
+        setHoverHid: hid => set(s => (s.hoverHid === hid ? s : {hoverHid: hid})),
+        toss: null,
+        chooseToss: call => {
+            const go = afterToss;
+            afterToss = null;
+            go?.(call);
+        },
         pending: null,
         dragging: null,
         attacking: null,
@@ -732,6 +1103,21 @@ export const useBattle = create<BattleState>((set, get) => {
         confirmMull: () => {
             const m = get().mull;
             if (!g || !m) return;
+            if (online) {
+                set({mull: null});
+                if (m.sel.length) sfx('draw');
+                if (isGuest()) {
+                    set({busy: true, hint: tr(`In attesa di ${online.foe}…`, `Waiting for ${online.foe}…`)});
+                    guestSend({k: 'mull', hids: m.sel}, 'end');
+                    return;
+                }
+                mulligan(g, 0, m.sel);
+                online.mull[0] = true;
+                commit();
+                if (online.mull[1]) begin(beginLabel);
+                else set({hint: tr(`In attesa di ${online.foe}…`, `Waiting for ${online.foe}…`)});
+                return;
+            }
             mulligan(g, 0, m.sel);
             aiMulligan(g, 1);
             set({mull: null});
@@ -741,7 +1127,7 @@ export const useBattle = create<BattleState>((set, get) => {
         },
         startCustom: m => {
             custom = m;
-            g = newGame({name: 'Tu', deck: m.me.deck}, {name: m.op.name, deck: m.op.deck}, {
+            g = mkGame({name: 'Tu', deck: m.me.deck}, {name: m.op.name, deck: m.op.deck}, {
                 mySeal: m.me.seal,
                 seal: m.op.seal,
                 startC: m.startC,
@@ -782,8 +1168,69 @@ export const useBattle = create<BattleState>((set, get) => {
                 reserveLeft: reserveMs()
             });
             beginLabel = m.label;
-            set({mull: {sel: []}});
+            tossThenMulligan();
+        },
+        startOnline: o => {
+            const foe = o.foe.name, prof = useProfile.getState();
+            custom = {
+                label: tr(`Sfida con ${foe}`, `Challenge vs ${foe}`),
+                me: {deck: o.me.deck, custode: o.me.custode},
+                op: {name: foe, deck: o.foe.deck, noise: 0, custode: o.foe.custode},
+                noRewards: true,
+                onEnd: win => [win ? tr(`Hai battuto ${foe}!`, `You beat ${foe}!`) : tr(`${foe} ha vinto la sfida.`, `${foe} won the challenge.`),
+                    tr('Sfida tra amici: nessuna ricompensa.', 'Friendly challenge: no rewards.')]
+            };
+            if (o.link.role === 'host') g = mkGame({name: 'Tu', deck: o.me.deck}, {name: foe, deck: o.foe.deck}, {custodi: [o.me.custode, o.foe.custode]});
+            else {
+                g = flipGame(o.start!, 'Tu', foe);
+                g.ev = [];
+            }
+            resetMatch(true);
+            online = {link: o.link, foe, mull: [false, false], wait: null};
+            myFacs = facsOf(o.me.deck);
+            matchLabel = custom.label;
+            deckName = o.me.deckName;
+            myBack = prof.back;
+            set({
+                G: clone(g),
+                mode: 'custom',
+                node: undefined,
+                advId: undefined,
+                noise: 0,
+                sel: null,
+                hint: '',
+                stack: null,
+                pending: null,
+                attacking: null,
+                laneHl: -1,
+                fx: [],
+                banner: null,
+                busy: false,
+                result: null,
+                preview: null,
+                tutStep: 0,
+                tutFree: false,
+                lens: false,
+                inspected: null,
+                mull: {sel: []},
+                coach: null,
+                timed: !prof.settings?.noTimer,
+                turnLeft: turnMs(),
+                reserveLeft: reserveMs()
+            });
+            beginLabel = g.first === 0 ? tr('Inizi tu', 'You go first') : tr(`Inizia ${foe}`, `${foe} goes first`);
             dealSounds(g.p[0].hand.length);
+            o.link.onMsg(o.link.role === 'host' ? hostMsg : guestMsg);
+            o.link.onClose(() => {
+                if (!online || online.link !== o.link) return;
+                online = null;
+                if (g && !get().result) {
+                    banner(tr(`${foe} si è disconnesso`, `${foe} disconnected`));
+                    g.winner = 0;
+                    finish();
+                }
+            });
+            if (o.link.role === 'host') o.link.send({t: 'start', G: clone(g), name: o.me.name});
         },
         toggleLens: () => {
             sfx('lens');
@@ -846,7 +1293,7 @@ export const useBattle = create<BattleState>((set, get) => {
                     opts = {...opts, custodi: [myCustode, advCustode]};
                 } else opts = {...opts, custodi: [myCustode, oc[Math.floor(Math.random() * oc.length)].id]};
             }
-            g = newGame(me, op, opts);
+            g = mkGame(me, op, opts);
             resetMatch(mode === 'tutorial');
             myFacs = facsOf(me.deck);
             matchLabel = ({
@@ -891,8 +1338,7 @@ export const useBattle = create<BattleState>((set, get) => {
                 begin(tr('Inizi tu', 'You go first'));
             } else {
                 beginLabel = tr('Inizi tu', 'You go first');
-                set({mull: {sel: []}});
-                dealSounds(g.p[0].hand.length);
+                tossThenMulligan();
             }
         },
         selectHand: hi => {
@@ -952,14 +1398,45 @@ export const useBattle = create<BattleState>((set, get) => {
                 return;
             }
             if (EFFECTS[h.id]?.spellT) {
-                // rilasciata su un bersaglio valido: giocala subito, altrimenti apri la freccia di mira
-                // (passa dalla stessa scelta del clic, così uno spostamento chiede anche la corsia di arrivo)
-                const tgt = dropToTarget(drop);
+                // le carte con bersaglio si giocano sempre prima e poi si mira: anche se rilasciate sopra un'unità
+                // o un Sigillo, si apre la freccia e il bersaglio si sceglie con un tocco
                 beginTargeting(hi, opts);
-                if (tgt) targetChosen(tgt);
                 return;
             }
             void doPlay(hi, {});
+        },
+        guardAll: on => {
+            if (!g || !myTurn() || g.phase !== 'main') return;
+            if (isGuest()) {
+                sfx('click');
+                set({busy: true});
+                guestSend({k: 'guardAll', on});
+                return;
+            }
+            let changed = false;
+            g.p[0].board.forEach((B, l) => B.forEach(u => {
+                if (readyToAttack(g!, 0, l, u) && !!u.guard !== on) {
+                    u.guard = on;
+                    changed = true;
+                }
+            }));
+            if (changed) {
+                sfx('click');
+                commit();
+            }
+        },
+        toggleGuard: uid => {
+            if (!g || !myTurn() || g.phase !== 'main') return;
+            if (isGuest()) {
+                sfx('click');
+                set({busy: true});
+                guestSend({k: 'guard', uid});
+                return;
+            }
+            if (toggleGuard(g, 0, uid)) {
+                sfx('click');
+                commit();
+            }
         },
         clickLane: l => {
             const s = get().sel;
@@ -1000,6 +1477,20 @@ export const useBattle = create<BattleState>((set, get) => {
                 }
                 if (targetChosen({type: 'unit', p: f.p, lane: f.l, uid})) return;
             }
+            // con una tua unità selezionata, toccare un nemico della sua corsia lo sceglie come bersaglio dell'attacco
+            if (s?.kind === 'unit' && f.p === 1 && s.aims.includes(uid) && myTurn() && aimAt(s.uid, uid)) {
+                sfx('lens');
+                set({sel: null, hint: '', preview: null});
+                commit();
+                return;
+            }
+            // nemico nella stessa corsia ma dietro un Guardiano: lo si dice invece di non fare nulla
+            const me = s?.kind === 'unit' ? findU(g, s.uid) : null;
+            if (me && f.p === 1 && f.l === me.l && myTurn()) {
+                sfx('error');
+                set({hint: tr('Devi colpire prima il Guardiano di questa corsia.', 'You must hit the Guardian in this lane first.')});
+                return;
+            }
             if (get().preview?.uid !== uid) set({preview: {id: f.u.id, uid}});
             if (!myTurn() || g.phase !== 'main' || f.p !== 0 || s?.kind === 'hand') return;
             if (s?.kind === 'unit' && s.uid === uid) {
@@ -1007,8 +1498,16 @@ export const useBattle = create<BattleState>((set, get) => {
                 return;
             }
             if (!tutAllows({type: 'selectUnit', card: f.u.id})) return;
-            const to = moveTargets(g, 0, uid);
-            set(to.length ? {sel: {kind: 'unit', uid, to}, hint: ''} : {
+            const to = moveTargets(g, 0, uid), aims = readyToAttack(g, 0, f.l, f.u) ? aimTargets(g, 0, uid) : [];
+            if (aims.length) {
+                set({
+                    sel: {kind: 'unit', uid, to, aims},
+                    hint: to.length ? tr('Tocca un nemico evidenziato per sceglierlo come bersaglio, o una corsia vicina per spostarti (chi si sposta non attacca in questo turno).', 'Tap a highlighted enemy to make it the target, or a nearby lane to move (a unit that moves does not attack this turn).')
+                        : tr('Tocca un nemico evidenziato per sceglierlo come bersaglio.', 'Tap a highlighted enemy to make it the target.')
+                });
+                return;
+            }
+            set(to.length ? {sel: {kind: 'unit', uid, to, aims}, hint: ''} : {
                 sel: null,
                 hint: f.u.kw.includes('Radicato') ? tr('Questa unità è Radicata e non può spostarsi.', 'This unit is Rooted and cannot move.') : f.u.moved ? tr('Si è già spostata in questo turno.', 'It has already moved this turn.') : g.p[0].crystals < 1 ? tr('Serve 1 Cristallo per spostare un\'unità.', 'You need 1 Crystal to move a unit.') : tr('Nessuna corsia adiacente ha spazio.', 'No nearby lane has space.')
             });
@@ -1016,11 +1515,27 @@ export const useBattle = create<BattleState>((set, get) => {
         dropUnit: (uid, drop) => {
             set({dragging: null});
             if (!g || !myTurn() || g.phase !== 'main' || !drop) return;
+            // rilasciata su un nemico della sua corsia: diventa il bersaglio dell'attacco
+            if (drop.startsWith('unit:')) {
+                const tid = +drop.split(':')[1], tf = findU(g, tid);
+                if (tf?.p === 1 && aimAt(uid, tid)) {
+                    sfx('lens');
+                    set({sel: null, hint: ''});
+                    commit();
+                    return;
+                }
+            }
             const [k, v] = laneOfDrop(drop).split(':');
             if (k !== 'lane') return;
             const to = +v, f = findU(g, uid);
             if (!f || !moveTargets(g, 0, uid).includes(to)) return;
             if (!tutAllows({type: 'move', card: f.u.id, to})) return;
+            if (isGuest()) {
+                sfx('move');
+                set({sel: null, busy: true});
+                guestSend({k: 'move', uid, to});
+                return;
+            }
             moveUnit(g, 0, uid, to);
             myMoves++;
             sfx('move');
@@ -1045,13 +1560,17 @@ export const useBattle = create<BattleState>((set, get) => {
             const G = g!;
             cancelStack();
             set({busy: true, hint: ''});
+            if (isGuest()) {
+                guestSend({k: 'end'}, 'end');
+                return;
+            }
             tutAdvance();
             endTurnEffects(g!, 0);
             commit();
             await combat(0);
             if (!alive(G)) return;
             if (g!.winner != null) return finish();
-            await aiTurn();
+            if (isHost()) remoteTurnStart(); else await aiTurn();
         },
         setDragging: hid => set({dragging: hid}),
         setPreview: p => set({preview: p}),
@@ -1061,10 +1580,13 @@ export const useBattle = create<BattleState>((set, get) => {
         },
         quit: () => {
             if (!g || get().result) return;
+            online?.link.send({t: 'quit'});
             g.winner = 1;
             finish();
         },
         exit: () => {
+            online?.link.close();
+            online = null;
             stopClock();
             resetEmotes();
             g = null;
@@ -1086,19 +1608,6 @@ function laneOfDrop(drop: string) {
 
 const turnNote = (G: Game) => (G.p[0].maxC >= 10 ? tr('Cristalli al massimo: peschi due carte', 'Crystals maxed out: you draw two cards') : tr(`+1 Cristallo: ora ne hai ${G.p[0].maxC}`, `+1 Crystal: you now have ${G.p[0].maxC}`));
 
-function dropToTarget(drop: string): Target | null {
-    const [k, v] = drop.split(':');
-    if (k === 'unit' && g) {
-        const f = findU(g, +v);
-        return f ? {type: 'unit', p: f.p, lane: f.l, uid: f.u.uid} : null;
-    }
-    if (k === 'seal') {
-        const [p, l] = v.split('-').map(Number);
-        return {type: 'seal', p, lane: l};
-    }
-    if (k === 'lane') return {type: 'lane', lane: +v};
-    return null;
-}
 
 const sameTarget = (a: Target, b: Target) => a.type === b.type && (a.type === 'unit' ? b.type === 'unit' && a.uid === b.uid : a.type === 'seal' ? b.type === 'seal' && a.p === b.p && a.lane === b.lane : a.lane === b.lane);
 export {moveTargets, playOptions};

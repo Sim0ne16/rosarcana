@@ -22,12 +22,15 @@ export function Lane({G, l, h}: { G: Game; l: number; h: H }) {
         <div className={`${s.row} ${p === 0 && h.lanes.has(l) ? s.dropOk : ''}`}
              data-drop={p === 0 ? `lane:${l}` : undefined}
              onClick={p === 0 && h.lanes.has(l) ? () => b().clickLane(l) : undefined}>
+            {/* caselle vuote su un piano a parte: il numero di unità può cambiare durante le animazioni senza spostare nulla */}
+            <div className={s.slots} aria-hidden="true">
+                {Array.from({length: SLOTS}, (_, i) => <div key={i} className={s.slot}/>)}
+            </div>
             <AnimatePresence mode="popLayout">
                 {G.p[p].board[l].map(u => <UnitCard key={u.uid} G={G} p={p} l={l} u={u}
-                                                    targetable={h.units.has(u.uid)}/>)}
+                                                    targetable={h.units.has(u.uid)}
+                                                    aim={h.aims.has(u.uid) ? 'ok' : h.blocked.has(u.uid) ? 'blocked' : undefined}/>)}
             </AnimatePresence>
-            {Array.from({length: SLOTS - G.p[p].board[l].length}, (_, i) => <div key={'e' + i} className={s.slot}
-                                                                                 aria-hidden="true"/>)}
         </div>
     );
     const o = omen ? (lang === 'en' ? EN_OMENS[omen] : OMENS[omen]) : null;

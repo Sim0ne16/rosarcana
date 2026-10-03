@@ -23,6 +23,7 @@ import {cardName, custodeName, factionName, typeName} from '../../i18n/names';
 import {W} from '../../i18n/words';
 import {EN_CUSTODI, EN_FACTION_LORE} from '../../i18n/en/mechanics';
 import {EN_BACKS, EN_PRESETS} from '../../i18n/en/ui';
+import {startArchetypeTest} from '../modes/archetypeTest';
 import s from './decks.module.css';
 
 const FACS = Object.keys(FACTIONS) as Faction[];
@@ -181,6 +182,9 @@ export function DecksScreen() {
                                                 toast(m || t(`${ar.name} aggiunto ai tuoi mazzi`, `${ar.name} added to your decks`));
                                             }}>{t(W.addToDecks)}
                                     </button>
+                                    <button className={`${u.btn} ${u.sm}`} style={{marginLeft: 8}}
+                                            title={t('Gioca subito questo mazzo contro l\'IA, anche senza le carte', 'Play this deck against the AI right away, even without the cards')}
+                                            onClick={() => startArchetypeTest(ar.id)}>{t('Prova', 'Try')}</button>
                                 </div>
                             </article>);
                     })}

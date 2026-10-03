@@ -13,7 +13,9 @@ export type Keyword =
     | 'Veleno'
     | 'Linfa vitale'
     | 'Offerta'
-    | 'Auspicio';
+    | 'Auspicio'
+    | 'Slancio'
+    | 'Sfondare';
 
 export interface CardDef {
     id: string;
@@ -48,12 +50,18 @@ export interface Unit {
     sick: boolean;
     moved: boolean;
     stun: boolean;
+    /** In guardia: il giocatore ha scelto di non farla attaccare in questo turno (torna pronta al turno dopo). */
+    guard?: boolean;
+    /** Bersaglio scelto per l'attacco di questo turno (uid di un'unità nemica nella stessa corsia). */
+    aim?: number;
     token: boolean;
     cm: number;
     dead?: boolean;
     fights?: number;
     asc?: boolean;
     auraH?: number;
+    /** Spostata gratis dal Nocchiero in questo turno: può attaccare lo stesso. */
+    dash?: boolean;
 }
 
 export interface Player {

@@ -1,5 +1,5 @@
 import {AnimatePresence, motion} from 'framer-motion';
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {BYID, costOf, type Game, playOptions} from '../../engine';
 import {Card} from '../../cards/Card';
 import {useLang, useT} from '../../i18n/lang';
@@ -23,8 +23,27 @@ export function Hand({G}: { G: Game }) {
     const cards = G.p[0].hand.map((h, hi) => ({h, hi})).filter(x => x.h.hid !== pending);
     const n = cards.length, my = G.active === 0 && G.phase === 'main' && !busy && G.winner == null;
     const hv = hover != null ? G.p[0].hand.find(x => x.hid === hover) : undefined;
+    const tossing = useBattle(st => st.toss != null);
+    // il ventaglio si stringe quanto serve per stare nello spazio tra la targa e i comandi, misurato davvero
+    const box = useRef<HTMLDivElement>(null);
+    const [hov, setHov] = useState(-0.1);
+    useEffect(() => {
+        const el = box.current;
+        if (!el) return;
+        const fit = () => {
+            const cw = el.querySelector<HTMLElement>(`.${s.handCard}`)?.getBoundingClientRect().width ?? 0;
+            const avail = el.clientWidth - 32;
+            if (!cw || n < 2) return setHov(-0.1);
+            setHov(Math.min(-0.1, Math.max(-0.6, (avail - n * cw) / ((n - 1) * cw))));
+        };
+        fit();
+        const ro = new ResizeObserver(fit);
+        ro.observe(el);
+        return () => ro.disconnect();
+    }, [n, tossing]);
+    if (tossing) return <div className={s.hand} data-tut="hand" ref={box}/>;
     return (
-        <div className={s.hand} data-tut="hand">
+        <div className={s.hand} data-tut="hand" ref={box} style={{['--hov' as string]: hov}}>
             {hv && pending == null &&
                 <div className={s.handZoom} aria-hidden="true"><Card card={BYID[hv.id]} cost={costOf(G, 0, hv)}
                                                                      look={lookOf(profile, hv.id)}/></div>}
@@ -50,8 +69,12 @@ export function Hand({G}: { G: Game }) {
                                     whileDrag={{scale: 1.1, rotate: 0, zIndex: 100}}
                                     onHoverStart={() => {
                                         setHover(h.hid);
+                                        b().setHoverHid(h.hid);
                                         sfx('hover');
-                                    }} onHoverEnd={() => setHover(x => (x === h.hid ? null : x))}
+                                    }} onHoverEnd={() => {
+                                        setHover(x => (x === h.hid ? null : x));
+                                        b().setHoverHid(null);
+                                    }}
                                     onDragStart={() => {
                                         setHover(null);
                                         b().setDragging(h.hid);
@@ -88,7 +111,7 @@ export function Hand({G}: { G: Game }) {
 }
 
 export function OppHand({G}: { G: Game }) {
-    const pending = useBattle(st => st.pending);
+    const pending = useBattle(st => st.pending), lift = useBattle(st => st.oppLift);
     const lang = useLang(), t = useT();
     const name = (id: string) => cardName(id, lang);
     const cards = G.p[1].hand.filter(h => h.hid !== pending), n = cards.length;
@@ -100,12 +123,18 @@ export function OppHand({G}: { G: Game }) {
                     const off = i - (n - 1) / 2;
                     return (
                         <motion.div key={h.hid} layoutId={`card-${h.hid}`}
-                                    className={`${s.oppCard} ${h.known ? s.known : ''}`} initial={{opacity: 0, y: -60}}
-                                    animate={{
-                                        opacity: 1,
-                                        y: (h.known ? 26 : 0) - Math.abs(off) * Math.abs(off) * 2,
-                                        rotate: -off * 4
-                                    }} exit={{opacity: 0}}
+                                    className={`${s.oppCard} ${h.known ? s.known : ''} ${lift === h.hid ? s.oppLifted : ''}`} initial={{opacity: 0, y: -60}}
+                                    animate={lift === h.hid
+                                        // la carta scelta scende dalla mano e si mette in evidenza prima di partire
+                                        ? {opacity: 1, y: 64, scale: 1.3, rotate: 0}
+                                        : {
+                                            opacity: 1,
+                                            y: (h.known ? 26 : 0) - Math.abs(off) * Math.abs(off) * 2,
+                                            rotate: -off * 4,
+                                            scale: 1
+                                        }}
+                                    transition={{duration: 0.42, ease: [0.22, 1, 0.36, 1]}}
+                                    exit={{opacity: 0}}
                                     onMouseEnter={h.known ? e => {
                                         const r = e.currentTarget.getBoundingClientRect();
                                         useBattle.getState().setPreview({

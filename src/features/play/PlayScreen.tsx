@@ -7,7 +7,7 @@ import {Card} from '../../cards/Card';
 import {CardArt} from '../../cards/art/CardArt';
 import {deckIssues} from '../../economy/decks';
 import {QUEST_POOL, RANKS, rewardLabel} from '../../economy/constants';
-import {lookOf, tierIdx, useProfile} from '../../profile/store';
+import {calendarDay, lookOf, tierIdx, useProfile} from '../../profile/store';
 import {Tilt} from '../../ui/Tilt';
 import {toast} from '../../ui/toast';
 import {Logo} from '../../app/Logo';
@@ -24,6 +24,8 @@ import {DRAFT_MAX_L, DRAFT_MAX_W, DRAFT_MIN_GAMES, draftOver, useDraft} from '..
 import {EXP_MIN_GAMES} from '../modes/expedition';
 import {NIGHT_MIN_GAMES, startNight} from '../modes/night';
 import {RoseWar} from '../war/RoseWar';
+import {FriendMatch} from '../online/FriendMatch';
+import {ArchetypeBench} from '../modes/ArchetypeBench';
 import {useLang, useT} from '../../i18n/lang';
 import {W} from '../../i18n/words';
 import {EN_ASCEND_TEXT, EN_LESSONS, EN_QUESTS, EN_WEEKLY, rankName} from '../../i18n/en/ui';
@@ -36,12 +38,24 @@ const HERO = ['vuoto-l0', 'brace-l0', 'marea-l0'];
 type Lock = { short: string; long: string } | null;
 
 /** Scheda di una modalità: arte in alto, titolo, descrizione, stato e un solo pulsante. Tutte uguali, così la griglia si legge a colpo d'occhio. */
-function ModeTile({art, card, title, desc, status, action, lock, onClick}: {
-    art?: string; card: string; title: string; desc: string; status?: ReactNode; action: string; lock: Lock; onClick: () => void
+/** Carattere di ogni modalità: un colore e un simbolo propri, usati con parsimonia (filo in cima, sfumatura, filigrana). */
+const TONES = {
+    adv: {glyph: '✧'},
+    arena: {glyph: '✿'},
+    exp: {glyph: '➶'},
+    night: {glyph: '☾'},
+    train: {glyph: '⚔'},
+    friend: {glyph: '⚭'},
+    bench: {glyph: '⚗'},
+} as const;
+
+function ModeTile({tone, art, card, title, desc, status, action, lock, onClick}: {
+    tone: keyof typeof TONES; art?: string; card: string; title: string; desc: string; status?: ReactNode; action: string; lock: Lock; onClick: () => void
 }) {
     const img = art ? siteImg(art) : undefined;
     return (
-        <article className={`${s.mode} ${lock ? s.lLock : ''}`}>
+        <article className={`${s.mode} ${s['tone-' + tone]} ${lock ? s.lLock : ''}`}>
+            <i className={s.modeGlyph} aria-hidden="true">{TONES[tone].glyph}</i>
             <div className={s.modeArt}>{img ? <img src={img} alt=""/> :
                 <CardArt id={card} style={defaultArt(card)} arch={false}/>}</div>
             <div className={s.modeBody}>
@@ -60,6 +74,7 @@ export function PlayScreen({goDecks, goTab}: { goDecks: () => void; goTab: (t: T
     const tier = tierIdx(p.rank);
     const t = useT(), lang = useLang(), en = lang === 'en';
     const [askReset, setAskReset] = useState(false);
+    const [friendOpen, setFriendOpen] = useState(false), [benchOpen, setBenchOpen] = useState(false);
     const [queue, setQueue] = useState<'ranked' | 'casual'>('ranked');
     const tutDone = p.tutorialDone || p.onboardSkip,
         unlocked = p.onboardSkip || (p.tutorialDone && LESSONS.every(l => p.lessons.includes(l.id)));
@@ -117,6 +132,7 @@ export function PlayScreen({goDecks, goTab}: { goDecks: () => void; goTab: (t: T
     const advDone = p.adv.length;
     const nextLesson = LESSONS.find(l => !p.lessons.includes(l.id));
     const days = daysToReset();
+    const canReroll = p.rerollDate !== calendarDay();
 
     // Pannello principale: una sola chiamata all'azione, che cambia col punto in cui si trova il giocatore.
     const panel = !p.tutorialDone && !p.onboardSkip ? (
@@ -204,11 +220,19 @@ export function PlayScreen({goDecks, goTab}: { goDecks: () => void; goTab: (t: T
                             <small>{t(`${p.games} partite · ${p.wins} vittorie`, `${p.games} matches · ${p.wins} wins`)}</small>
                         </header>
                         {p.quests.map((q, i) => {
-                            const d = QUEST_POOL.find(x => x.id === q.id)!, done = q.prog >= d.goal;
+                            const d = QUEST_POOL.find(x => x.id === q.id);
+                            if (!d) return null;
+                            const done = q.prog >= d.goal;
                             return <div key={q.id} className={s.quest}>
                                 <div className={s.qTop}>
                                     <strong>{en ? EN_QUESTS[d.id] ?? d.txt : d.txt}</strong><span>{q.claimed ? t('Riscossa', 'Claimed') : `${d.oro} ${t(W.gold)}`}</span></div>
                                 <div className={u.bar}><b style={{width: `${Math.min(1, q.prog / d.goal) * 100}%`}}/></div>
+                                <div className={s.qFoot}>
+                                    <small>{Math.min(q.prog, d.goal)} / {d.goal}</small>
+                                    {!q.claimed && !done && canReroll &&
+                                        <button className={s.reroll} onClick={() => p.rerollQuest(i)}
+                                                title={t('Puoi cambiare una missione al giorno', 'You can swap one quest per day')}>{t('Cambia', 'Swap')}</button>}
+                                </div>
                                 {!q.claimed && done &&
                                     <motion.button data-sfx="claim" className={s.claim} onClick={() => p.claimQuest(i)}
                                                    animate={{scale: [1, 1.05, 1]}} transition={{
@@ -253,30 +277,34 @@ export function PlayScreen({goDecks, goTab}: { goDecks: () => void; goTab: (t: T
             <section className={`${u.page} ${s.block}`}>
                 <h2 className={s.blockTitle}>{t('Modalità', 'Modes')}</h2>
                 <div className={s.modeGrid}>
-                    <ModeTile art="avventura-mappa" card="vuoto-r2" title={t(W.adventure)}
+                    <ModeTile tone="adv" art="avventura-mappa" card="vuoto-r2" title={t(W.adventure)}
                               desc={t('Capitolo 1: Il Risveglio. Cinque avversari fino a Nyxa, Regina del Nulla.', 'Chapter 1: The Awakening. Five opponents all the way to Nyxa, Queen of Nothing.')}
-                              status={<div className={s.nodes}>{ADVENTURE.map((_, i) => <i key={i} className={p.adv.includes(i) ? s.done : ''}/>)}</div>}
+                              status={<div className={s.trail} aria-label={t(`${advDone} tappe su ${ADVENTURE.length}`, `${advDone} of ${ADVENTURE.length} stages`)}>
+                                  {ADVENTURE.map((_, i) => <i key={i} className={p.adv.includes(i) ? s.done : ''}/>)}</div>}
                               action={`${advDone ? t('Continua', 'Continue') : t(W.start)} (${advDone}/${ADVENTURE.length})`}
                               lock={lockOf(0)} onClick={() => goTab('avventura')}/>
-                    <ModeTile art="modo-arena" card="marea-l2" title={t(W.arena)}
+                    <ModeTile tone="arena" art="modo-arena" card="marea-l2" title={t(W.arena)}
                               desc={t(`Scegli un Custode e costruisci il mazzo una carta alla volta: ${DRAFT_MAX_W} vittorie prima di ${DRAFT_MAX_L} sconfitte.`, `Pick a Custodian and build your deck one card at a time: ${DRAFT_MAX_W} wins before ${DRAFT_MAX_L} losses.`)}
                               status={arena && !draftOver(arena)
                                   ? t(`In corso: ${arena.wins}V · ${arena.losses}S`, `In progress: ${arena.wins}W · ${arena.losses}L`)
                                   : t(`Record: ${arenaBest} vittorie`, `Best: ${arenaBest} wins`)}
                               action={arena && !draftOver(arena) ? t('Continua la corsa', 'Continue the run') : t('Entra nell\'Arena', 'Enter the Arena')}
                               lock={lockOf(DRAFT_MIN_GAMES)} onClick={() => goTab('arena')}/>
-                    <ModeTile card="radice-c3" title={t(W.expedition)}
+                    <ModeTile tone="exp" card="radice-c3" title={t(W.expedition)}
                               desc={t('Una corsa roguelike di sette scontri: il mazzo cresce vittoria dopo vittoria.', 'A roguelike run of seven battles: your deck grows win after win.')}
+                              status={t('Sette scontri, un solo mazzo', 'Seven battles, one deck')}
                               action={t(W.start)} lock={lockOf(EXP_MIN_GAMES)} onClick={() => goTab('spedizione')}/>
-                    <ModeTile card="vuoto-l0" title={t(W.chainedNight)}
+                    <ModeTile tone="night" card="vuoto-l0" title={t(W.chainedNight)}
                               desc={t('Nyxa gioca contro entrambi: ogni Sigillo spezzato allenta le sue Catene.', 'Nyxa plays against both of you: every broken Seal loosens her Chains.')}
+                              status={t('Tre al tavolo', 'Three at the table')}
                               action={t(W.play)} lock={lockOf(NIGHT_MIN_GAMES)} onClick={() => {
                         const d = deckOrAsk();
                         if (d) startNight(d);
                     }}/>
                     {/* L'allenamento chiede solo il tutorial: niente Prove né partite minime. */}
-                    <ModeTile card="brace-r1" title={t(W.training)}
+                    <ModeTile tone="train" card="brace-r1" title={t(W.training)}
                               desc={t('Prova il tuo mazzo contro un manichino, senza rischi e senza ricompense.', 'Test your deck against a dummy, with no risks and no rewards.')}
+                              status={t('Senza tempo né punti', 'No timer, no points')}
                               action={t(W.play)} lock={tutDone ? null : lockOf(0)} onClick={() => {
                         const d = deckOrAsk();
                         if (!d) return;
@@ -288,7 +316,17 @@ export function PlayScreen({goDecks, goTab}: { goDecks: () => void; goTab: (t: T
                             onEnd: () => [t('Allenamento: nessuna ricompensa, solo pratica.', 'Training: no rewards, just practice.')]
                         });
                     }}/>
+                    <ModeTile tone="friend" card="marea-l0" title={t('Sfida un amico', 'Challenge a friend')}
+                              desc={t('Crea una partita e manda il codice a un amico, o entra con il suo: ognuno con il proprio mazzo.', 'Create a match and send the code to a friend, or join theirs: each with their own deck.')}
+                              status={t('Partita privata con codice', 'Private match with a code')}
+                              action={t('Sfida', 'Challenge')} lock={tutDone ? null : lockOf(0)} onClick={() => setFriendOpen(true)}/>
+                    <ModeTile tone="bench" card="radice-l0" title={t('Banco di prova', 'Test bench')}
+                              desc={t('Un mazzo pronto per ogni archetipo, da provare contro l\'IA anche senza averne le carte.', 'A ready deck for every archetype, to try against the AI even without owning the cards.')}
+                              status={t('Aggro, Control, Combo e altri', 'Aggro, Control, Combo and more')}
+                              action={t(W.play)} lock={tutDone ? null : lockOf(0)} onClick={() => setBenchOpen(true)}/>
                 </div>
+                <FriendMatch open={friendOpen} onClose={() => setFriendOpen(false)}/>
+                <ArchetypeBench open={benchOpen} onClose={() => setBenchOpen(false)}/>
             </section>
 
             {tutDone && !unlocked && <section className={`${u.page} ${s.block}`}>

@@ -22,13 +22,31 @@ export interface Reward {
 
 /** Oro per partita classificata: vittoria, sconfitta, prima vittoria del giorno. */
 export const WIN_ORO = 10, LOSS_ORO = 3, FIRST_WIN_ORO = 40;
+/** Missioni del giorno. `fam` è la famiglia: ogni giorno se ne pescano tre di famiglie diverse, così non
+ * capitano mai tre missioni dello stesso tipo. `ev` è l'evento che le fa avanzare (vedi `bump` nel profilo). */
 export const QUEST_POOL = [
-    {id: 'win3', txt: 'Vinci 3 partite', goal: 3, ev: 'win', oro: 50},
-    {id: 'win5', txt: 'Vinci 5 partite', goal: 5, ev: 'win', oro: 75},
-    {id: 'play5', txt: 'Gioca 5 partite', goal: 5, ev: 'play', oro: 30},
-    {id: 'play3', txt: 'Gioca 3 partite', goal: 3, ev: 'play', oro: 20},
-    {id: 'craft1', txt: 'Crea o disfa una carta', goal: 1, ev: 'craft', oro: 25},
-    {id: 'open2', txt: 'Apri 2 bustine', goal: 2, ev: 'open', oro: 25},
+    // vittorie
+    {id: 'win3', txt: 'Vinci 3 partite', goal: 3, ev: 'win', fam: 'win', oro: 50},
+    {id: 'win5', txt: 'Vinci 5 partite', goal: 5, ev: 'win', fam: 'win', oro: 75},
+    {id: 'winRanked2', txt: 'Vinci 2 partite in classificata', goal: 2, ev: 'winRanked', fam: 'win', oro: 55},
+    {id: 'winBrace', txt: 'Vinci 2 partite con un mazzo di Brace', goal: 2, ev: 'win-brace', fam: 'win', oro: 50},
+    {id: 'winMarea', txt: 'Vinci 2 partite con un mazzo di Marea', goal: 2, ev: 'win-marea', fam: 'win', oro: 50},
+    {id: 'winRadice', txt: 'Vinci 2 partite con un mazzo di Radice', goal: 2, ev: 'win-radice', fam: 'win', oro: 50},
+    {id: 'winVuoto', txt: 'Vinci 2 partite con un mazzo di Vuoto', goal: 2, ev: 'win-vuoto', fam: 'win', oro: 50},
+    {id: 'flawless', txt: 'Vinci una partita senza perdere nessun Sigillo', goal: 1, ev: 'flawless', fam: 'win', oro: 60},
+    // partite e carte giocate
+    {id: 'play3', txt: 'Gioca 3 partite', goal: 3, ev: 'play', fam: 'play', oro: 20},
+    {id: 'play5', txt: 'Gioca 5 partite', goal: 5, ev: 'play', fam: 'play', oro: 30},
+    {id: 'units15', txt: 'Gioca 15 unità', goal: 15, ev: 'unit', fam: 'play', oro: 30},
+    {id: 'spells6', txt: 'Lancia 6 incantesimi', goal: 6, ev: 'spell', fam: 'play', oro: 30},
+    {id: 'relics3', txt: 'Metti in gioco 3 reliquie', goal: 3, ev: 'relic', fam: 'play', oro: 35},
+    // combattimento
+    {id: 'seals6', txt: 'Spezza 6 Sigilli nemici', goal: 6, ev: 'sealBreak', fam: 'fight', oro: 40},
+    {id: 'sealDmg40', txt: 'Infliggi 40 danni ai Sigilli nemici con le tue unità', goal: 40, ev: 'sealDmg', fam: 'fight', oro: 40},
+    {id: 'kills12', txt: 'Distruggi 12 unità nemiche in combattimento', goal: 12, ev: 'kill', fam: 'fight', oro: 40},
+    // collezione
+    {id: 'craft1', txt: 'Crea o disfa una carta', goal: 1, ev: 'craft', fam: 'collect', oro: 25},
+    {id: 'open2', txt: 'Apri 2 bustine', goal: 2, ev: 'open', fam: 'collect', oro: 25},
 ] as const;
 export type QuestEvent = (typeof QUEST_POOL)[number]['ev'];
 export const BACKS: Record<string, string> = {

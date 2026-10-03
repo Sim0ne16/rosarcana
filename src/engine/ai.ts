@@ -1,6 +1,7 @@
 // Intelligenza artificiale: valuta ogni azione possibile simulando il combattimento di fine turno.
 import {BYID, CARDS} from './cards';
-import {attackers, attackOne, chooseRes, endTurnEffects, moveTargets, moveUnit, playCard, playOptions} from './rules';
+import {aimTargets, attackers, attackOne, chooseRes, endTurnEffects, moveTargets, moveUnit, playCard, playOptions, readyToAttack} from './rules';
+import {findU} from './state';
 import {clone, costOf, hasKw, shuffle, uAtk, uMax} from './state';
 import type {Action, Faction, Game} from './types';
 
@@ -19,11 +20,13 @@ export function evaluate(G: Game, p: number) {
         }));
     }
     s += me.hand.length * 1.6 - op.hand.length * 0.8 + me.maxC * 1.3 - op.maxC * 0.6;
+    // Una reliquia rende nei turni a venire, che la valutazione (fino a fine turno) non vede: vale in base al costo.
+    const relicV = (id: string) => 2 + BYID[id].c * 1.4;
     me.relics.forEach((r, l) => {
-        if (r && me.seals[l] > 0) s += 4;
+        if (r && me.seals[l] > 0) s += relicV(r);
     });
     op.relics.forEach((r, l) => {
-        if (r && op.seals[l] > 0) s -= 4;
+        if (r && op.seals[l] > 0) s -= relicV(r);
     });
     const broken = me.seals.filter(x => x <= 0).length;
     for (let l = 0; l < 3; l++) {
@@ -73,6 +76,26 @@ export function bestAction(G: Game, p: number, noise: number): Action | null {
         }
     }
     return best;
+}
+
+/** L'IA sceglie chi attacca e chi colpisce: punta il nemico più pericoloso che riesce a uccidere (o, se non ne
+ * uccide nessuno, quello con meno salute), e resta in guardia se attaccando morirebbe senza uccidere.
+ * Chi può aggirare i difensori attacca sempre. */
+export function aiGuards(G: Game, p: number) {
+    G.p[p].board.forEach((B, l) => B.forEach(u => {
+        if (!readyToAttack(G, p, l, u) || hasKw(G, p, u, 'Aggirare')) return;
+        const options = aimTargets(G, p, u.uid).map(id => findU(G, id)!.u);
+        if (!options.length) return;
+        const atk = uAtk(G, p, l, u);
+        const left = (t: typeof u) => uMax(G, 1 - p, l, t) - t.dmg;
+        const kills = (t: typeof u) => atk >= left(t) || (atk > 0 && hasKw(G, p, u, 'Veleno'));
+        const killable = options.filter(kills).sort((a, b) => uAtk(G, 1 - p, l, b) - uAtk(G, 1 - p, l, a));
+        const t = killable[0] ?? [...options].sort((a, b) => left(a) - left(b))[0];
+        u.aim = t.uid;
+        const tAtk = uAtk(G, 1 - p, l, t);
+        const dies = tAtk >= uMax(G, p, l, u) - u.dmg || (tAtk > 0 && hasKw(G, 1 - p, t, 'Veleno'));
+        u.guard = dies && !kills(t);
+    }));
 }
 
 /** Non più usata: il Cristallo arriva da solo a inizio turno. Resta per compatibilità. */

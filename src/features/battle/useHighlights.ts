@@ -1,12 +1,20 @@
-import {BYID, findU} from '../../engine';
+import {aimTargets, BYID, findU, readyToAttack} from '../../engine';
 import {moveTargets, playOptions, useBattle} from './store';
 
 /** Calcola quali corsie, unità e Sigilli sono bersagli validi per la selezione o il trascinamento in corso. */
 export function useHighlights() {
     const G = useBattle(s => s.G), sel = useBattle(s => s.sel), dragging = useBattle(s => s.dragging);
     const lanes = new Set<number>(), units = new Set<number>(), seals = new Set<string>(),
-        laneTargets = new Set<number>();
-    if (!G) return {lanes, units, seals, laneTargets};
+        laneTargets = new Set<number>(), aims = new Set<number>(), blocked = new Set<number>();
+    if (!G) return {lanes, units, seals, laneTargets, aims, blocked};
+    /** Bersagli d'attacco di una tua unità; gli altri nemici della sua corsia risultano bloccati (dietro un Guardiano). */
+    const aimFrom = (uid: number) => {
+        const f = findU(G, uid);
+        if (!f || !readyToAttack(G, 0, f.l, f.u)) return;
+        const ok = aimTargets(G, 0, uid);
+        ok.forEach(x => aims.add(x));
+        G.p[1].board[f.l].forEach(x => !ok.includes(x.uid) && !x.dead && blocked.add(x.uid));
+    };
     if (sel?.kind === 'hand') {
         const c = G.p[0].hand[sel.hi];
         if (sel.step === 'lane' && c) sel.opts.forEach(o => {
@@ -21,7 +29,10 @@ export function useHighlights() {
             sel.dests?.forEach(l => laneTargets.add(l));
         }
     }
-    if (sel?.kind === 'unit') sel.to.forEach(l => lanes.add(l));
+    if (sel?.kind === 'unit') {
+        sel.to.forEach(l => lanes.add(l));
+        aimFrom(sel.uid);
+    }
     if (dragging != null) {
         const hi = G.p[0].hand.findIndex(h => h.hid === dragging);
         if (hi >= 0) {
@@ -33,9 +44,14 @@ export function useHighlights() {
                 }
                 if (o.lane != null) (isRelic(id) ? seals.add(`0-${o.lane}`) : lanes.add(o.lane));
             });
-        } else if (findU(G, dragging)) moveTargets(G, 0, dragging).forEach(l => lanes.add(l));
+        } else {
+            if (findU(G, dragging)) {
+                moveTargets(G, 0, dragging).forEach(l => lanes.add(l));
+                aimFrom(dragging);
+            }
+        }
     }
-    return {lanes, units, seals, laneTargets};
+    return {lanes, units, seals, laneTargets, aims, blocked};
 }
 
 const isRelic = (id: string) => BYID[id]?.t === 'R';

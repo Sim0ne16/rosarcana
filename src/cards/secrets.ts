@@ -20,7 +20,7 @@ export const SECRETS: Record<string, string> = {
     'marea-c2': 'Le anguille nascono tutte nello stesso punto: sopra la tomba di Atlantide, dove il mare è più caldo.',
     'marea-c3': 'Il corallo cresce sui soldati da mille anni, ma dentro le armature batte ancora un cuore lentissimo.',
     'marea-c4': 'I sassi che la risacca conta non sono sassi: sono i denti dei marinai che hanno sfidato Thalassa.',
-    'marea-c5': 'La Medusa non trasforma in pietra. Mostra a chi la guarda il momento della propria morte, e il corpo si ferma per lo spavento.',
+    'marea-c5': 'La Medusa non trasforma in pietra. Il suo veleno mostra a chi la tocca il momento della propria morte, e il cuore si ferma per lo spavento.',
     'marea-u0': 'La Veggente ha visto anche la propria fine: morirà il giorno in cui qualcuno le crederà.',
     'marea-u1': 'La Corrente non odia i naviganti: li protegge da una riva che non esiste più.',
     'marea-u2': 'La luce del Faro è alimentata dall\'ultimo respiro dei naufraghi. Per questo non si spegne mai.',

@@ -66,7 +66,8 @@ export function hasKw(G: Game, p: number, u: Unit, k: Keyword) {
     return false;
 }
 
-export const canAttack = (G: Game, p: number, u: Unit) => !u.sick || hasKw(G, p, u, 'Rapido');
+/** Può attaccare a fine turno: non appena arrivata (salvo Rapido) e non se si è spostata in questo turno (o attacca o si sposta). */
+export const canAttack = (G: Game, p: number, u: Unit) => (!u.moved || u.dash || hasKw(G, p, u, 'Slancio')) && (!u.sick || hasKw(G, p, u, 'Rapido'));
 
 export function mkUnit(G: Game, id: string, cm = 0, uid?: number): Unit {
     const c = cardInfo(id);
@@ -204,7 +205,7 @@ export function sacrifice(G: Game, p: number, uid: number) {
     P.relics.forEach((r, l) => {
         if (r === 'vuoto-u2' && P.seals[l] > 0) {
             const t = randomIntact(G, 1 - p);
-            if (t >= 0) dmgSeal(G, 1 - p, t, 1);
+            if (t >= 0) dmgSeal(G, 1 - p, t, 2);
         }
     });
     cleanup(G);
@@ -282,7 +283,7 @@ function onDie(G: Game, p: number, u: Unit, l = -1) {
     }
     glog(G, 'dies', [u.id, p]);
     emit(G, {t: 'death', uid: u.uid, p});
-    if (u.id === 'vuoto-c0') draw(G, p, 1);
+    if (u.id === 'vuoto-c0' || u.id === 'brace-c9') draw(G, p, 1);
     if (u.id === 'vuoto-c7') {
         const t = randomIntact(G, 1 - p);
         if (t >= 0) dmgSeal(G, 1 - p, t, 1);
@@ -342,7 +343,7 @@ function ringBell(G: Game, p: number, l: number) {
             if (hasSpace(G, p, x)) summon(G, p, x, 'brace-c0');
         });
         if (cu.id === 'ladro') {
-            const t = randomIntact(G, 1 - p);
+            const t = weakest(G, 1 - p);
             if (t >= 0) dmgSeal(G, 1 - p, t, 3);
         }
         if (cu.id === 'veggente') draw(G, p, 3);

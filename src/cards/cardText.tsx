@@ -6,6 +6,11 @@ import {EN_KEYWORD_WORD} from '../i18n/en/mechanics';
 import type {Lang} from '../i18n/lang';
 import {ICONS} from './art/icons.generated';
 
+// Slancio non ha un'icona propria fra quelle estratte: usa quella dell'Anguilla Guizzante, che scatta di corsia in corsia.
+ICONS['kw-Slancio'] ??= ICONS['marea-c2'];
+// Sfondare usa l'icona dell'Ariete Rovente, il primo sfondatore.
+ICONS['kw-Sfondare'] ??= ICONS['brace-u0'];
+
 export interface CardMention {
     n: string;
     id: string
@@ -50,7 +55,7 @@ export function splitCardMentions(text: string, lang: Lang = 'it'): (string | Ca
 
 export const KW_SHORT: Record<Keyword, string> = {
     Rapido: 'attacca nel turno in cui entra',
-    Guardiano: 'protegge le tue corsie accanto',
+    Guardiano: 'va attaccato per primo',
     Scossa: '+1 danno a un Sigillo accanto',
     Radicato: 'non può cambiare corsia',
     Eco: 'se muore torna in mano, costa +1',
@@ -61,30 +66,56 @@ export const KW_SHORT: Record<Keyword, string> = {
     'Linfa vitale': 'i suoi danni curano il Sigillo',
     Offerta: 'si paga con i punti vita dei Sigilli',
     Auspicio: 'Ignora i presagi',
+    Slancio: 'attacca anche dopo essersi spostata',
+    Sfondare: 'ignora i Guardiani',
 };
 export const TYPE_NOTE: Record<CardType, string> = {
     U: '', I: 'Effetto immediato, poi va nel cimitero.', R: 'Si posa su un tuo Sigillo e agisce finché resiste.',
 };
-const KW_RE_IT = /\b(Rapido|Guardiano|Scossa|Radicato|Eco|Assedio|Cresce|Aggirare|Veleno|Linfa vitale|Offerta|Auspicio)\b/g;
-const LEAD_KW_IT = /^((Rapido|Guardiano|Scossa|Radicato|Eco|Assedio|Cresce|Aggirare|Veleno|Linfa vitale|Offerta \d|Auspicio)\.\s*)+/;
-const TRIGGER_IT = /(Rintocco:|Quando entra:|Quando muore:|Se muore in combattimento,|All'inizio del tuo turno, finché questo Sigillo è intatto:|All'inizio del tuo turno:|Alla fine del tuo turno:|Quando un'altra unità muore, tua o nemica:|Quando sacrifichi un'unità, finché questo Sigillo è intatto:|Finché questo Sigillo è intatto,|Finché è in gioco,)/;
+const KW_RE_IT = /\b(Rapido|Guardiano|Scossa|Radicato|Eco|Assedio|Cresce|Aggirare|Veleno|Linfa vitale|Offerta|Auspicio|Slancio|Sfondare)\b/g;
+const LEAD_KW_IT = /^((Rapido|Guardiano|Scossa|Radicato|Eco|Assedio|Cresce|Aggirare|Veleno|Linfa vitale|Offerta \d|Auspicio|Slancio|Sfondare)\.\s*)+/;
+const TRIGGER_IT = /(Rintocco:|Ingresso:|Lascito:|Martirio:|Mattutino:|Vespro:|Requiem:|Immolazione:|Presidio:|Aura:)/;
 
 // Stesso riconoscimento, in inglese: la lista delle parole chiave è generata da EN_KEYWORD_WORD così le due
 // lingue restano sempre in sincronia (un solo posto dove aggiornare i nomi tradotti).
 const EN_KW_LIST = Object.values(EN_KEYWORD_WORD).join('|');
 const KW_RE_EN = new RegExp(`\\b(${EN_KW_LIST})\\b`, 'g');
 const LEAD_KW_EN = new RegExp(`^((${EN_KW_LIST}) ?\\d?\\.\\s*)+`);
-const TRIGGER_EN = /(Toll:|When it enters:|When it dies:|If it dies in combat,|At the start of your turn, while this Seal is intact:|At the start of your turn:|At the end of your turn:|When another unit dies, yours or the enemy's:|When you sacrifice a unit, while this Seal is intact:|While this Seal is intact,|While in play,)/;
+const TRIGGER_EN = /(Toll:|Entrance:|Legacy:|Martyrdom:|Matins:|Vespers:|Requiem:|Immolation:|Bastion:|Aura:)/;
 
 /** Parole chiave della carta e testo restante (senza l'elenco iniziale di parole chiave). */
 export function splitText(tx: string, kw: Keyword[], lang: Lang = 'it') {
     return {kws: kw, rest: tx.replace(lang === 'en' ? LEAD_KW_EN : LEAD_KW_IT, '').trim()};
 }
 
+/** Spiegazione di ogni innesco ("Rintocco:", "Quando entra:"...), mostrata al passaggio del mouse come per le parole chiave. */
+const TRIGGER_TIP: Record<string, [string, string]> = {
+    "Rintocco": ["Si attiva quando uno dei tuoi Sigilli si spezza, se questa unità è in gioco.", "Triggers when one of your Seals breaks, if this unit is in play."],
+    "Ingresso": ["Si attiva quando la giochi e l'unità entra in campo.", "Triggers when you play it and the unit enters the board."],
+    "Lascito": ["Si attiva quando questa unità muore, in qualunque modo.", "Triggers when this unit dies, in any way."],
+    "Martirio": ["Si attiva solo se l'unità muore durante uno scontro.", "Triggers only if the unit dies during a clash."],
+    "Mattutino": ["Si attiva all'inizio di ogni tuo turno. Su una reliquia, solo finché il suo Sigillo è intatto.", "Triggers at the start of each of your turns. On a relic, only while its Seal is intact."],
+    "Vespro": ["Si attiva alla fine di ogni tuo turno, prima degli attacchi.", "Triggers at the end of each of your turns, before attacks."],
+    "Requiem": ["Si attiva ogni volta che muore un'altra unità sul campo, tua o nemica.", "Triggers every time another unit on the board dies, yours or the enemy's."],
+    "Immolazione": ["Si attiva ogni volta che sacrifichi una tua unità, finché il Sigillo della reliquia è intatto.", "Triggers every time you sacrifice one of your units, while the relic's Seal is intact."],
+    "Presidio": ["Effetto continuo della reliquia: vale finché il suo Sigillo è intatto.", "Ongoing effect of the relic: it lasts while its Seal is intact."],
+    "Aura": ["Effetto continuo: vale finché l'unità resta sul campo.", "Ongoing effect: it lasts while the unit stays on the board."],
+};
+/** Gli inneschi inglesi puntano alla stessa spiegazione, nello stesso ordine delle due espressioni regolari. */
+const TRIGGER_KEYS = TRIGGER_IT.source.slice(1, -1).split('|').map(x => x.replace(/[:,]$/, ''));
+const TRIGGER_EN_KEYS = TRIGGER_EN.source.slice(1, -1).split('|').map(x => x.replace(/[:,]$/, ''));
+
+function triggerTip(part: string, lang: Lang) {
+    const raw = part.replace(/[:,]$/, '');
+    const i = (lang === 'en' ? TRIGGER_EN_KEYS : TRIGGER_KEYS).indexOf(raw);
+    const tip = TRIGGER_TIP[TRIGGER_KEYS[i] ?? raw];
+    return tip ? tip[lang === 'en' ? 1 : 0] : undefined;
+}
+
 export function RichText({text, lang = 'it'}: { text: string; lang?: Lang }) {
     const TRIGGER = lang === 'en' ? TRIGGER_EN : TRIGGER_IT, KW_RE = lang === 'en' ? KW_RE_EN : KW_RE_IT;
     return <>{text.split(TRIGGER).map((part, i) => i % 2
-        ? <em key={i} className="trigger">{part}</em>
+        ? <em key={i} className="trigger" data-tip={triggerTip(part, lang)} data-tip-title={part.replace(/[:,]$/, '')}>{part}</em>
         : part.split(KW_RE).map((p, j) => (j % 2 ? <b key={i + '-' + j}>{p}</b> : p)))}</>;
 }
 

@@ -30,7 +30,7 @@ import {
     uMax,
     weakest
 } from './state';
-import type {Game, Player, PlayOpt, Target, TargetSpec} from './types';
+import type {Game, Player, PlayOpt, Target, TargetSpec, Unit} from './types';
 
 export function legalTargets(G: Game, p: number, spec?: TargetSpec): Target[] {
     if (!spec) return [];
@@ -67,7 +67,7 @@ export function legalTargets(G: Game, p: number, spec?: TargetSpec): Target[] {
 
 export const needsTarget = (id: string) => !!EFFECTS[id]?.spellT;
 export const enterSpec = (id: string) => EFFECTS[id]?.enterT;
-/** Vero solo se il testo dice esplicitamente "puoi": per le altre abilità Quando entra con bersaglio,
+/** Vero solo se il testo dice esplicitamente "puoi": per le altre abilità di Ingresso con bersaglio,
  * scegliere un bersaglio (quando ne esiste uno legale) non è facoltativo. */
 export const enterOptional = (id: string) => !!EFFECTS[id]?.optional;
 
@@ -85,7 +85,7 @@ export function playOptions(G: Game, p: number, hi: number): PlayOpt[] {
         for (let l = 0; l < 3; l++) if (hasSpace(G, p, l)) {
             tg.forEach(t => out.push({lane: l, ...t}));
             // Senza bersagli legali si gioca comunque, senza effetto. Con bersagli legali, si può rinunciare
-            // solo se il testo dice esplicitamente "puoi" (optional) - le altre "Quando entra" con bersaglio
+            // solo se il testo dice esplicitamente "puoi" (optional) - le altre abilità di Ingresso con bersaglio
             // sono obbligatorie, non si aggirano giocando la carta senza scegliere.
             if (!tg.length || e.optional) out.push({lane: l});
         }
@@ -126,6 +126,11 @@ export function playCard(G: Game, p: number, hi: number, opt: PlayOpt) {
     } else {
         e.spell?.(G, p, opt.target, opt.to);
         P.grave.push(h.id);
+        // il Ladro concentra il fuoco: ogni incantesimo brucia anche il Sigillo nemico più debole
+        if (P.custode === 'ladro') {
+            const l = weakest(G, 1 - p);
+            if (l >= 0) dmgSeal(G, 1 - p, l, 1);
+        }
     }
     cleanup(G);
     return true;
@@ -142,8 +147,11 @@ export function moveTargets(G: Game, p: number, uid: number): number[] {
 export function moveUnit(G: Game, p: number, uid: number, to: number) {
     const f = findU(G, uid);
     if (!f) return;
+    // il primo spostamento gratuito del Nocchiero non costa l'attacco
+    const dash = G.p[p].custode === 'nocchiero' && !G.p[p].flags?.move;
     G.p[p].crystals -= moveCost(G, p);
     (G.p[p].flags ??= {}).move = true;
+    if (dash) f.u.dash = true;
     G.p[p].board[f.l].splice(f.i, 1);
     f.u.moved = true;
     G.p[p].board[to].push(f.u);
@@ -164,14 +172,17 @@ export function startTurn(G: Game, p: number) {
     glog(G, 'turn', [G.turn, p], 'turn');
     P.board.forEach(B => B.forEach(u => {
         u.sick = false;
+        u.guard = false;
+        u.aim = undefined;
         u.moved = false;
+        u.dash = false;
         if (u.kw.includes('Cresce')) {
             u.a++;
             u.h++;
         }
         if (u.id === 'radice-l0') {
-            u.a += 2;
-            u.h += 2;
+            u.a += 1;
+            u.h += 1;
             [0, 1, 2].forEach(x => healSeal(G, p, x, 2));
         }
     }));
@@ -269,7 +280,46 @@ export function endTurnEffects(G: Game, p: number) {
 }
 
 /** Le unità che attaccheranno in una corsia, nell'ordine. */
-export const attackers = (G: Game, p: number, l: number) => G.p[p].board[l].filter(u => canAttack(G, p, u) && uAtk(G, p, l, u) > 0).map(u => u.uid);
+export const attackers = (G: Game, p: number, l: number) => G.p[p].board[l].filter(u => !u.guard && canAttack(G, p, u) && uAtk(G, p, l, u) > 0).map(u => u.uid);
+
+/** Può attaccare in questo turno (quindi ha senso offrirle la scelta tra attaccare e restare in guardia). */
+export const readyToAttack = (G: Game, p: number, l: number, u: Unit) => !u.dead && !u.stun && canAttack(G, p, u) && uAtk(G, p, l, u) > 0;
+
+/** Sfondare: l'unità ignora i Guardiani e può colpire chi vuole nella sua corsia. */
+const breaches = (G: Game, p: number, u: Unit) => hasKw(G, p, u, 'Sfondare');
+
+/** Nemici che un'unità può scegliere come bersaglio nella sua corsia: se ci sono Guardiani, solo loro. */
+export function aimTargets(G: Game, p: number, uid: number): number[] {
+    const f = findU(G, uid);
+    if (!f || f.p !== p) return [];
+    const foes = G.p[1 - p].board[f.l].filter(x => !x.dead);
+    const guards = breaches(G, p, f.u) ? [] : foes.filter(x => hasKw(G, 1 - p, x, 'Guardiano'));
+    return (guards.length ? guards : foes).map(x => x.uid);
+}
+
+/** Sceglie il bersaglio dell'attacco di questo turno. */
+export function setAim(G: Game, p: number, uid: number, target: number) {
+    const f = findU(G, uid);
+    if (!f || !readyToAttack(G, p, f.l, f.u) || !aimTargets(G, p, uid).includes(target)) return false;
+    f.u.aim = target;
+    return true;
+}
+
+/** Il difensore che un'attaccante colpisce: un Guardiano se c'è (quello scelto, o il primo), altrimenti il
+ * bersaglio scelto, altrimenti il primo della corsia. */
+function defenderFor(G: Game, p: number, u: Unit, foes: Unit[]) {
+    const guards = breaches(G, p, u) ? [] : foes.filter(x => hasKw(G, 1 - p, x, 'Guardiano'));
+    const pool = guards.length ? guards : foes;
+    return pool.find(x => x.uid === u.aim) ?? pool[0];
+}
+
+/** Attacca o resta in guardia: vale solo per il turno in corso. */
+export function toggleGuard(G: Game, p: number, uid: number) {
+    const f = findU(G, uid);
+    if (!f || f.p !== p || !readyToAttack(G, p, f.l, f.u)) return false;
+    f.u.guard = !f.u.guard;
+    return true;
+}
 
 /** Un singolo attacco: restituisce il bersaglio colpito, per le animazioni. */
 export function attackOne(G: Game, p: number, l: number, uid: number): { uid?: number; seal?: boolean } | null {
@@ -298,7 +348,7 @@ export function attackOne(G: Game, p: number, l: number, uid: number): { uid?: n
         }
     }
     if (foes.length) {
-        const t = foes[0], ta = uAtk(G, 1 - p, l, t);
+        const t = defenderFor(G, p, u, foes), ta = uAtk(G, 1 - p, l, t);
         dmgUnit(G, t, atk);
         dmgUnit(G, u, ta);
         if (atk > 0 && hasKw(G, p, u, 'Veleno')) t.dead = true;
@@ -306,7 +356,6 @@ export function attackOne(G: Game, p: number, l: number, uid: number): { uid?: n
         if (hasKw(G, p, u, 'Linfa vitale')) healSeal(G, p, l, atk);
         if (hasKw(G, 1 - p, t, 'Linfa vitale')) healSeal(G, 1 - p, l, ta);
         glog(G, 'clash', [u.id, atk, t.id, ta]);
-        if (t.id === 'marea-c5' && t.dmg >= uMax(G, 1 - p, l, t)) u.stun = true;
         cleanup(G);
         // Arena di sangue: chi esce vivo da uno scontro in cui ha ucciso diventa più forte, attaccante o difensore.
         if (omenFor(G, l, u) === 'arena' && !findU(G, t.uid) && findU(G, u.uid)) {

@@ -1,5 +1,7 @@
 // Suoni "materici" sintetizzati con la Web Audio API: carta, legno, vetro, campane di cattedrale.
 // Niente file da scaricare e niente timbri da sintetizzatore: rumore filtrato, parziali di campana e un riverbero da navata.
+// Tutto passa da un filtro morbido sugli acuti e da un compressore: niente picchi né fischi, anche a volume alto.
+// I suoni d'interfaccia usano un carillon quasi armonico (dolce); le campane di bronzo restano per rintocchi e Sigilli.
 import {useProfile} from '../profile/store';
 
 export type Sfx =
@@ -28,6 +30,8 @@ export type Sfx =
     | 'flipL'
     | 'tear'
     | 'coin'
+    | 'coinFlip'
+    | 'spend'
     | 'hover';
 
 let lastHover = 0;
@@ -40,19 +44,32 @@ function init() {
     }
     try {
         ctx = new AudioContext();
+        // catena finale: acuti ammorbiditi e un compressore gentile che tiene a bada i picchi
+        const soft = ctx.createBiquadFilter();
+        soft.type = 'lowpass';
+        soft.frequency.value = 7800;
+        soft.Q.value = 0.5;
+        const comp = ctx.createDynamicsCompressor();
+        comp.threshold.value = -20;
+        comp.knee.value = 18;
+        comp.ratio.value = 3.5;
+        comp.attack.value = 0.004;
+        comp.release.value = 0.2;
         out = ctx.createGain();
         out.gain.value = 0.8;
-        out.connect(ctx.destination);
-        // riverbero di navata: risposta all'impulso generata (rumore che decade in 3 secondi)
-        const len = ctx.sampleRate * 3, ir = ctx.createBuffer(2, len, ctx.sampleRate);
+        out.connect(soft);
+        soft.connect(comp);
+        comp.connect(ctx.destination);
+        // riverbero di navata: risposta all'impulso generata (rumore che decade in poco più di 2 secondi)
+        const len = Math.floor(ctx.sampleRate * 2.2), ir = ctx.createBuffer(2, len, ctx.sampleRate);
         for (let ch = 0; ch < 2; ch++) {
             const d = ir.getChannelData(ch);
-            for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2);
+            for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.6);
         }
         const conv = ctx.createConvolver();
         conv.buffer = ir;
         verb = ctx.createGain();
-        verb.gain.value = 0.32;
+        verb.gain.value = 0.24;
         verb.connect(conv);
         conv.connect(out);
         noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
@@ -111,6 +128,27 @@ function bell(t: number, f: number, peak: number, wet = 0.55) {
     for (const [r, a, d] of BELL) tone(t, f * r, d * (1 + 220 / f) * 0.5, peak * a, wet);
 }
 
+/** Carillon: parziali quasi armoniche e attacco morbido. Dolce all'orecchio, per i suoni d'interfaccia. */
+function chime(t: number, f: number, peak: number, wet = 0.35) {
+    for (const [r, a, d] of [[1, 1, 1.1], [2, 0.28, 0.6], [3.01, 0.08, 0.35]]) {
+        const c = ctx!, o = c.createOscillator();
+        o.type = 'sine';
+        o.frequency.value = f * r;
+        const g = c.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(peak * a, t + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+        g.connect(out);
+        const w = c.createGain();
+        w.gain.value = wet;
+        g.connect(w);
+        w.connect(verb);
+        o.connect(g);
+        o.start(t);
+        o.stop(t + d + 0.05);
+    }
+}
+
 /** Legno: tonfo breve di una carta sul tavolo. */
 function wood(t: number, peak = 0.35) {
     noise(t, 0.07, 900, 500, 4, peak, 0.12);
@@ -123,8 +161,8 @@ function thump(t: number, f: number, peak: number) {
 }
 
 function glass(t: number, n: number, peak: number) {
-    for (let i = 0; i < n; i++) tone(t + Math.random() * 0.12, 1800 + Math.random() * 4200, 0.18 + Math.random() * 0.35, peak * (0.4 + Math.random() * 0.6), 0.45);
-    noise(t, 0.25, 6000, 3000, 0.7, peak * 0.6, 0.3, 'highpass');
+    for (let i = 0; i < n; i++) tone(t + Math.random() * 0.12, 1600 + Math.random() * 2200, 0.18 + Math.random() * 0.3, peak * (0.35 + Math.random() * 0.5), 0.4);
+    noise(t, 0.2, 4200, 2600, 0.7, peak * 0.4, 0.25, 'highpass');
 }
 
 const scale = (base: number, semis: number) => base * Math.pow(2, semis / 12);
@@ -143,8 +181,9 @@ export function sfx(kind: Sfx) {
     try {
         switch (kind) {
             case 'play':
-                noise(t, 0.16, 1200, 3800, 1.2, 0.22, 0.08);
-                wood(t + 0.13, 0.3);
+                // fruscio della carta che scivola, poi il tonfo morbido sul tavolo
+                noise(t, 0.18, 900, 2800, 1, 0.16, 0.06);
+                wood(t + 0.15, 0.26);
                 break;
             case 'move':
                 noise(t, 0.12, 1500, 3000, 1.4, 0.16, 0.05);
@@ -172,21 +211,21 @@ export function sfx(kind: Sfx) {
                 bell(t + 0.05, 98, 0.12);
                 break;
             case 'turn':
-                bell(t, 523.25, 0.07, 0.5);
-                bell(t + 0.18, 659.25, 0.05, 0.5);
+                chime(t, 523.25, 0.07);
+                chime(t + 0.16, 783.99, 0.055);
                 break;
             case 'flipC':
-                noise(t, 0.12, 1800, 4000, 1.4, 0.12, 0.05);
-                bell(t + 0.05, 1046.5, 0.035);
+                noise(t, 0.12, 1500, 3200, 1.2, 0.1, 0.05);
+                chime(t + 0.05, 880, 0.035);
                 break;
             case 'flipU':
-                noise(t, 0.12, 1800, 4000, 1.4, 0.12, 0.05);
-                bell(t + 0.05, 783.99, 0.05);
-                bell(t + 0.15, 1174.66, 0.04);
+                noise(t, 0.12, 1500, 3200, 1.2, 0.1, 0.05);
+                chime(t + 0.05, 783.99, 0.045);
+                chime(t + 0.15, 1174.66, 0.035);
                 break;
             case 'flipR':
-                noise(t, 0.12, 1800, 4000, 1.4, 0.12, 0.05);
-                [0, 4, 7, 12].forEach((s, i) => bell(t + 0.05 + i * 0.09, scale(523.25, s), 0.05));
+                noise(t, 0.12, 1500, 3200, 1.2, 0.1, 0.05);
+                [0, 4, 7, 12].forEach((s, i) => chime(t + 0.05 + i * 0.09, scale(523.25, s), 0.045));
                 break;
             case 'flipL':
                 noise(t, 0.12, 1800, 4000, 1.4, 0.14, 0.05);
@@ -195,23 +234,24 @@ export function sfx(kind: Sfx) {
                 glass(t + 0.7, 10, 0.04);
                 break;
             case 'win':
-                [0, 4, 7, 12, 16].forEach((s, i) => bell(t + i * 0.16, scale(392, s), 0.08));
-                bell(t + 0.9, 196, 0.1);
+                [0, 4, 7, 12, 16].forEach((s, i) => chime(t + i * 0.15, scale(392, s), 0.07, 0.45));
+                bell(t + 0.85, 196, 0.07);
                 break;
             case 'lose':
-                bell(t, 146.83, 0.12, 0.7);
-                bell(t + 1.1, 130.81, 0.12, 0.7);
+                // due rintocchi bassi e lontani, non lugubri
+                chime(t, 293.66, 0.07, 0.6);
+                chime(t + 0.5, 261.63, 0.06, 0.6);
+                bell(t + 1, 130.81, 0.06, 0.7);
                 break;
             case 'tick':
-                tone(t, 1320, 0.06, 0.05, 0.05, 'square', 0.9);
-                noise(t, 0.03, 4000, 3000, 4, 0.05, 0.02);
+                tone(t, 1100, 0.05, 0.035, 0.04, 'sine', 0.9);
                 break;
             case 'click':
-                noise(t, 0.035, 2600, 1800, 3, 0.07, 0.02);
-                tone(t, 520, 0.05, 0.025, 0.02, 'triangle');
+                noise(t, 0.03, 2200, 1600, 2.5, 0.05, 0.02);
+                tone(t, 480, 0.05, 0.02, 0.02, 'sine');
                 break;
             case 'hover':
-                noise(t, 0.05, 3200, 4200, 2, 0.035, 0.02);
+                noise(t, 0.045, 2600, 3400, 1.6, 0.022, 0.02);
                 break;
             case 'forge':
                 tone(t, 880, 0.5, 0.07, 0.3, 'triangle', 0.98);
@@ -220,21 +260,25 @@ export function sfx(kind: Sfx) {
                 glass(t + 0.02, 4, 0.03);
                 break;
             case 'claim':
-                [0, 7, 12].forEach((s, i) => bell(t + i * 0.08, scale(784, s), 0.04));
-                tone(t + 0.1, 2637, 0.4, 0.03, 0.3);
+                [0, 4, 7, 12].forEach((s, i) => chime(t + i * 0.07, scale(659.25, s), 0.045));
                 break;
             case 'lens':
-                tone(t, 1760, 0.25, 0.035, 0.4);
-                tone(t + 0.06, 2349, 0.3, 0.025, 0.4);
+                chime(t, 1174.66, 0.03);
+                chime(t + 0.06, 1567.98, 0.022);
                 break;
             case 'crystal':
-                tone(t, 1568, 0.6, 0.04, 0.5);
-                tone(t + 0.07, 2093, 0.7, 0.035, 0.5);
-                tone(t + 0.14, 3136, 0.5, 0.02, 0.5);
+                chime(t, 1046.5, 0.04, 0.45);
+                chime(t + 0.08, 1567.98, 0.03, 0.45);
+                break;
+            case 'spend':
+                // Cristalli spesi: due note che scendono, leggere
+                chime(t, 1318.51, 0.035, 0.3);
+                chime(t + 0.07, 987.77, 0.03, 0.3);
                 break;
             case 'error':
-                tone(t, 220, 0.12, 0.06, 0.05, 'triangle', 0.8);
-                tone(t + 0.1, 185, 0.14, 0.05, 0.05, 'triangle', 0.8);
+                // un "no" gentile: due note basse, morbide
+                tone(t, 330, 0.14, 0.05, 0.05, 'sine', 0.92);
+                tone(t + 0.11, 262, 0.18, 0.045, 0.05, 'sine', 0.92);
                 break;
             case 'toll':
                 bell(t, 65.41, 0.22, 0.8);
@@ -242,17 +286,23 @@ export function sfx(kind: Sfx) {
                 noise(t, 1.2, 300, 80, 0.8, 0.08, 0.5, 'lowpass');
                 break;
             case 'ascend':
-                [0, 4, 7, 11, 14].forEach((s, i) => bell(t + i * 0.07, scale(659.25, s), 0.045));
-                glass(t + 0.3, 8, 0.03);
+                [0, 4, 7, 11, 14].forEach((s, i) => chime(t + i * 0.07, scale(659.25, s), 0.045));
+                glass(t + 0.3, 5, 0.02);
                 break;
             case 'tear':
                 noise(t, 0.45, 700, 5000, 0.9, 0.3, 0.1);
                 for (let i = 0; i < 6; i++) noise(t + i * 0.06, 0.03, 3000, 2500, 3, 0.18, 0.05);
                 break;
             case 'coin':
-                tone(t, 2093, 0.4, 0.06, 0.3);
-                tone(t + 0.05, 2637, 0.5, 0.05, 0.3);
-                tone(t + 0.02, 3520, 0.25, 0.02, 0.3);
+                // moneta che si posa: un tintinnio caldo, non metallico
+                chime(t, 1567.98, 0.05, 0.3);
+                chime(t + 0.05, 2093, 0.035, 0.3);
+                wood(t, 0.12);
+                break;
+            case 'coinFlip':
+                // la moneta che sale girando: un fruscio che si alza
+                noise(t, 0.5, 600, 2600, 1.2, 0.09, 0.15);
+                [0, 0.12, 0.24, 0.36].forEach(d => tone(t + d, 1800, 0.04, 0.012, 0.1, 'sine'));
                 break;
         }
     } catch { /* audio non disponibile */
@@ -273,7 +323,7 @@ const LEGEND_VOICE: Record<string, (t: number) => void> = {
         thump(t, 40, 0.5);
         noise(t, 1.6, 900, 80, 0.8, 0.35, 0.3, 'lowpass');
         for (let i = 0; i < 6; i++) noise(t + 0.2 + i * 0.13, 0.06, 3000, 2000, 4, 0.12, 0.05);
-        tone(t + 0.1, 55, 1.4, 0.18, 0.3, 'sawtooth', 0.6);
+        tone(t + 0.1, 55, 1.4, 0.18, 0.3, 'triangle', 0.6);
     },
     'brace-l1': t => {
         tone(t, 220, 0.2, 0.08, 0.2, 'triangle', 2);
@@ -281,8 +331,8 @@ const LEGEND_VOICE: Record<string, (t: number) => void> = {
         bell(t + 0.5, 392, 0.12);
     },
     'brace-l2': t => {
-        tone(t, 90, 1.3, 0.3, 0.35, 'sawtooth', 0.35);
-        tone(t, 45, 1.5, 0.25, 0.35, 'square', 0.5);
+        tone(t, 90, 1.3, 0.3, 0.35, 'triangle', 0.35);
+        tone(t, 45, 1.5, 0.25, 0.35, 'triangle', 0.5);
         noise(t, 1.4, 600, 60, 0.7, 0.35, 0.3, 'lowpass');
         thump(t + 0.9, 35, 0.5);
     },
@@ -304,7 +354,7 @@ const LEGEND_VOICE: Record<string, (t: number) => void> = {
         thump(t + 0.8, 50, 0.3);
     },
     'marea-l2': t => {
-        [0, 0.15, 0.3].forEach(d => tone(t + d, 110 + d * 60, 0.7, 0.18, 0.35, 'sawtooth', 0.5));
+        [0, 0.15, 0.3].forEach(d => tone(t + d, 110 + d * 60, 0.7, 0.18, 0.35, 'triangle', 0.5));
         noise(t, 1.2, 500, 150, 0.8, 0.3, 0.4, 'lowpass');
     },
     'marea-l3': t => {
@@ -334,7 +384,7 @@ const LEGEND_VOICE: Record<string, (t: number) => void> = {
     },
     // Vuoto: cori dissonanti, sussurri, rintocchi
     'vuoto-l0': t => {
-        [0, 1, 6].forEach(s => tone(t, scale(110, s), 1.8, 0.1, 0.6, 'sawtooth', 0.9));
+        [0, 1, 6].forEach(s => tone(t, scale(110, s), 1.8, 0.1, 0.6, 'triangle', 0.9));
         noise(t, 1.5, 200, 3000, 0.6, 0.15, 0.6);
     },
     'vuoto-l1': t => {
@@ -344,11 +394,11 @@ const LEGEND_VOICE: Record<string, (t: number) => void> = {
     'vuoto-l2': t => {
         bell(t, 98, 0.25);
         noise(t + 0.2, 1.4, 1800, 2400, 3, 0.08, 0.6);
-        tone(t + 0.3, scale(196, 1), 1.2, 0.07, 0.6, 'sawtooth');
+        tone(t + 0.3, scale(196, 1), 1.2, 0.07, 0.6, 'triangle');
     },
     'vuoto-l3': t => {
         [0, 0.24, 0.9, 1.14].forEach(d => thump(t + d, 42, 0.45));
-        [0, 3, 6].forEach(s => tone(t + 0.4, scale(147, s), 1.2, 0.07, 0.5, 'sawtooth'));
+        [0, 3, 6].forEach(s => tone(t + 0.4, scale(147, s), 1.2, 0.07, 0.5, 'triangle'));
     },
 };
 

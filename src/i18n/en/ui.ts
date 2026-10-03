@@ -11,6 +11,18 @@ export const EN_QUESTS: Record<string, string> = {
     play3: 'Play 3 matches',
     craft1: 'Craft or disenchant a card',
     open2: 'Open 2 packs',
+    winRanked2: 'Win 2 ranked matches',
+    winBrace: 'Win 2 matches with an Ember deck',
+    winMarea: 'Win 2 matches with a Tide deck',
+    winRadice: 'Win 2 matches with a Root deck',
+    winVuoto: 'Win 2 matches with a Void deck',
+    flawless: 'Win a match without losing any Seal',
+    units15: 'Play 15 units',
+    spells6: 'Cast 6 spells',
+    relics3: 'Put 3 relics into play',
+    seals6: 'Break 6 enemy Seals',
+    sealDmg40: 'Deal 40 damage to enemy Seals with your units',
+    kills12: 'Destroy 12 enemy units in combat',
 };
 
 export const EN_BACKS: Record<string, string> = {
@@ -56,6 +68,15 @@ export const EN_WEEKLY: Record<string, { title: string; desc: string }> = {
     cristalli: {title: 'Crystal Storm', desc: 'Start with 5 Crystals: the big cards arrive right away.'},
     eclissi: {title: 'Total Eclipse', desc: 'Every lane has the Eclipse omen: each hit on a Seal deals 1 extra damage.'},
     fortezze: {title: 'Fortresses', desc: '14-health Seals and Hallowed Ground everywhere: long matches.'},
+    luna: {title: 'Full Moon', desc: 'Waxing Moon on every lane: each turn your weakest unit grows. Endurance wins.'},
+    miasma: {title: 'Poisoned Air', desc: 'Miasma everywhere: units lose 1 health on each of your turns. Strike fast.'},
+    arena: {title: 'Blood Games', desc: 'Blood Arena on every lane: every unit that kills and survives gets stronger.'},
+    palude: {title: 'Sunken Lands', desc: 'Mire everywhere: every unit has -1 attack. Find another way to strike.'},
+    mura: {title: 'Walls and Breaches', desc: 'Bulwark on the sides, Eclipse in the center: the center lane decides the match.'},
+    golia: {title: 'David and Goliath', desc: 'Enemy Seals have 16 health, but you start with 3 Crystals.'},
+    traghetto: {title: 'The Last Ferry', desc: 'Both players have the Ferryman as Custodian: the first death each turn wounds a Seal.'},
+    stagioni: {title: 'Change of Season', desc: 'Both players have the Mother of Seasons as Custodian, and Seals have 12 health.'},
+    pozzi: {title: 'Choir of Wells', desc: 'Well of Whispers on every lane: whoever holds a lane draws an extra card.'},
 };
 
 /** Capitoli ufficiali: titolo, introduzione e tappe (stesso ordine dei dati italiani). */
@@ -161,11 +182,11 @@ export const EN_TUTORIAL: { title: string; text: string }[] = [
     {title: 'Open a second front', text: 'Play Novice Flamethrower in the left lane. It has no Haste, so it will attack from next turn.'},
     {title: 'End turn', text: 'Press End turn. Spark will hit the center Seal again.'},
     {title: 'Opponent\'s turn', text: 'Your opponent responds.'},
-    {title: 'Move your units', text: 'Coral Sentinel has 5 health and blocks Flamethrower. Drag Flamethrower into the center lane: moving costs 1 Crystal.'},
+    {title: 'Move your units', text: 'Coral Sentinel has 5 health and blocks Flamethrower. Drag Flamethrower into the center lane: moving costs 1 Crystal. Careful: a unit that moves does not attack this turn. It either moves or attacks.'},
     {title: 'Strike where it is open', text: 'Play Blazing Runner in the right lane: with Haste it hits the undefended Seal right away.'},
-    {title: 'Break the Seal', text: 'Press End turn and watch the center lane.'},
-    {title: 'A Seal has fallen', text: 'One to go. Your opponent now plays on their own.'},
-    {title: 'Your turn', text: 'From here you play freely: break the second Seal to win. The right Seal has only 2 health.'},
+    {title: 'End turn', text: 'Press End turn. Runner hits the right Seal; Flamethrower, having just moved, will attack from next turn.'},
+    {title: 'Opponent\'s turn', text: 'From here your opponent plays on their own, without a script.'},
+    {title: 'Your turn', text: 'From here you play freely: break two Seals to win. The center and right Seals are already down to 3 health: Flamethrower and Runner can finish them.'},
 ];
 
 export const EN_FACTION_OF: Record<string, string> = {brace: 'of Ember', marea: 'of the Tide', radice: 'of the Root', vuoto: 'of the Void'};

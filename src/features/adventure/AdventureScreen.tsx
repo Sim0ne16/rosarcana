@@ -128,9 +128,9 @@ function Chapter({a, onEdit, onShare, onDelete, onExport}: {
                     const tx = stageText(a.id, i, st, lang);
                     return (
                         <li key={i} className={`${s.node} ${ok ? s.done : open ? s.open : s.lock}`}>
-                            <span className={s.num}>{st.portrait && siteImg(st.portrait) ?
+                            <span className={s.num}><span className={s.numArt}>{st.portrait && siteImg(st.portrait) ?
                                 <img src={siteImg(st.portrait)} alt=""/> :
-                                <CardArt id={st.art} style={defaultArt(st.art)} arch={false}/>}<i>{i + 1}</i></span>
+                                <CardArt id={st.art} style={defaultArt(st.art)} arch={false}/>}</span><i>{i + 1}</i></span>
                             <div><h3>{tx.n}</h3><p><strong>{tx.foe}</strong>,
                                 {en ? `${st.facs.map(f => EN_FACTION_NAMES[f]).join(' and ')} deck` : `mazzo ${st.facs.map(f => FACTIONS[f].name).join(' e ')}`} · {en ? EN_DIFFS[st.diff] : DIFFS[st.diff].name}{st.seal !== 10 ? t(` · Sigilli da ${st.seal}`, ` · ${st.seal}-health Seals`) : ''}
                             </p>

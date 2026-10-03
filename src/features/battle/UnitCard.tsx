@@ -1,6 +1,7 @@
 import {motion} from 'framer-motion';
-import {memo} from 'react';
-import {activeSynergies, cardInfo, type Game, hasKw, uAtk, uMax, type Unit} from '../../engine';
+import {forwardRef, memo} from 'react';
+import {activeSynergies, aimTargets, cardInfo, type Game, hasKw, readyToAttack, uAtk, uMax, type Unit} from '../../engine';
+import {SWORD} from '../../cards/glyphs';
 import {Card} from '../../cards/Card';
 import {defaultArt} from '../../cards/styles';
 import {EN_CARDS} from '../../i18n/en/cards';
@@ -18,11 +19,15 @@ interface Props {
     p: number;
     l: number;
     u: Unit;
-    targetable: boolean
+    targetable: boolean;
+    /** Durante la scelta del bersaglio d'attacco: 'ok' attaccabile, 'blocked' protetto da un Guardiano. */
+    aim?: 'ok' | 'blocked'
 }
 
-/** Unità sul tavolo: la stessa carta del giocatore (stile, effetto, cornice) in formato ridotto, senza testo. */
-export const UnitCard = memo(function UnitCard({G, p, l, u, targetable}: Props) {
+/** Unità sul tavolo: la stessa carta del giocatore (stile, effetto, cornice) in formato ridotto, senza testo.
+ * Accetta un ref: AnimatePresence in modalità popLayout lo usa per togliere dal flusso della corsia l'unità che
+ * muore. Senza, la carta morente resta nella griglia durante l'uscita e manda a capo le altre. */
+export const UnitCard = memo(forwardRef<HTMLDivElement, Props>(function UnitCard({G, p, l, u, targetable, aim}, ref) {
     const c = cardInfo(u.id);
     const lang = useLang(), t = useT();
     const name = (lang === 'en' ? EN_CARDS[c.id]?.n : undefined) ?? c.n;
@@ -36,17 +41,26 @@ export const UnitCard = memo(function UnitCard({G, p, l, u, targetable}: Props) 
     const a = uAtk(G, p, l, u), mh = uMax(G, p, l, u), hp = mh - u.dmg;
     const kws: string[] = [...u.kw];
     if (!kws.includes('Rapido') && hasKw(G, p, u, 'Rapido')) kws.push('Rapido');
-    const sleepy = u.sick && !hasKw(G, p, u, 'Rapido') && G.active === p;
-    const canDrag = p === 0 && G.active === 0 && G.phase === 'main' && moveTargets(G, 0, u.uid).length > 0;
+    // o si sposta o attacca: chi si è spostata in questo turno resta ferma come una appena arrivata
+    const moved = u.moved && !u.dash && !hasKw(G, p, u, 'Slancio') && G.active === p;
+    const sleepy = ((u.sick && !hasKw(G, p, u, 'Rapido')) || moved) && G.active === p;
+    // si trascina per spostarla in un'altra corsia o, se può attaccare, sopra il nemico da colpire
+    const canDrag = p === 0 && G.active === 0 && G.phase === 'main'
+        && (moveTargets(G, 0, u.uid).length > 0 || (readyToAttack(G, 0, l, u) && aimTargets(G, 0, u.uid).length > 0));
+    // mirino: un nemico scelto come bersaglio da almeno una tua unità che attaccherà
+    const aimed = p === 1 && G.active === 0 && G.p[0].board.some(B => B.some(x => x.aim === u.uid && !x.guard));
     const hurt = fx.some(f => f.kind === 'dmg');
     const syn = activeSynergies(G, p, u);
+    // nel tuo turno ogni unità pronta mostra se attaccherà (spada) o resterà in guardia (scudo): un tocco cambia
+    const busy = useBattle(st => st.busy);
+    const choose = p === 0 && G.active === 0 && G.phase === 'main' && G.winner == null && !busy && readyToAttack(G, p, l, u);
     const show = (el: Element) => {
         const r = el.getBoundingClientRect();
         b().setPreview({id: u.id, uid: u.uid, rect: {x: r.left, y: r.top, w: r.width, h: r.height}});
     };
     return (
-        <motion.div layoutId={`card-${u.uid}`} layout="position"
-                    className={`${s.unit} ${targetable ? s.targetable : ''} ${selected ? s.selected : ''} ${sleepy ? s.sleepy : ''} ${u.asc ? s.ascended : ''} ${syn.length ? s.synced : ''}`}
+        <motion.div ref={ref} layoutId={`card-${u.uid}`} layout="position"
+                    className={`${s.unit} ${choose && u.guard ? s.guarding : ''} ${aim === 'ok' ? s.aimable : aim === 'blocked' ? s.aimBlocked : ''} ${targetable ? s.targetable : ''} ${selected ? s.selected : ''} ${sleepy ? s.sleepy : ''} ${u.asc ? s.ascended : ''} ${syn.length ? s.synced : ''}`}
                     data-drop={`unit:${u.uid}`} data-tut={`unit:${u.id}`} role="button" tabIndex={0}
                     aria-label={t(`${name}, attacco ${a}, salute ${hp}`, `${name}, attack ${a}, health ${hp}`)}
                     initial={{opacity: 0, scale: 0.6}}
@@ -65,7 +79,7 @@ export const UnitCard = memo(function UnitCard({G, p, l, u, targetable}: Props) 
                         filter: 'grayscale(1) brightness(2.2) blur(2px)',
                         transition: {duration: 0.55}
                     }}
-                    transition={{type: 'spring', stiffness: 420, damping: 28}}
+                    transition={{duration: 0.5, ease: [0.22, 1, 0.36, 1]}}
                     drag={canDrag && !lensOn} dragSnapToOrigin dragElastic={0.6}
                     whileDrag={{scale: 1.1, zIndex: 60, rotate: 0}}
                     onDragStart={() => {
@@ -105,9 +119,28 @@ export const UnitCard = memo(function UnitCard({G, p, l, u, targetable}: Props) 
                 d="M9.5 14.5 14.5 9.5M8 11l-2 2a3.5 3.5 0 0 0 5 5l2-2M16 13l2-2a3.5 3.5 0 0 0-5-5l-2 2" fill="none"
                 stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"/></svg></span>}
             {u.asc && <span className={s.uasc} title={t(W.ascension)}>♛</span>}
-            {(sleepy || u.stun) && <div className={s.zz}>{u.stun ? t('stordita', 'stunned') : t('in attesa', 'waiting')}</div>}
+            {(sleepy || u.stun) && <div className={s.zz}>{u.stun ? t('stordita', 'stunned') : moved ? t('spostata', 'moved') : t('in attesa', 'waiting')}</div>}
             {hp < mh && <span className={s.hurtBar} style={{width: `${(hp / mh) * 100}%`}}/>}
+            {aim === 'blocked' && <span className={s.blockedMark} title={t('Protetta: devi colpire prima un Guardiano', 'Protected: you must hit a Guardian first')}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 4.5 5.5v5.8c0 4.7 3.2 8.7 7.5 10.2 4.3-1.5 7.5-5.5 7.5-10.2V5.5Z"/></svg>
+            </span>}
+            {aimed && <span className={s.aimMark} title={t('Bersaglio dei tuoi attacchi', 'Target of your attacks')}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><path d="M12 1v6M12 17v6M1 12h6M17 12h6"/></svg>
+            </span>}
+            {choose && <button className={`${s.atkChip} ${u.guard ? s.atkGuard : ''}`} aria-pressed={!u.guard}
+                               onPointerDownCapture={e => e.stopPropagation()}
+                               onClick={e => {
+                                   e.stopPropagation();
+                                   b().toggleGuard(u.uid);
+                               }}
+                               title={u.guard ? t('In guardia: non attacca in questo turno. Tocca per farla attaccare', 'On guard: it will not attack this turn. Tap to make it attack')
+                                   : t('Attaccherà a fine turno. Tocca per tenerla in guardia', 'It will attack at the end of the turn. Tap to keep it on guard')}
+                               aria-label={u.guard ? t(`${name} in guardia`, `${name} on guard`) : t(`${name} attaccherà`, `${name} will attack`)}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">{u.guard
+                    ? <path d="M12 2.5 4.5 5.5v5.8c0 4.7 3.2 8.7 7.5 10.2 4.3-1.5 7.5-5.5 7.5-10.2V5.5Z"/>
+                    : SWORD}</svg>
+            </button>}
             <Floaters fx={fx}/>
         </motion.div>
     );
-});
+}));

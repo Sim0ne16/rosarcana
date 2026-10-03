@@ -98,24 +98,6 @@
     color: #a69d8a !important;
 }
 
-.nodes {
-    display: flex;
-    gap: 8px;
-}
-
-.nodes i {
-    width: 14px;
-    height: 14px;
-    transform: rotate(45deg);
-    background: rgba(255, 255, 255, .12);
-    box-shadow: 0 0 0 1px rgba(217, 169, 67, .5);
-}
-
-.nodes i.done {
-    background: #e0a032;
-    box-shadow: 0 0 10px rgba(240, 195, 90, .7);
-}
-
 .quest {
     display: flex;
     flex-direction: column;
@@ -402,18 +384,21 @@
 }
 
 .mode {
+    --acc: 214, 172, 96;
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     border-radius: 16px;
-    background: linear-gradient(160deg, rgba(40, 32, 52, .95), rgba(22, 18, 30, .95));
-    box-shadow: 0 0 0 1px rgba(217, 169, 67, .3), 0 14px 28px rgba(0, 0, 0, .35);
+    background: linear-gradient(180deg, rgba(var(--acc), .10), transparent 55%), linear-gradient(160deg, rgba(40, 32, 52, .95), rgba(22, 18, 30, .95));
+    box-shadow: inset 0 2px 0 rgba(var(--acc), .75), 0 0 0 1px rgba(var(--acc), .28), 0 14px 28px rgba(0, 0, 0, .35);
     transition: transform .15s, box-shadow .2s;
 }
 
 .mode:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0 0 1px #f0c35a, 0 0 22px rgba(240, 195, 90, .25);
+    box-shadow: inset 0 2px 0 rgb(var(--acc)), 0 0 0 1px rgba(var(--acc), .7), 0 0 22px rgba(var(--acc), .22);
 }
 
 .modeArt {
@@ -426,7 +411,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, transparent 40%, rgba(22, 18, 30, .95));
+    background: linear-gradient(180deg, transparent 35%, rgba(var(--acc), .10) 70%, rgba(22, 18, 30, .95));
 }
 
 .modeArt img, .modeArt > * {
@@ -457,7 +442,8 @@
 
 .modeStatus {
     font-size: 13px;
-    color: #e0b458;
+    font-weight: 700;
+    color: rgb(var(--acc));
 }
 
 .modeBody > button {
@@ -500,4 +486,112 @@
     font-size: 28px;
     color: #f3dfb0;
     margin: 4px 0;
+}
+
+.qFoot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #a69d8a;
+}
+
+/* cambio missione: discreto, una volta al giorno */
+.reroll {
+    border: 0;
+    background: none;
+    padding: 0;
+    font: inherit;
+    font-size: 12px;
+    color: #cdbb95;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.reroll:hover {
+    color: #f0c35a;
+}
+
+/* Carattere delle modalità: colore e simbolo propri, senza cambiare la struttura delle schede */
+.tone-adv {
+    --acc: 224, 176, 88;
+}
+
+.tone-arena {
+    --acc: 226, 118, 138;
+}
+
+.tone-exp {
+    --acc: 122, 186, 110;
+}
+
+.tone-night {
+    --acc: 160, 132, 236;
+}
+
+.tone-train {
+    --acc: 160, 176, 196;
+}
+
+.tone-friend {
+    --acc: 96, 176, 226;
+}
+
+.tone-bench {
+    --acc: 200, 160, 110;
+}
+
+/* simbolo in filigrana nell'angolo in basso a destra */
+.modeGlyph {
+    position: absolute;
+    right: 10px;
+    bottom: -6px;
+    z-index: -1;
+    font-style: normal;
+    font-size: 96px;
+    line-height: 1;
+    color: rgba(var(--acc), .07);
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Avventura: le tappe come un piccolo sentiero, rombi distanziati uniti da un filo */
+.trail {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 4px;
+}
+
+.trail::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(var(--acc), .6), rgba(var(--acc), .15));
+}
+
+.trail i {
+    position: relative;
+    width: 11px;
+    height: 11px;
+    flex: none;
+    transform: rotate(45deg);
+    background: #1b1624;
+    box-shadow: 0 0 0 1px rgba(var(--acc), .55);
+}
+
+.trail i.done {
+    background: rgb(var(--acc));
+    box-shadow: 0 0 8px rgba(var(--acc), .7);
+}
+
+/* l'ultima tappa (Nyxa) è un po' più grande */
+.trail i:last-child {
+    width: 14px;
+    height: 14px;
 }

@@ -1,16 +1,16 @@
 # Graph Report - rosarcana  (2026-10-02)
 
 ## Corpus Check
-- 138 files · ~3,870,935 words
+- 142 files · ~3,877,042 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1288 nodes · 4663 edges · 60 communities (59 shown, 1 thin omitted)
-- Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 405 edges (avg confidence: 0.87)
+- 1320 nodes · 4779 edges · 54 communities (53 shown, 1 thin omitted)
+- Extraction: 91% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 406 edges (avg confidence: 0.87)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e7c3a2f9`
+- Built from commit: `8f054669`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -18,37 +18,33 @@
 - PlayScreen.tsx
 - CardArt.tsx
 - Radice Suit (Root House)
-- useT
+- stories.ts
 - Brace C4 - Armored Knight with Burning Banner
 - devDependencies
-- CollectionScreen.tsx
-- useProfile
-- war.ts
-- DecksScreen.tsx
-- Card.tsx
-- PackOpening.tsx
 - App.tsx
-- en/mechanics.ts
-- profile/store.ts
+- siteImg
+- AdventureScreen.tsx
+- index.ts
+- rules.ts
+- glog
+- AuthorScreen.tsx
+- battle/store.ts
+- words.ts
 - Marea R2 - Drowned Warden with Trident Staff on the Wreck
 - Shop Backdrop (Candlelit Reliquary Wall of Card Cases)
 - Vuoto (Void) Suit
 - Four-House Color Palette (Red / Teal / Green / Violet)
-- battle/store.ts
+- useBattle
 - Card Back: Radici (Glowing Root Knot in Verdant Frame)
-- names.ts
 - God Rays / Descending Light Shafts
 - compilerOptions
 - Card Frame Overlay (Transparent-Center Border Asset)
-- index.ts
 - Legendary entrance reveal
-- rules.ts
+- effects.ts
 - constants.ts
 - Set Base (120 cards)
-- state.ts
-- weeklyStart.ts
-- cardInfo
-- emoteStore.ts
+- engine/night.ts
+- PackOpening.tsx
 - CardDetail.tsx
 - Solid black centre and background convention
 - economy/ packs, odds, pity, rewards, decks
@@ -61,27 +57,25 @@
 - engine/ pure rules engine
 - extract-icons.mjs
 - Framer Motion animation layer
-- i18n/log.ts
-- draft.ts
-- AuthorScreen.tsx
-- AdventureScreen.tsx
-- cardText.tsx
-- types.ts
-- styles.ts
-- stories.ts
-- model.ts
-- engine/night.ts
-- Faction
-- engine/cards.ts
-- variants.ts
+- useT
+- ArenaScreen.tsx
+- CollectionScreen.tsx
+- war.ts
+- lang.ts
+- names.ts
+- DecksScreen.tsx
+- useLang
+- state.ts
+- Card.tsx
+- profile/store.ts
 
 ## God Nodes (most connected - your core abstractions)
-1. `useT()` - 113 edges
-2. `useBattle` - 104 edges
-3. `useProfile` - 96 edges
+1. `useT()` - 121 edges
+2. `useBattle` - 112 edges
+3. `useProfile` - 97 edges
 4. `useLang()` - 77 edges
-5. `cardName()` - 47 edges
-6. `Faction` - 46 edges
+5. `cardName()` - 49 edges
+6. `Faction` - 47 edges
 7. `cardInfo()` - 35 edges
 8. `lookOf()` - 35 edges
 9. `W` - 31 edges
@@ -140,23 +134,23 @@
 - **Mastery Tier Frame Ladder (bronze to pearl progression)** — src_assets_site_frame_maestria_1, src_assets_site_frame_maestria_2, src_assets_site_frame_maestria_3, src_assets_site_frame_maestria_4, motif_mastery_tier_progression [INFERRED 0.95]
 - **Vuoto Suit C-Rank Card Ladder (c0-c5)** — src_assets_art_vuoto_c0, src_assets_art_vuoto_c1, src_assets_art_vuoto_c2, src_assets_art_vuoto_c3, src_assets_art_vuoto_c4, src_assets_art_vuoto_c5 [INFERRED 0.95]
 
-## Communities (60 total, 1 thin omitted)
+## Communities (54 total, 1 thin omitted)
 
 ### Community 0 - "PlayScreen.tsx"
-Cohesion: 0.09
-Nodes (26): weeklyChallenges(), DeckSelect(), DRAFT_MAX_L, DRAFT_MAX_W, HERO, Lock, PlayScreen(), chapterText() (+18 more)
+Cohesion: 0.10
+Nodes (29): Tab, backName(), rewardLabel(), Archetype, ARCHETYPES, commons(), Deck, deckIssues() (+21 more)
 
 ### Community 1 - "CardArt.tsx"
-Cohesion: 0.08
-Nodes (35): artUri(), cache, IMG, Rose, ART_DEFS, cache, engraving(), ICONS (+27 more)
+Cohesion: 0.11
+Nodes (27): artUri(), cache, IMG, ART_DEFS, cache, engraving(), ICONS, files (+19 more)
 
 ### Community 2 - "Radice Suit (Root House)"
 Cohesion: 0.15
 Nodes (43): Amber-and-Green Forest Palette, Ancient Colossal Tree Bearing a Face in Its Bark, Bioluminescent Spores and Warm Ember Particles, Colossal Beast Silhouette, Forest Guardian Beast Portrait, Glowing Green Luminous Relic at Scene Center, God Rays - Volumetric Light Shafts Through Canopy, God Rays / Crepuscular Shaft Light (+35 more)
 
-### Community 3 - "useT"
+### Community 3 - "stories.ts"
 Cohesion: 0.12
-Nodes (32): Logo(), PAL, rose(), Coach(), CustodeBadge(), GraveView(), OppHand(), CrystalPool() (+24 more)
+Nodes (21): resetMentions(), applyVariants(), CardVariant, originals, Snapshot, VARIANTS, Keyword, AdvStage (+13 more)
 
 ### Community 4 - "Brace C4 - Armored Knight with Burning Banner"
 Cohesion: 0.14
@@ -164,43 +158,43 @@ Nodes (42): Amber-Red Chiaroscuro Palette, Armored Warrior Figure, Motif: Ascend
 
 ### Community 5 - "devDependencies"
 Cohesion: 0.05
-Nodes (40): d3-delaunay, framer-motion, @iconify-json/game-icons, dependencies, d3-delaunay, framer-motion, react, react-dom (+32 more)
+Nodes (41): d3-delaunay, framer-motion, @iconify-json/game-icons, dependencies, d3-delaunay, framer-motion, react, react-dom (+33 more)
 
-### Community 6 - "CollectionScreen.tsx"
-Cohesion: 0.21
-Nodes (15): kwIcon(), typeIcon(), CollectionScreen(), RAR_ORDER, Sort, toggle(), costMatch(), COSTS (+7 more)
+### Community 6 - "App.tsx"
+Cohesion: 0.16
+Nodes (12): App(), TABS, SvgDefs(), useEvent, Credits(), SettingsModal(), FONT_SETS, Ambient() (+4 more)
 
-### Community 7 - "useProfile"
-Cohesion: 0.14
-Nodes (30): Card, rewardLabel(), countMap(), CardBack(), myBack, Unlock(), DeckEditor(), ArenaScreen() (+22 more)
+### Community 7 - "siteImg"
+Cohesion: 0.18
+Nodes (13): files, SITE, siteImg(), EffectLayer, FrameLayer, FRAME_HOLES, ImageFrame, Miniature (+5 more)
 
-### Community 8 - "war.ts"
-Cohesion: 0.17
-Nodes (23): daysToReset(), weekIndex(), RoseWar(), add(), emptyEntry(), entries(), leader(), petals() (+15 more)
-
-### Community 9 - "DecksScreen.tsx"
-Cohesion: 0.11
-Nodes (34): files, SITE, siteImg(), FRAME_HOLES, FACTION_GLYPH, Glyph(), RarityGem(), StatGem() (+26 more)
-
-### Community 10 - "Card.tsx"
-Cohesion: 0.13
-Nodes (14): EffectLayer, splitText(), HEART, SWORD, LINKS, Lore, loreOf(), WORLD (+6 more)
-
-### Community 11 - "PackOpening.tsx"
-Cohesion: 0.27
-Nodes (7): flipSfx(), ARTS, PackOpening(), Phase, RANK, useStage(), rarityName()
-
-### Community 12 - "App.tsx"
+### Community 8 - "AdventureScreen.tsx"
 Cohesion: 0.12
-Nodes (17): App(), Tab, TABS, SvgDefs(), BattleScreen(), Credits(), SettingsModal(), LESSONS (+9 more)
+Nodes (37): defaultArt(), originalName(), AdventureScreen(), Chapter(), copy(), Editor(), Tab, UNITS (+29 more)
 
-### Community 13 - "en/mechanics.ts"
+### Community 9 - "index.ts"
+Cohesion: 0.14
+Nodes (15): Logo(), PAL, Rose, BACK_PAL, SEAL_PAL, rose(), RoseOpts, CardBack() (+7 more)
+
+### Community 10 - "rules.ts"
 Cohesion: 0.20
-Nodes (13): LANE_NAME, SLOTS, OMENS, H, EN_BELLS, EN_KEYWORD_WORD, EN_KEYWORDS, EN_KW_SHORT (+5 more)
+Nodes (14): aiChoose(), EFFECTS, aiMulligan(), canOffer(), legalTargets(), mulligan(), offerSeal(), playCard() (+6 more)
 
-### Community 14 - "profile/store.ts"
-Cohesion: 0.10
-Nodes (26): backName(), CUST_MISSIONS, CUST_REWARD, custDone(), CustProgress, starterDecks(), starterOwned(), CardMastery (+18 more)
+### Community 11 - "glog"
+Cohesion: 0.32
+Nodes (21): advanceNight(), attackOne(), chooseRes(), startTurn(), checkWin(), cleanup(), dmgSeal(), dmgUnit() (+13 more)
+
+### Community 12 - "AuthorScreen.tsx"
+Cohesion: 0.11
+Nodes (32): F, games, N, played, wins, simulateEconomy(), actions(), aiDeck() (+24 more)
+
+### Community 13 - "battle/store.ts"
+Cohesion: 0.09
+Nodes (29): LANE_NAME, hasAttackTarget(), Game, PlayOpt, laneName(), oppAim(), OppPlay, oppTone (+21 more)
+
+### Community 14 - "words.ts"
+Cohesion: 0.21
+Nodes (10): Challenge, LEVEL_XP, matchXp(), SECTIONS, NIGHT_LOSS_ORO, NIGHT_MIN_GAMES, NIGHT_WIN_ORO, setDataLang() (+2 more)
 
 ### Community 15 - "Marea R2 - Drowned Warden with Trident Staff on the Wreck"
 Cohesion: 0.28
@@ -218,17 +212,13 @@ Nodes (24): Constellation and Starfield Iconography, Contained Soul-Light (Vesse
 Cohesion: 0.18
 Nodes (23): Chiaroscuro Painterly Portrait, Ember and Living Fire, Four-House Color Palette (Red / Teal / Green / Violet), Gothic Cathedral Architecture, Hooded Cloaked Figure, Lone Figure Dwarfed by Vast Scene, Overgrown Nature and Ancient Stone, Rose Window (Rosone) Emblem (+15 more)
 
-### Community 19 - "battle/store.ts"
-Cohesion: 0.09
-Nodes (37): actions(), EFFECTS, tgtU(), hasAttackTarget(), moveCost(), moveTargets(), playOptions(), findU() (+29 more)
+### Community 19 - "useBattle"
+Cohesion: 0.12
+Nodes (21): BattleScreen(), Coach(), BEADS, CoinToss(), EDGE, PELLETS, OppAim(), OppAnnouncer() (+13 more)
 
 ### Community 20 - "Card Back: Radici (Glowing Root Knot in Verdant Frame)"
 Cohesion: 0.23
 Nodes (21): UI Role: Adventure Character Portrait (512x512 Square Avatar), Visual Motif: Arcane Rose Sigil (Rosarcana Brand Mark), UI Role: Card Back (400x560 Deck Reverse), Visual Motif: Centered Radial Glowing Emblem, Visual Motif: Chiaroscuro Dark-Fantasy Painterly Style, Visual Motif: Elemental Suit Color Coding (Water/Fire/Earth/Night/Arcane), Visual Motif: Ember Sparks and Molten Glow, Visual Motif: Nature Overgrowth (Thorns, Roots, Ivy) (+13 more)
-
-### Community 21 - "names.ts"
-Cohesion: 0.31
-Nodes (8): ART_STYLES, FX, MASTERY_NAMES, EN_RARITY_NAMES, en(), frameName(), fxName(), styleName()
 
 ### Community 22 - "God Rays / Descending Light Shafts"
 Cohesion: 0.30
@@ -242,45 +232,33 @@ Nodes (19): DOM, DOM.Iterable, ES2021, src, vite/client, compilerOptions, isolat
 Cohesion: 0.27
 Nodes (17): Baroque Scrollwork and Gemstone Ornamentation, Card Frame Overlay (Transparent-Center Border Asset), Chiaroscuro Darkness with Single Light Source, Elemental Frame Theming (Sea vs Fire Material Identity), Guardian (Custode) Portrait Archetype, Held Luminous Vessel (Lantern / Brazier), Mastery Tier Progression (Material Rarity Ladder), Custode Nocchiero (Helmsman Guardian Portrait) (+9 more)
 
-### Community 25 - "index.ts"
-Cohesion: 0.23
-Nodes (9): PRESETS, WeeklyRules, CustodeId, OmenId, NewGameOpts, CustomMatch, DraftState, Lesson (+1 more)
-
 ### Community 26 - "Legendary entrance reveal"
 Cohesion: 0.15
 Nodes (15): Nyxa, Regina del Nulla (vuoto-l0), Occhio Vacuo (vuoto-c4), Thalassa, Voce degli Abissi (marea-l0), Vulkara, Cuore del Monte (brace-l0), Dorsi delle carte (card backs), Site batch 4: Casata banners (3:2), Casata Brace (ember/forge faction), Casata Marea (tide/sea faction) (+7 more)
 
-### Community 27 - "rules.ts"
-Cohesion: 0.13
-Nodes (30): aiChoose(), aiDeck(), apply(), bestAction(), QUOTA, simEnd(), aiMulligan(), attackers() (+22 more)
+### Community 27 - "effects.ts"
+Cohesion: 0.21
+Nodes (15): Effect, pushChosen(), tgtU(), uidOf(), bounce(), findU(), pushAuto(), pushTargets() (+7 more)
 
 ### Community 28 - "constants.ts"
 Cohesion: 0.10
-Nodes (32): BACK_PRICE, BACKS, FIRST_LEG_BY, FIRST_WIN_ORO, FOIL_CHANCE, IMAGE_BACKS, LOSS_ORO, ODDS (+24 more)
+Nodes (34): Icon(), FIRST_LEG_BY, FIRST_WIN_ORO, FOIL_CHANCE, LOSS_ORO, ODDS, PACK_GEMME, PACK_ORO (+26 more)
 
 ### Community 29 - "Set Base (120 cards)"
 Cohesion: 0.19
 Nodes (14): Full-art vertical 5:7 format, Horizontal 4:3 classic frame format, Sciame di Spore (radice-u1), Common art style directive, 60 missing card illustrations, 12 new card illustrations, Site batch 1: missing cards and tokens, Germoglio token (summoned by Sciame di Spore) (+6 more)
 
-### Community 30 - "state.ts"
-Cohesion: 0.21
-Nodes (31): pushChosen(), uidOf(), advanceNight(), startTurn(), bounce(), checkWin(), cleanup(), dmgSeal() (+23 more)
+### Community 30 - "engine/night.ts"
+Cohesion: 0.19
+Nodes (13): crossed(), nextNight(), NIGHT_PER_BREAK, NIGHT_PER_ROUND, NIGHT_PER_SACRIFICE, NIGHT_STEPS, NIGHT_TEXT, NIGHT_TOLL_EVERY (+5 more)
 
-### Community 31 - "weeklyStart.ts"
-Cohesion: 0.13
-Nodes (19): OPP_NAMES, POOL, WEEKLY_REWARD, WEEKLY_WINS, WeeklyChallenge, custodiOf(), turnNote(), NIGHT_LOSS_ORO (+11 more)
-
-### Community 32 - "cardInfo"
-Cohesion: 0.21
-Nodes (20): evaluate(), cardInfo(), activeSynergies(), omenAt(), synergyBonus(), costOf(), fac(), hasKw() (+12 more)
-
-### Community 33 - "emoteStore.ts"
-Cohesion: 0.09
-Nodes (38): BELL, envGain(), glass(), init(), LEGEND_VOICE, legendSfx(), noise(), scale() (+30 more)
+### Community 32 - "PackOpening.tsx"
+Cohesion: 0.07
+Nodes (42): BELL, chime(), envGain(), flipSfx(), glass(), init(), LEGEND_VOICE, legendSfx() (+34 more)
 
 ### Community 34 - "CardDetail.tsx"
-Cohesion: 0.15
-Nodes (27): CardArt, hasIllustration(), FACTION_LORE, linksOf(), CODEX_LEVEL, SECRETS, freeStyles(), levelName() (+19 more)
+Cohesion: 0.13
+Nodes (22): FACTION_GLYPH, Glyph(), FACTION_LORE, LINKS, linksOf(), Lore, WORLD, CODEX_LEVEL (+14 more)
 
 ### Community 35 - "Solid black centre and background convention"
 Cohesion: 0.33
@@ -322,57 +300,49 @@ Nodes (6): engine/ pure rules engine, Mulligan, Replay system, Turn clock (TURN_
 Cohesion: 0.40
 Nodes (4): map, out, require, set
 
-### Community 47 - "i18n/log.ts"
-Cohesion: 0.12
-Nodes (19): formatLog(), IT_LOG, LogArgs, LogFmt, LogKey, LogTable, Tpl, NIGHT_TEXT (+11 more)
+### Community 47 - "useT"
+Cohesion: 0.18
+Nodes (21): EmoteBubble(), EmotePicker(), useEmotes, CrystalPool(), Crystals(), fmt(), PlayerBar(), QuitButton() (+13 more)
 
-### Community 48 - "draft.ts"
-Cohesion: 0.12
-Nodes (21): botDraft(), copyLimit(), counts(), DRAFT_COST, DRAFT_COST_GEMS, DRAFT_MIN_GAMES, DRAFT_PICKS, DRAFT_REWARDS (+13 more)
+### Community 48 - "ArenaScreen.tsx"
+Cohesion: 0.06
+Nodes (58): OPP_NAMES, Reward, CARDS, Faction, ADVENTURE, AdvNode, ArenaScreen(), DeckSide() (+50 more)
 
-### Community 49 - "AuthorScreen.tsx"
+### Community 49 - "CollectionScreen.tsx"
+Cohesion: 0.08
+Nodes (35): CardMention, EN_KW_LIST, KW_RE_EN, KW_SHORT, kwIcon(), LEAD_KW_EN, mentionableCards(), RichText() (+27 more)
+
+### Community 50 - "war.ts"
+Cohesion: 0.09
+Nodes (39): Community, connectCommunity(), Db, User, daysToReset(), POOL, weekIndex(), WEEKLY_REWARD (+31 more)
+
+### Community 52 - "lang.ts"
+Cohesion: 0.14
+Nodes (16): CustodeBadge(), usage(), NightGauge(), Log(), ReplayBar(), CustodePortrait(), EN_LANE_NAME, Lang (+8 more)
+
+### Community 53 - "names.ts"
+Cohesion: 0.07
+Nodes (41): ART_STYLES, ArtStyle, CardLook, CRAFT_FRAMES, EffectId, FrameId, FRAMES, FREE_STYLES (+33 more)
+
+### Community 54 - "DecksScreen.tsx"
+Cohesion: 0.17
+Nodes (17): CardArt, CUST_MISSIONS, CUST_REWARD, CustProgress, decodeDeck(), encodeDeck(), BYID, FACTIONS (+9 more)
+
+### Community 57 - "useLang"
 Cohesion: 0.16
-Nodes (15): Archetype, ARCHETYPES, autoDeck(), commons(), Deck, Preset, simulateEconomy(), BYID (+7 more)
+Nodes (29): Card, loreOf(), cardInfo(), activeSynergies(), ASCEND_FIGHTS, omenAt(), OMENS, synergiesOf() (+21 more)
 
-### Community 50 - "AdventureScreen.tsx"
-Cohesion: 0.21
-Nodes (21): originalName(), deckIssues(), AdventureScreen(), Chapter(), copy(), Editor(), Tab, UNITS (+13 more)
+### Community 59 - "state.ts"
+Cohesion: 0.10
+Nodes (30): evaluate(), formatLog(), IT_LOG, LogArgs, LogFmt, LogKey, LogTable, Tpl (+22 more)
 
-### Community 51 - "cardText.tsx"
-Cohesion: 0.18
-Nodes (10): CardMention, EN_KW_LIST, KW_RE_EN, KW_SHORT, LEAD_KW_EN, mentionableCards(), RichText(), splitCardMentions() (+2 more)
-
-### Community 52 - "types.ts"
+### Community 61 - "Card.tsx"
 Cohesion: 0.11
-Nodes (21): Effect, ASCEND_FIGHTS, ASCEND_TEXT, BELLS, Custode, inPlay(), omenSealHit(), SYNERGIES (+13 more)
+Nodes (20): CardProps, HEART, RarityGem(), StatGem(), SWORD, TYPE_GLYPH, DEFAULT_ART, CardDef (+12 more)
 
-### Community 53 - "styles.ts"
-Cohesion: 0.14
-Nodes (19): FrameLayer, ImageFrame, Miniature, ArtStyle, CardLook, CRAFT_FRAMES, EffectId, FrameId (+11 more)
-
-### Community 54 - "stories.ts"
-Cohesion: 0.14
-Nodes (19): Community, connectCommunity(), Db, User, AdvStage, activeEvent(), activeVariants(), EVENT_DAYS (+11 more)
-
-### Community 55 - "model.ts"
-Cohesion: 0.18
-Nodes (14): Reward, Adventure, CHAPTER_1, clip(), decode(), DIFFS, OFFICIAL_EXTRA, sanitize() (+6 more)
-
-### Community 56 - "engine/night.ts"
-Cohesion: 0.22
-Nodes (13): crossed(), nextNight(), NIGHT_PER_BREAK, NIGHT_PER_ROUND, NIGHT_PER_SACRIFICE, NIGHT_STEPS, NIGHT_TOLL_EVERY, nightSegment() (+5 more)
-
-### Community 57 - "Faction"
-Cohesion: 0.18
-Nodes (16): Faction, StoryEvent, DraftRun, EXP_BLESSING, EXP_MIN_GAMES, expOpponent(), ExpRun, ExpStage (+8 more)
-
-### Community 58 - "engine/cards.ts"
-Cohesion: 0.20
-Nodes (9): CardProps, KEYWORDS, LANES, Raw, TOKENS, TOTAL_COPIES, TYPES, CardDef (+1 more)
-
-### Community 59 - "variants.ts"
-Cohesion: 0.28
-Nodes (7): resetMentions(), applyVariants(), CardVariant, originals, Snapshot, VARIANTS, Keyword
+### Community 62 - "profile/store.ts"
+Cohesion: 0.12
+Nodes (38): hasIllustration(), freeStyles(), custDone(), autoDeck(), countMap(), starterDecks(), starterOwned(), challengesFor() (+30 more)
 
 ## Ambiguous Edges - Review These
 - `Abyssal Leviathan / Colossal Sea Creature` → `Marea C3 - Coral-Encrusted Colossus in the Drowned Chasm`  [AMBIGUOUS]
@@ -391,7 +361,7 @@ Nodes (7): resetMentions(), applyVariants(), CardVariant, originals, Snapshot, V
   art/PROMPT-CARTE.txt · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **204 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+199 more)
+- **216 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+211 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **1 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 

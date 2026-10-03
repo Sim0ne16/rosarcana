@@ -1,6 +1,6 @@
 /* ---------- Struttura ---------- */
 .screen {
-    --uw: min(clamp(48px, calc((100vw - 300px) / 9 - 13px), 132px), calc((100vh - 470px) / 2.8));
+    --uw: min(clamp(48px, calc((100vw - 300px) / 9 - 13px), 132px), calc((100vh - 520px) / 2.8));
     --uh: calc(var(--uw) * 1.4);
     --hw: clamp(92px, min(8vw, 13.5vh), 200px);
     /* pietra dell'altare e filo d'oro delle incisioni */
@@ -44,7 +44,8 @@
 /* Speculare a .top: la tua targa a sinistra, la mano al centro. */
 .bottom {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    /* targa e comandi prendono la loro larghezza; la mano si adatta allo spazio che resta, al centro */
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: end;
     gap: 12px;
     padding: 0 16px 8px;
@@ -84,6 +85,11 @@
 
 /* L'altare: un unico piano di pietra con le tre navate incise. */
 .board {
+    /* le caselle delle unità si misurano sul tavolo stesso: crescono con lo spazio della corsia
+       (anche quando si chiude la colonna laterale) senza mai uscirne */
+    container-type: size;
+    --uw: min(calc(((100cqw - 12px) / 3 - 34px) / 3), calc((100cqh - 256px) / 2.8), 170px);
+    --uh: calc(var(--uw) * 1.4);
     position: relative;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -187,18 +193,36 @@
     background: var(--stone2);
 }
 
+/* Una sola fila di tre caselle, sempre: le unità oltre la terza (per un istante, mentre una esce e un'altra entra)
+   finiscono in una fila alta zero invece di spingere su le altre. Riferimento di posizione per popLayout. */
 .row {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(3, var(--uw));
-    grid-auto-rows: var(--uh);
+    grid-template-rows: var(--uh);
+    grid-auto-rows: 0;
     justify-content: center;
-    align-content: center;
+    align-content: start;
     gap: 6px;
     padding: 5px;
     border-radius: 12px;
     height: calc(var(--uh) + 10px);
     flex: none;
     transition: background .2s, box-shadow .2s;
+}
+
+/* Le caselle vuote stanno su un piano sotto le unità, con la stessa griglia. */
+.slots {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(3, var(--uw));
+    grid-template-rows: var(--uh);
+    justify-content: center;
+    align-content: start;
+    gap: 6px;
+    padding: 5px;
+    pointer-events: none;
 }
 
 .dropOk {
@@ -317,51 +341,6 @@
     --sg: rgba(255, 107, 94, .45);
 }
 
-.medal {
-    position: relative;
-    width: 62px;
-    height: 62px;
-    flex: none;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 0, 0, .55), rgba(0, 0, 0, .2) 70%);
-    filter: drop-shadow(0 0 10px var(--sg));
-}
-
-.gauge {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-}
-
-.gaugeTrack {
-    fill: none;
-    stroke: rgba(0, 0, 0, .55);
-    stroke-width: 7;
-}
-
-.gaugeFill {
-    fill: none;
-    stroke: var(--sc);
-    stroke-width: 7;
-    stroke-linecap: round;
-    transition: stroke-dasharray .5s ease;
-    filter: drop-shadow(0 0 3px var(--sc));
-}
-
-.rose {
-    position: absolute;
-    inset: 7px;
-}
-
-.rose svg {
-    width: 100%;
-    height: 100%;
-}
-
 .sealHp {
     position: relative;
     font-family: var(--display);
@@ -385,52 +364,10 @@
 
 
 /* reliquia: una piccola targa accanto al rosone */
-.relic {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    font-weight: 700;
-    max-width: 120px;
-    color: #f3dfb0;
-    background: linear-gradient(180deg, rgba(60, 46, 26, .95), rgba(30, 22, 12, .95));
-    border: 1px solid var(--gild);
-    border-radius: 999px;
-    padding: 2px 9px 2px 5px;
-    cursor: help;
-}
 
-.relic svg {
-    width: 14px;
-    height: 14px;
-    flex: none;
-    color: #e0b458;
-}
-
-.relic span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-
-
-.low .medal {
-    animation: lowPulse 1.1s ease-in-out infinite;
-}
-
-@keyframes lowPulse {
-    50% {
-        filter: drop-shadow(0 0 16px #ff4040);
-    }
-}
 
 .broken {
     opacity: .75;
-}
-
-.broken .medal {
-    filter: grayscale(.8) brightness(.7);
 }
 
 
@@ -491,7 +428,8 @@
 }
 
 .handCard + .handCard {
-    margin-left: calc(var(--hw) * -.1);
+    /* con molte carte il ventaglio si stringe, così non schiaccia la targa e i comandi ai lati */
+    margin-left: calc(var(--hw) * var(--hov, -.1));
 }
 
 .handCard:not(.playable) {
@@ -625,10 +563,12 @@
 /* ---------- Pila e mira ---------- */
 .stackZone {
     position: fixed;
-    right: 250px;
+    /* a cavallo tra il tavolo e il leggio: copre il registro, non le corsie */
+    right: 150px;
     top: 50%;
     transform: translateY(-58%);
-    width: 220px;
+    width: 230px;
+    height: 330px;
     z-index: 55;
     pointer-events: none;
 }
@@ -995,29 +935,38 @@
     margin: 0;
     font-size: 14px;
     color: #d6d3e2;
-    height: 4.2em;
+    /* cresce quanto serve: il registro sopra cede lo spazio */
+    min-height: 4.2em;
+    flex: none;
     line-height: 1.4;
     overflow: hidden;
 }
 
-.endTurn {
-    width: 128px;
-    height: 128px;
+/* contatore del turno, inciso sopra il pulsante */
+.turnBadge {
     align-self: center;
-    border-radius: 50%;
-    border: 0;
-    cursor: pointer;
-    font-family: var(--display);
-    font-size: 24px;
-    line-height: 1;
-    color: #2a1a02;
-    background: radial-gradient(circle at 40% 30%, #ffe7a6, #e0a032 45%, #7a4d0c);
-    box-shadow: 0 0 0 4px #17141c, 0 0 0 6px #caa15a, 0 0 28px rgba(255, 200, 110, .45), 0 12px 24px rgba(0, 0, 0, .6);
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 2px 12px;
+    border-radius: 999px;
+    color: #b9ae96;
+    background: rgba(0, 0, 0, .3);
+    box-shadow: inset 0 0 0 1px rgba(214, 172, 96, .3);
 }
 
-.endTurn:disabled {
-    filter: grayscale(.8) brightness(.6);
-    cursor: default;
+.turnBadge span {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.turnBadge b {
+    font-family: var(--display);
+    font-size: 20px;
+    color: #f3dfb0;
+    font-variant-numeric: tabular-nums;
 }
 
 /* ---------- Anteprima, registro ---------- */
@@ -1046,10 +995,13 @@
     font-size: 13px;
 }
 
-.log summary {
-    cursor: pointer;
+.logHead {
+    display: flex;
+    align-items: center;
+    margin: 0;
     font-family: var(--display);
     font-size: 17px;
+    font-weight: 400;
 }
 
 .logCount {
@@ -1712,48 +1664,6 @@
 }
 
 /* ---------- Tempo del turno ---------- */
-.endWrap {
-    position: relative;
-    align-self: center;
-    display: grid;
-    place-items: center;
-}
-
-.clock {
-    position: absolute;
-    inset: -9px;
-    width: calc(100% + 18px);
-    height: calc(100% + 18px);
-    transform: rotate(-90deg);
-    pointer-events: none;
-}
-
-.clockTrack {
-    fill: none;
-    stroke: rgba(0, 0, 0, .45);
-    stroke-width: 4;
-}
-
-.clockFill {
-    fill: none;
-    stroke: #5aa8ff;
-    stroke-width: 4;
-    stroke-linecap: round;
-    transition: stroke-dasharray .25s linear;
-    filter: drop-shadow(0 0 4px #5aa8ff);
-}
-
-.clockRes .clockFill {
-    stroke: #ffa53a;
-    filter: drop-shadow(0 0 5px #ffa53a);
-}
-
-.clockLow .clockFill {
-    stroke: #ff4a4a;
-    filter: drop-shadow(0 0 7px #ff4a4a);
-    animation: clockPulse .5s ease-in-out infinite alternate;
-}
-
 @keyframes clockPulse {
     to {
         opacity: .5;
@@ -1780,11 +1690,6 @@
     color: #ffa53a;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .clockLow .clockFill {
-        animation: none;
-    }
-}
 
 /* ---------- Mano rivelata ---------- */
 .known {
@@ -2351,10 +2256,9 @@ html.rm .legendRays {
         display: none;
     }
 
-    .right .endTurn {
-        width: 104px;
-        height: 104px;
-        font-size: 21px;
+    .dock .endTurn {
+        width: 180px;
+        padding-block: 10px 9px;
     }
 }
 
@@ -2493,20 +2397,27 @@ html.rm .legendRays {
 
 /* Leggio: il registro occupa lo spazio libero in alto, i comandi restano in fondo vicino alla mano. */
 .right .log {
-    flex: none;
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
     background: rgba(0, 0, 0, .22);
 }
 
-/* il registro scorre dentro lo spazio che i comandi lasciano libero */
+/* il registro occupa lo spazio libero della colonna e scorre al suo interno */
 .right .log ul {
-    max-height: max(60px, calc(100vh - 660px));
+    max-height: none;
+    min-height: 0;
+    overflow: auto;
 }
 
-.right .controls {
-    margin-top: auto;
+.right .log {
+    flex: 1 1 auto;
 }
 
+/* Abbandona e tempo in fondo alla colonna, dove prima c'era il pulsante */
 .right .toolsRow {
+    margin-top: auto;
     padding-top: 10px;
     border-top: 1px solid var(--gildSoft);
 }
@@ -2534,4 +2445,1183 @@ html.rm .legendRays {
 /* il nome del Custode è già nel suo riquadro accanto */
 .plate .custName {
     display: none;
+}
+
+/* ---------- Giocata dell'avversario: didascalia, mira, impatto ---------- */
+/* testo solo per i lettori di schermo */
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.oa-fire, .im-fire {
+    --tc: #ff7a45;
+}
+
+.oa-void, .im-void {
+    --tc: #b07cff;
+}
+
+.oa-tide, .im-tide {
+    --tc: #5cc8e8;
+}
+
+.oa-life, .im-life {
+    --tc: #7fe08a;
+}
+
+.oa-gold, .im-gold {
+    --tc: #ffd27a;
+}
+
+.oa-fire .arrowGlow, .oa-void .arrowGlow, .oa-tide .arrowGlow, .oa-life .arrowGlow, .oa-gold .arrowGlow {
+    stroke: color-mix(in srgb, var(--tc) 40%, transparent);
+}
+
+.oppArrowLine {
+    fill: none;
+    stroke: var(--tc);
+    stroke-width: 4;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px var(--tc));
+}
+
+.oppArrowHead {
+    fill: var(--tc);
+}
+
+/* il bersaglio pulsa nel colore dell'effetto mentre l'avversario mira */
+:global([data-aim]) {
+    animation: aimPulse .8s ease-in-out infinite;
+    border-radius: 12px;
+}
+
+:global([data-aim="fire"]) { --aim: #ff7a45; }
+:global([data-aim="void"]) { --aim: #b07cff; }
+:global([data-aim="tide"]) { --aim: #5cc8e8; }
+:global([data-aim="life"]) { --aim: #7fe08a; }
+:global([data-aim="gold"]) { --aim: #ffd27a; }
+
+@keyframes aimPulse {
+    50% {
+        box-shadow: 0 0 0 3px var(--aim, #ffd27a), 0 0 26px var(--aim, #ffd27a);
+    }
+}
+
+/* impatto: forma diversa per famiglia di effetto */
+.impact {
+    position: fixed;
+    width: 160px;
+    height: 160px;
+    margin: -80px 0 0 -80px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 85;
+}
+
+/* fuoco: esplosione calda che si allarga */
+.im-fire {
+    background: radial-gradient(circle, rgba(255, 230, 160, .95), rgba(255, 122, 69, .7) 35%, transparent 70%);
+    animation: impBurst .7s ease-out forwards;
+}
+
+/* vuoto: buio che implode verso il centro */
+.im-void {
+    background: radial-gradient(circle, rgba(20, 8, 40, .95), rgba(176, 124, 255, .55) 45%, transparent 70%);
+    animation: impImplode .9s ease-in forwards;
+}
+
+/* marea: un'onda ad anello che si apre */
+.im-tide {
+    background: none;
+    box-shadow: 0 0 0 4px rgba(92, 200, 232, .9), inset 0 0 22px rgba(92, 200, 232, .6);
+    animation: impRing .9s ease-out forwards;
+}
+
+/* vita: bagliore morbido che sale */
+.im-life {
+    background: radial-gradient(circle, rgba(200, 255, 190, .8), rgba(127, 224, 138, .45) 40%, transparent 70%);
+    animation: impRise 1s ease-out forwards;
+}
+
+/* oro: lampo breve */
+.im-gold {
+    background: radial-gradient(circle, rgba(255, 245, 210, .9), rgba(255, 210, 122, .5) 35%, transparent 70%);
+    animation: impBurst .6s ease-out forwards;
+}
+
+@keyframes impBurst {
+    from { transform: scale(.2); opacity: 1; }
+    to { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes impImplode {
+    from { transform: scale(1.6); opacity: 0; }
+    40% { opacity: 1; }
+    to { transform: scale(.1); opacity: 0; }
+}
+
+@keyframes impRing {
+    from { transform: scale(.2); opacity: 1; }
+    to { transform: scale(1.7); opacity: 0; }
+}
+
+@keyframes impRise {
+    from { transform: translateY(10px) scale(.5); opacity: 0; }
+    35% { opacity: 1; }
+    to { transform: translateY(-30px) scale(1.2); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .impact {
+        animation-duration: .01s;
+    }
+
+    :global([data-aim]) {
+        animation: none;
+        box-shadow: 0 0 0 3px var(--aim, #ffd27a);
+    }
+}
+
+/* carta sfilata dalla mano dell'avversario */
+.oppLifted {
+    z-index: 5;
+    filter: drop-shadow(0 0 14px rgba(255, 210, 140, .7)) drop-shadow(0 10px 14px rgba(0, 0, 0, .6));
+}
+
+
+/* dorso della carta in volo: ruotato di mezzo giro, così a carta girata si legge dritto */
+.faceBack {
+    position: absolute;
+    inset: 0;
+    transform: rotateY(180deg);
+}
+
+.flip {
+    position: relative;
+}
+
+/* ---------- Colonna laterale richiudibile e dock del turno ---------- */
+.field {
+    position: relative;
+    transition: grid-template-columns .3s ease;
+}
+
+/* colonna chiusa: il campo prende tutta la larghezza (resta lo spazio della linguetta) */
+.fieldWide {
+    grid-template-columns: minmax(0, 1fr) 0;
+    gap: 0;
+    padding-right: 34px;
+}
+
+/* linguetta sul bordo per aprire e chiudere la colonna */
+.sideTab {
+    position: absolute;
+    top: 50%;
+    right: 248px;
+    z-index: 20;
+    width: 22px;
+    height: 64px;
+    margin-top: -32px;
+    border: 0;
+    border-radius: 10px 0 0 10px;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    color: #f3dfb0;
+    background: linear-gradient(180deg, rgba(40, 32, 50, .95), rgba(20, 16, 26, .95));
+    box-shadow: inset 0 0 0 1px var(--gildSoft), -4px 0 12px rgba(0, 0, 0, .35);
+}
+
+.sideTab:hover {
+    color: #fff;
+    box-shadow: inset 0 0 0 1px var(--gild), -4px 0 14px rgba(240, 195, 90, .2);
+}
+
+.sideTabClosed {
+    right: 8px;
+}
+
+/* colonna chiusa: la carta dell'avversario in pila si sposta sul bordo, sopra la linguetta, e non copre il campo */
+.sideClosed .stackZone {
+    right: 40px;
+}
+
+/* Dock nell'angolo in basso a destra: turno e Cristalli accanto al grande pulsante */
+.dock {
+    /* sopra la mano: con tante carte il ventaglio arriva fin qui e non deve coprire i Cristalli */
+    position: relative;
+    z-index: 35;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 6px;
+}
+
+/* ---------- Testa o croce di inizio partita ---------- */
+.toss {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(ellipse at 50% 45%, rgba(30, 22, 40, .55), rgba(8, 6, 11, .88));
+    backdrop-filter: blur(2px);
+}
+
+.tossBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    max-width: 440px;
+    padding: 0 16px;
+}
+
+.tossBox h2 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 40px;
+    color: #f3dfb0;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, .6);
+}
+
+.tossBox p {
+    margin: 0;
+    font-size: 16px;
+    color: #d8cdb4;
+    min-height: 1.5em;
+}
+
+.tossBox p b {
+    color: #ffe39a;
+}
+
+/* la moneta: due facce che si alternano mentre gira */
+.coinStage {
+    height: 250px;
+    display: grid;
+    place-items: end center;
+    perspective: 800px;
+}
+
+.coin {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+/* la moneta: un disco SVG per faccia, con l'ombra di uno spessore battuto */
+.coinFace {
+    position: absolute;
+    inset: 0;
+    filter: drop-shadow(0 3px 0 #4a2e08) drop-shadow(0 14px 18px rgba(0, 0, 0, .55));
+}
+
+.coinSvg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* croce: la faccia è girata di mezzo giro, così a moneta capovolta si legge dritta */
+.coinTails {
+    transform: rotateX(180deg);
+}
+
+.coinShadow {
+    width: 120px;
+    height: 16px;
+    margin-top: 8px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(0, 0, 0, .55), transparent 70%);
+}
+
+.tossBtns {
+    display: flex;
+    gap: 14px;
+}
+
+.tossBtns button {
+    min-width: 130px;
+    padding: 12px 22px;
+    border: 0;
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: var(--display);
+    font-size: 22px;
+    color: #2a1a02;
+    background: linear-gradient(180deg, #ffe39a, #e0a032 55%, #a86a12);
+    box-shadow: 0 0 0 1px #ffe7a6, 0 0 22px rgba(240, 195, 90, .35), 0 10px 18px rgba(0, 0, 0, .4);
+    transition: transform .15s;
+}
+
+.tossBtns button:hover {
+    transform: translateY(-2px);
+}
+
+.tossWin {
+    font-family: var(--display);
+    font-size: 26px;
+    color: #ffe39a;
+}
+
+.tossLose {
+    font-family: var(--display);
+    font-size: 26px;
+    color: #cfc5ae;
+}
+
+/* targhetta sotto la moneta con la faccia uscita */
+.coinLabel {
+    height: 34px;
+    display: grid;
+    place-items: center;
+}
+
+.coinLabel span {
+    padding: 4px 18px;
+    border-radius: 6px;
+    font-family: var(--display);
+    font-size: 20px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #3a2206;
+    background: linear-gradient(180deg, #f6d27a, #c48a22);
+    box-shadow: inset 0 1px 0 rgba(255, 245, 210, .7), 0 0 0 1px #7a4e0e, 0 6px 12px rgba(0, 0, 0, .45);
+}
+
+/* cinque secondi per chiamare la moneta */
+.tossTimer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 260px;
+    font-size: 12px;
+    color: #a69d8a;
+}
+
+.tossTimer i {
+    display: block;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    transform-origin: left center;
+    background: linear-gradient(90deg, #ffe39a, #e0a032);
+    box-shadow: 0 0 8px rgba(240, 195, 90, .5);
+}
+
+/* ---------- Riserva di Cristalli: anteprima del costo e consumo ---------- */
+.pool {
+    position: relative;
+}
+
+.poolGems {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    max-width: 118px;
+}
+
+.poolGems svg {
+    width: 15px;
+    height: 22px;
+    overflow: visible;
+}
+
+.g-on path:first-child {
+    fill: url(#gemCost);
+    stroke: #e8f6ff;
+    stroke-width: 1;
+    filter: drop-shadow(0 0 4px #7cc4ff);
+}
+
+.g-off path:first-child {
+    fill: rgba(255, 255, 255, .05);
+    stroke: rgba(200, 220, 255, .45);
+    stroke-width: 1;
+}
+
+/* gemme che la carta sotto il mouse spenderebbe: arancio, sollevate */
+.g-pending path:first-child {
+    fill: #ffb347;
+    stroke: #fff1c4;
+    stroke-width: 1.1;
+    filter: drop-shadow(0 0 6px #ff9a2e);
+}
+
+/* gemme che mancano per giocarla */
+.g-missing path:first-child {
+    fill: rgba(255, 70, 70, .18);
+    stroke: #ff6b5e;
+    stroke-width: 1.2;
+    stroke-dasharray: 2 1.5;
+}
+
+/* gemme appena spese: lampo bianco, poi si spengono */
+.g-spent path:first-child {
+    fill: #fff;
+    stroke: #fff;
+    filter: drop-shadow(0 0 8px #fff) drop-shadow(0 0 14px #7cc4ff);
+}
+
+.poolInfo .poolNote {
+    font-family: var(--body, inherit);
+    font-size: 11px;
+    font-weight: 700;
+    color: #cfe6ff;
+}
+
+/* ---------- Banda del turno (tra il tavolo e la mano) ---------- */
+.band {
+    position: relative;
+    /* sotto la mano: la carta ingrandita al passaggio del mouse deve coprire la banda, non il contrario */
+    z-index: 29;
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-top: 6px;
+    padding: 6px 20px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(30, 26, 42, .94), rgba(16, 13, 22, .94));
+    box-shadow: inset 0 0 0 1px var(--gildSoft), 0 10px 24px rgba(0, 0, 0, .45);
+}
+
+.band .turnBadge {
+    align-self: center;
+    padding: 4px 14px;
+}
+
+.band .turnBadge b {
+    font-size: 26px;
+}
+
+/* tempo: numero grande e barra lunga */
+.timer {
+    --tc: #5aa8ff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 220px;
+}
+
+.timerTop {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-variant-numeric: tabular-nums;
+}
+
+.timerTop b {
+    font-family: var(--display);
+    font-size: 26px;
+    line-height: 1;
+    color: #fff;
+}
+
+.timerTop span {
+    font-size: 12px;
+    color: #b9b2c8;
+}
+
+.timerTop em {
+    margin-left: auto;
+    font-style: normal;
+    font-size: 11px;
+    color: #8f88a0;
+}
+
+.timerBar {
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, .5);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06);
+}
+
+.timerBar i {
+    display: block;
+    height: 100%;
+    transform-origin: left center;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 60%, #000), var(--tc));
+    box-shadow: 0 0 8px var(--tc);
+    transition: transform .25s linear;
+}
+
+.tRes {
+    --tc: #ffa53a;
+}
+
+.tLow {
+    --tc: #ff4a4a;
+}
+
+.tLow .timerTop b {
+    color: #ff8a80;
+    animation: clockPulse .5s ease-in-out infinite alternate;
+}
+
+.tOpp .timerTop b {
+    font-size: 18px;
+    color: #cfc5ae;
+}
+
+.tOpp .timerBar i {
+    background: rgba(200, 190, 220, .25);
+    box-shadow: none;
+}
+
+/* ---------- Cristalli accanto a Fine turno: grandi, animati, con "rimasti / totale" sempre in vista ---------- */
+.dock {
+    gap: 16px;
+}
+
+.dock .pool {
+    /* senza riquadro: le gemme stanno direttamente sul tavolo, accanto al pulsante */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-width: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+
+/* gemme grandi: due file da cinque */
+.dock .poolGems {
+    max-width: 236px;
+    gap: 7px;
+}
+
+.dock .poolGems svg {
+    width: 40px;
+    height: 58px;
+}
+
+/* le gemme piene respirano una dopo l'altra, come una luce che scorre */
+.dock .g-on path:first-child {
+    animation: gemGlow 2.8s ease-in-out infinite;
+    animation-delay: var(--d, 0s);
+}
+
+.dock .poolNote {
+    min-height: 15px;
+    font-size: 12px;
+}
+
+.noteShort {
+    color: #ffb4aa !important;
+}
+
+/* gemma grande: circa metà del pulsante, con un respiro di luce continuo */
+@keyframes gemGlow {
+    50% {
+        filter: drop-shadow(0 0 14px #7cc4ff) brightness(1.15);
+    }
+}
+
+.poolCount {
+    display: flex;
+    white-space: nowrap;
+    align-items: baseline;
+    gap: 5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.poolCount b {
+    font-family: var(--display);
+    font-size: 30px;
+    line-height: 1;
+    color: #fff;
+}
+
+.poolCount span {
+    font-family: var(--display);
+    font-size: 20px;
+    color: #9fcaff;
+}
+
+.poolCount em {
+    margin-left: 4px;
+    font-style: normal;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #9fcaff;
+}
+
+/* gemme singole: due file da cinque */
+@media (prefers-reduced-motion: reduce) {
+    .dock .g-on path:first-child {
+        animation: none;
+    }
+}
+
+/* ---------- Fine turno: lastra moderna ---------- */
+.endWrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.endTurn {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 14px 18px 12px;
+    border: 0;
+    border-radius: 14px;
+    cursor: pointer;
+    color: #2a1a02;
+    background: linear-gradient(180deg, #ffe39a, #e0a032);
+    box-shadow: inset 0 0 0 1px #fff1c4, 0 10px 20px rgba(0, 0, 0, .45);
+    transition: background .25s, box-shadow .25s, color .25s;
+}
+
+.endTurn:hover:not(:disabled) {
+    box-shadow: inset 0 0 0 1px #fff1c4, 0 0 26px rgba(240, 195, 90, .45), 0 12px 22px rgba(0, 0, 0, .45);
+}
+
+.endTurn b {
+    font-family: var(--display);
+    font-size: 28px;
+    line-height: 1;
+}
+
+.endTurn small {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    opacity: .7;
+}
+
+/* turno avversario: pietra spenta */
+.endTurn:disabled {
+    cursor: default;
+    color: #c9c2d6;
+    background: linear-gradient(180deg, #4a4458, #2c2736);
+    box-shadow: inset 0 0 0 1px #6f6880, 0 10px 20px rgba(0, 0, 0, .45);
+}
+
+/* niente più da giocare: la lastra respira per invitare a chiudere il turno */
+.endReady {
+    animation: slabBreath 1.6s ease-in-out infinite;
+}
+
+@keyframes slabBreath {
+    50% {
+        box-shadow: inset 0 0 0 1px #fff1c4, 0 0 34px rgba(255, 210, 120, .7), 0 10px 20px rgba(0, 0, 0, .45);
+    }
+}
+
+/* tempo del turno: barra sottile sotto la lastra */
+.endBar {
+    height: 5px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, .5);
+}
+
+.endBar i {
+    display: block;
+    height: 100%;
+    transform-origin: left center;
+    background: #5aa8ff;
+    box-shadow: 0 0 8px #5aa8ff;
+    transition: transform .25s linear;
+}
+
+.endBarOff {
+    visibility: hidden;
+}
+
+.clockRes i {
+    background: #ffa53a;
+    box-shadow: 0 0 8px #ffa53a;
+}
+
+.clockLow i {
+    background: #ff4a4a;
+    box-shadow: 0 0 8px #ff4a4a;
+    animation: clockPulse .5s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .endReady, .clockLow i {
+        animation: none;
+    }
+}
+
+/* ---------- Sigilli: cero votivo in cinque fasi ---------- */
+.seal {
+    height: 78px;
+}
+
+.candle {
+    position: relative;
+    width: 44px;
+    height: 76px;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.wax {
+    position: relative;
+    width: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 5px 5px 3px 3px;
+    /* cera tinta del colore del lato: azzurrina la tua, rosata quella nemica */
+    background: linear-gradient(90deg, color-mix(in srgb, var(--sc) 32%, #efe2c4), #fff7e6 45%, color-mix(in srgb, var(--sc) 45%, #d8c59e));
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .15), 0 4px 10px rgba(0, 0, 0, .5);
+    transition: height .5s cubic-bezier(.22, 1, .36, 1);
+}
+
+.wax .sealHp {
+    font-size: 19px;
+    color: color-mix(in srgb, var(--sc) 55%, #1a1020);
+    -webkit-text-stroke: 0;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+/* colature di cera: una sempre, una seconda quando il cero è a metà */
+.drip, .drip2 {
+    position: absolute;
+    top: 0;
+    width: 6px;
+    border-radius: 0 0 4px 4px;
+    background: #fff7e6;
+}
+
+.drip {
+    left: 5px;
+    height: 11px;
+}
+
+.drip2 {
+    right: 6px;
+    height: 16px;
+}
+
+.flame {
+    width: 13px;
+    height: 20px;
+    margin-bottom: 1px;
+    border-radius: 50% 50% 45% 45% / 65% 65% 35% 35%;
+    background: radial-gradient(ellipse at 50% 70%, #fff7c2, #ffb347 55%, transparent 72%);
+    filter: drop-shadow(0 0 8px #ffb347);
+    transform-origin: 50% 90%;
+    animation: flicker 1.4s ease-in-out infinite;
+    transition: transform .4s;
+}
+
+.candleBase {
+    width: 40px;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #8a6a2a, #4a3410);
+}
+
+/* le cinque fasi: altezza del cero e forza della fiamma */
+.ph5 .wax {
+    height: 46px;
+}
+
+.ph4 .wax {
+    height: 38px;
+}
+
+.ph4 .flame {
+    scale: .92;
+}
+
+.ph3 .wax {
+    height: 30px;
+}
+
+.ph3 .flame {
+    scale: .82;
+}
+
+.ph2 .wax {
+    height: 23px;
+}
+
+.ph2 .flame {
+    scale: .7;
+}
+
+/* ultima fase: mozzicone e fiammella, il cero chiede aiuto */
+.ph1 .wax {
+    height: 18px;
+    animation: candleWarn 1.1s ease-in-out infinite;
+}
+
+.ph1 .wax .sealHp {
+    font-size: 15px;
+}
+
+.ph1 .flame {
+    scale: .55;
+}
+
+/* spezzato: il mozzicone spento e un filo di fumo */
+.ph0 .wax {
+    height: 14px;
+    background: #3a3442;
+}
+
+.ph0 .drip {
+    background: #4a4452;
+}
+
+.smoke {
+    width: 2px;
+    height: 18px;
+    margin-bottom: 2px;
+    border-radius: 1px;
+    background: linear-gradient(180deg, transparent, rgba(200, 200, 210, .55));
+    animation: smokeDrift 2.4s ease-in-out infinite;
+}
+
+@keyframes flicker {
+    50% {
+        transform: scaleY(1.12) rotate(-3deg);
+    }
+}
+
+@keyframes smokeDrift {
+    50% {
+        transform: translateY(-4px) skewX(10deg);
+        opacity: .45;
+    }
+}
+
+@keyframes candleWarn {
+    50% {
+        box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .15), 0 0 14px rgba(255, 64, 64, .8);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flame, .smoke, .ph1 .wax {
+        animation: none;
+    }
+}
+
+/* colonna in basso a sinistra: striscia del turno sopra la targa del giocatore */
+.leftStack {
+    display: flex;
+    flex-direction: column;
+    /* striscia e targa larghe uguali */
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.leftStack .plate {
+    margin-bottom: 0;
+}
+
+.leftStack .band {
+    margin-top: 0;
+    padding: 5px 14px;
+    gap: 16px;
+}
+
+.leftStack .band .turnBadge b {
+    font-size: 22px;
+}
+
+.leftStack .timer {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+}
+
+.leftStack .timerTop {
+    white-space: nowrap;
+}
+
+/* ---------- Reliquia: piccolo reliquiario accanto al cero ---------- */
+/* il cero resta sempre al centro della corsia: la reliquia gli sta accanto senza spostarlo */
+.relic {
+    position: absolute;
+    left: calc(50% + 34px);
+    top: 50%;
+    width: 44px;
+    height: 60px;
+    transform: translateY(-50%) rotate(5deg);
+    border-radius: 7px;
+    cursor: help;
+    background: #120e18;
+    box-shadow: 0 0 0 2px #2a1d0c, 0 0 0 3px var(--gild), 0 6px 12px rgba(0, 0, 0, .55);
+    transition: transform .2s, box-shadow .3s;
+}
+
+/* reliquia nemica: inclinata al contrario, come rispecchiata sull'altro lato del tavolo */
+.theirs .relic {
+    transform: translateY(-50%) rotate(-5deg);
+}
+
+.relic:hover {
+    transform: translateY(-50%) rotate(0deg) scale(1.08);
+    box-shadow: 0 0 0 2px #2a1d0c, 0 0 0 3px var(--gold2, #f0c35a), 0 0 16px rgba(240, 195, 90, .45), 0 6px 12px rgba(0, 0, 0, .55);
+}
+
+.relicArt {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.relicArt > * {
+    width: 100%;
+    height: 100%;
+}
+
+/* sigillo dorato delle reliquie nell'angolo in basso */
+.relicIcon {
+    position: absolute;
+    right: -6px;
+    bottom: -6px;
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: #2a1a02;
+    background: radial-gradient(circle at 40% 35%, #fff0c2, #e0a032 60%, #8a5410);
+    box-shadow: 0 0 0 1.5px #2a1d0c, 0 2px 4px rgba(0, 0, 0, .5);
+}
+
+.relicIcon svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* la reliquia si attiva: un lampo dorato che si spegne */
+.relicOn {
+    animation: relicFlash 1.2s ease-out;
+}
+
+@keyframes relicFlash {
+    20% {
+        box-shadow: 0 0 0 2px #2a1d0c, 0 0 0 3px #fff1c4, 0 0 26px 6px rgba(255, 215, 130, .85), 0 6px 12px rgba(0, 0, 0, .55);
+    }
+}
+
+/* reliquia su un Sigillo spezzato: non agisce più, si vede spenta */
+.broken .relic {
+    filter: grayscale(1) brightness(.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .relicOn {
+        animation: none;
+    }
+}
+
+/* ---------- Attaccare o restare in guardia ---------- */
+.atkChip {
+    position: absolute;
+    left: 50%;
+    bottom: -11px;
+    z-index: 6;
+    width: 28px;
+    height: 28px;
+    margin-left: -14px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #2a1a02;
+    background: radial-gradient(circle at 40% 35%, #fff0c2, #e0a032 60%, #8a5410);
+    box-shadow: 0 0 0 2px #17141c, 0 0 10px rgba(240, 195, 90, .55);
+    transition: transform .15s, background .2s, box-shadow .2s;
+}
+
+.atkChip:hover {
+    transform: scale(1.15);
+}
+
+.atkChip svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+/* in guardia: scudo d'argento al posto della spada */
+.atkGuard {
+    color: #1c2a3e;
+    background: radial-gradient(circle at 40% 35%, #f4f8ff, #a9bdd6 60%, #5a6e88);
+    box-shadow: 0 0 0 2px #17141c, 0 0 10px rgba(170, 200, 240, .55);
+}
+
+/* l'unità in guardia si vede un po' arretrata: non partecipa all'attacco */
+.guarding > :first-child {
+    filter: saturate(.55) brightness(.85);
+}
+
+.guarding {
+    box-shadow: 0 0 0 2px rgba(170, 200, 240, .65);
+    border-radius: 9px;
+}
+
+/* tutti in guardia / tutti all'attacco, sopra la lastra di Fine turno */
+.guardAll, .guardAllSpace {
+    height: 30px;
+}
+
+.guardAll {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    color: #dbe6f6;
+    background: linear-gradient(180deg, rgba(60, 74, 96, .9), rgba(30, 38, 52, .9));
+    box-shadow: inset 0 0 0 1px rgba(170, 200, 240, .45);
+    transition: filter .15s;
+}
+
+.guardAll:hover {
+    filter: brightness(1.15);
+}
+
+.guardAll svg {
+    width: 15px;
+    height: 15px;
+    fill: currentColor;
+}
+
+/* tutte in guardia: il pulsante invita a riportarle all'attacco */
+.guardAllOn {
+    color: #2a1a02;
+    background: linear-gradient(180deg, #ffe39a, #e0a032);
+    box-shadow: inset 0 0 0 1px #fff1c4;
+}
+
+/* mirino sul nemico scelto come bersaglio */
+.aimMark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 6;
+    width: 44px;
+    height: 44px;
+    margin: -22px 0 0 -22px;
+    pointer-events: none;
+    color: #ff6b5e;
+    filter: drop-shadow(0 0 6px rgba(255, 80, 60, .8));
+    animation: aimSpin 6s linear infinite;
+}
+
+.aimMark svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+
+@keyframes aimSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .aimMark {
+        animation: none;
+    }
+}
+
+/* scelta del bersaglio d'attacco: anello rosso pulsante sui nemici attaccabili */
+.aimable {
+    cursor: crosshair;
+    border-radius: 9px;
+    animation: aimPick 1s ease-in-out infinite;
+}
+
+@keyframes aimPick {
+    0%, 100% {
+        box-shadow: 0 0 0 3px rgba(255, 107, 94, .95), 0 0 16px rgba(255, 80, 60, .55);
+    }
+    50% {
+        box-shadow: 0 0 0 3px rgba(255, 107, 94, .45), 0 0 6px rgba(255, 80, 60, .2);
+    }
+}
+
+/* nemici protetti da un Guardiano: spenti, con lo scudo */
+.aimBlocked > :first-child {
+    filter: grayscale(.7) brightness(.55);
+}
+
+.blockedMark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 6;
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+    pointer-events: none;
+    color: #cfd8e6;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .8));
+}
+
+.blockedMark svg {
+    width: 100%;
+    height: 100%;
+    fill: rgba(30, 38, 52, .85);
+    stroke: currentColor;
+    stroke-width: 1.6;
+}
+
+/* frecce dei tuoi attacchi pianificati */
+.myAim path {
+    fill: none;
+    stroke: rgba(255, 107, 94, .85);
+    stroke-width: 3;
+    stroke-dasharray: 8 6;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 4px rgba(255, 80, 60, .6));
+    animation: dash .8s linear infinite;
+}
+
+.myAim polygon {
+    fill: rgba(255, 107, 94, .95);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .aimable, .myAim path {
+        animation: none;
+    }
 }

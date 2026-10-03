@@ -39,7 +39,7 @@ export const TUTORIAL = {
         {
             kind: 'do',
             title: 'Gioca un\'unità',
-            text: 'Hai 2 Cristalli, il medaglione blu accanto a Fine turno. Trascina Scintilla Errante (costo 1) in una casella libera della corsia centrale: con Rapido attacca già in questo turno.',
+            text: 'Hai 2 Cristalli: sono le gemme blu accanto a Fine turno. Trascina Scintilla Errante (costo 1) in una casella libera della corsia centrale: con Rapido attacca già in questo turno.',
             anchors: ['hand:brace-c0', 'lane:1'],
             expect: {type: 'play', card: 'brace-c0', lane: 1}
         },
@@ -76,7 +76,7 @@ export const TUTORIAL = {
         {
             kind: 'do',
             title: 'Sposta le unità',
-            text: 'La Sentinella di Corallo ha 5 salute e blocca Lanciafiamme. Trascina Lanciafiamme nella corsia centrale: spostarsi costa 1 Cristallo.',
+            text: 'La Sentinella di Corallo ha 5 salute e blocca Lanciafiamme. Trascina Lanciafiamme nella corsia centrale: spostarsi costa 1 Cristallo. Attenzione: chi si sposta non attacca in questo turno. O si sposta o attacca.',
             anchors: ['unit:brace-c2', 'lane:1'],
             expect: {type: 'move', card: 'brace-c2', to: 1}
         },
@@ -89,16 +89,16 @@ export const TUTORIAL = {
         },
         {
             kind: 'do',
-            title: 'Spezza il Sigillo',
-            text: 'Premi Fine turno e guarda la corsia centrale.',
+            title: 'Fine turno',
+            text: 'Premi Fine turno. Corridore colpisce il Sigillo destro; Lanciafiamme, appena spostato, attaccherà dal prossimo turno.',
             anchors: ['end'],
             expect: {type: 'end'}
         },
-        {kind: 'wait', title: 'Un Sigillo è caduto', text: 'Ne manca uno. L\'avversario ora gioca da solo.'},
+        {kind: 'wait', title: 'Turno avversario', text: 'Da qui l\'avversario gioca da solo, senza copione.'},
         {
             kind: 'free',
             title: 'Tocca a te',
-            text: 'Da qui giochi liberamente: spezza il secondo Sigillo per vincere. Il Sigillo destro ha solo 2 punti vita.'
+            text: 'Da qui giochi liberamente: spezza due Sigilli per vincere. Il centrale e il destro sono già scesi a 3 punti vita: Lanciafiamme e Corridore possono finirli.'
         },
     ] as TutStep[],
 };

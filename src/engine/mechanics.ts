@@ -311,7 +311,7 @@ export const CUSTODI: Record<CustodeId, Custode> = {
         title: 'Guida tra gli scogli',
         art: 'marea-r2',
         insp: "Odisseo e i nocchieri dell'Odissea",
-        passive: 'Il primo spostamento di ogni turno non costa Cristalli.',
+        passive: "Il primo spostamento di ogni turno non costa Cristalli e quell'unità può attaccare lo stesso.",
         bellName: 'Mareggiata',
         bell: "Riporta in mano all'avversario tutte le sue unità che costano 3 o meno.",
         lore: "Conosce ogni corrente tra Scilla e Cariddi. Si dice che abbia portato a casa un re che il mare non voleva lasciar andare."

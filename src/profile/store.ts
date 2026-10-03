@@ -166,6 +166,10 @@ export interface Profile {
     day: number;
     lastWinDay: number;
     quests: Quest[];
+    /** Giorno di calendario (locale) a cui appartengono le missioni: quando cambia, arrivano missioni nuove. */
+    questDate?: number;
+    /** Giorno di calendario in cui si è già cambiata una missione (una volta al giorno). */
+    rerollDate?: number;
     games: number;
     wins: number;
     sound: boolean;
@@ -177,14 +181,18 @@ export interface Profile {
     log: { t: number; txt: string }[];
 }
 
+/** Tre missioni di famiglie diverse (vittorie, partite, combattimento, collezione). */
 function newQuests(): Quest[] {
-    const pool = [...QUEST_POOL].sort(() => Math.random() - 0.5), out: Quest[] = [], evs = new Set<string>();
-    for (const q of pool) if (out.length < 3 && !evs.has(q.ev)) {
+    const pool = [...QUEST_POOL].sort(() => Math.random() - 0.5), out: Quest[] = [], fams = new Set<string>();
+    for (const q of pool) if (out.length < 3 && !fams.has(q.fam)) {
         out.push({id: q.id, prog: 0, claimed: false});
-        evs.add(q.ev);
+        fams.add(q.fam);
     }
     return out;
 }
+
+/** Giorno di calendario nel fuso del giocatore: le missioni cambiano a mezzanotte locale. */
+export const calendarDay = (now = Date.now()) => Math.floor((now - new Date(now).getTimezoneOffset() * 60000) / 86400000);
 
 export function freshProfile(): Profile {
     const owned = starterOwned();
@@ -229,6 +237,7 @@ export function freshProfile(): Profile {
         day: 1,
         lastWinDay: 0,
         quests: newQuests(),
+        questDate: calendarDay(),
         games: 0,
         wins: 0,
         sound: true,
@@ -260,6 +269,10 @@ interface Actions {
     unlockFrame: (id: string, f: FrameId) => boolean;
     setLook: (id: string, look: Partial<CardLook>) => void;
     claimQuest: (i: number) => void;
+    /** Cambia una missione non ancora riscossa con un'altra di una famiglia diversa: una volta al giorno. */
+    rerollQuest: (i: number) => void;
+    /** Se è cominciato un nuovo giorno, rinnova le missioni (e il bonus della prima vittoria). */
+    rollDay: () => void;
     claimPass: (L: number, prem: boolean) => 'legChoice' | void;
     claimAllPass: () => boolean;
     pickLegendary: (id: string) => void;
@@ -463,6 +476,31 @@ export const useProfile = create<ProfileStore>()(persist((set, get) => {
         setLook: (id, look) => patch(d => {
             d.look[id] = {...lookOf(d, id), ...look};
         }),
+        rollDay: () => {
+            const today = calendarDay();
+            if (get().questDate === today) return;
+            patch(d => {
+                // i salvataggi senza data tengono le missioni in corso: da oggi in poi si rinnovano a ogni giorno
+                if (d.questDate != null) {
+                    d.day++;
+                    d.quests = newQuests();
+                }
+                d.questDate = today;
+            });
+        },
+        rerollQuest: i => {
+            const s = get(), q = s.quests[i];
+            if (!q || q.claimed || s.rerollDate === calendarDay()) return;
+            const famOf = (id: string) => QUEST_POOL.find(x => x.id === id)?.fam;
+            const taken = new Set(s.quests.map(x => famOf(x.id)));
+            const options = QUEST_POOL.filter(x => !taken.has(x.fam));
+            const pick = options[Math.floor(Math.random() * options.length)];
+            if (!pick) return;
+            patch(d => {
+                d.quests[i] = {id: pick.id, prog: 0, claimed: false};
+                d.rerollDate = calendarDay();
+            });
+        },
         claimQuest: i => {
             const s = get(), q = s.quests[i], d = QUEST_POOL.find(x => x.id === q?.id);
             if (!q || !d || q.claimed || q.prog < d.goal) return;
